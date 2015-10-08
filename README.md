@@ -1,3 +1,3 @@
 # Checkers-Server
 
-Does checkers things that others don't!
+# Does checkers things that others don't!
