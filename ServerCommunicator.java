@@ -56,8 +56,7 @@ public class ServerCommunicator implements ServerInterface {
 				//finally send the requested user name to the server.
 				streamToServer.write(userName.getBytes());
 				return true;
-			}
-	        } catch (UnknownHostException e) {
+			} catch (UnknownHostException e) {
 	            System.out.println("Don't know about host: "+ip);
 	            System.out.println(e.getMessage());
 	            return false;
