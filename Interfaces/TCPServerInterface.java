@@ -1,4 +1,4 @@
-package RMIConnection.Interfaces;
+package Interfaces;
 
 public interface TCPServerInterface {
 	/*
