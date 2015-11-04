@@ -1,7 +1,12 @@
-import userInterface.Login;
+import userInterface.LoginWindow;
 
 public class test {
 	public static void main(String[] args) {
-		userInterface.Login loginScreen = new userInterface.Login();
+		try {
+		LoginWindow window = new LoginWindow();
+		window.Display();
+	} catch (Exception e) {
+		e.printStackTrace();
+		}
 	}
 }
