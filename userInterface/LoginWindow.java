@@ -11,19 +11,23 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.FlowLayout;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.text.MaskFormatter;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import java.awt.Font;
+import javax.swing.JFormattedTextField;
+import javax.swing.SwingConstants;
 
-public class LoginWindow {
+public class LoginWindow implements ActionListener {
 
 	private JFrame frmCheckersGameClient;
-	private JTextField nameTxtField;
-	private JTextField addrTxtField;
+	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -47,8 +51,18 @@ public class LoginWindow {
 	public LoginWindow() {
 		initialize();
 	}
+	
 	public void Display() {
-		frmCheckersGameClient.setVisible(true);
+		EventQueue.invokeLater(new Runnable() {
+		public void run() {
+			try {
+				LoginWindow window = new LoginWindow();
+				window.frmCheckersGameClient.setVisible(true);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		});
 	}
 	/**
 	 * Initialize the contents of the frame.
@@ -62,13 +76,6 @@ public class LoginWindow {
 		
 		JLabel lblIpAddress = new JLabel("IP Address:");
 		
-		nameTxtField = new JTextField();
-		nameTxtField.setColumns(15);
-		
-		addrTxtField = new JTextField();
-		addrTxtField.setToolTipText("Must contain 4 integers no greater than 255 separated by periods. Ex. \"255.255.255.0\"");
-		addrTxtField.setColumns(15);
-		
 		JButton btnLogin = new JButton("Login");
 		
 		JButton btnClear = new JButton("Clear");
@@ -77,6 +84,13 @@ public class LoginWindow {
 		
 		JLabel lblCheckersClientLogin = new JLabel("Checkers Client Login");
 		lblCheckersClientLogin.setFont(new Font("Tahoma", Font.BOLD, 13));
+		
+		JFormattedTextField addrFormattedTxtField = new JFormattedTextField(createFormatter("###.###.###.###"));
+		addrFormattedTxtField.setColumns(15);
+		
+		textField = new JTextField();
+		textField.setToolTipText("The username may not contain whitespaces.");
+		textField.setColumns(15);
 		GroupLayout groupLayout = new GroupLayout(frmCheckersGameClient.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -94,12 +108,13 @@ public class LoginWindow {
 									.addComponent(btnClear, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(btnTutorial, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
-								.addComponent(nameTxtField, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)
-								.addComponent(addrTxtField, GroupLayout.PREFERRED_SIZE, 135, GroupLayout.PREFERRED_SIZE)))
+								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+									.addComponent(textField, Alignment.LEADING)
+									.addComponent(addrFormattedTxtField, Alignment.LEADING))))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(77)
 							.addComponent(lblCheckersClientLogin)))
-					.addContainerGap(32, Short.MAX_VALUE))
+					.addContainerGap(29, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -109,20 +124,41 @@ public class LoginWindow {
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblUsername)
-						.addComponent(nameTxtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(27)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(addrTxtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblIpAddress))
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE, false)
+						.addComponent(lblIpAddress)
+						.addComponent(addrFormattedTxtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnLogin)
 						.addComponent(btnClear)
 						.addComponent(btnTutorial))
-					.addContainerGap(14, Short.MAX_VALUE))
+					.addGap(14))
 		);
 		frmCheckersGameClient.getContentPane().setLayout(groupLayout);
 		frmCheckersGameClient.setBounds(100, 100, 336, 213);
 		frmCheckersGameClient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		btnLogin.addActionListener(this);
+		btnClear.addActionListener(this);
+	}
+	
+	private MaskFormatter createFormatter(String string) {
+		MaskFormatter formatter = null;
+	    try {
+	        formatter = new MaskFormatter(string);
+	    } catch (java.text.ParseException exc) {
+	        System.err.println("formatter is bad: " + exc.getMessage());
+	        System.exit(-1);
+	    }
+	    return formatter;
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		if (arg0.getActionCommand().equalsIgnoreCase("LOGIN")) {
+			System.out.println("LOGIN");
+		} else System.out.println("Something Else");
+		
 	}
 }

@@ -1,3 +1,5 @@
+package serverCommunication;
+
 import java.io.*;
 
 import Interfaces.TCPMsg;

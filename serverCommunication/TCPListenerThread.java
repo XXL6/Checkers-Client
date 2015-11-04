@@ -1,3 +1,5 @@
+package serverCommunication;
+
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
