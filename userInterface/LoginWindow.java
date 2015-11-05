@@ -23,12 +23,15 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
+import loginHandler.LoginInfoRetriever;
 
 public class LoginWindow implements ActionListener {
 
 	private JFrame frmCheckersGameClient;
 	private JTextField textField;
-
+	JFormattedTextField addrFormattedTxtField;
+	private JButton btnLogin;
+	//private JButton btnClear;
 	/**
 	 * Launch the application.
 	 */
@@ -53,16 +56,8 @@ public class LoginWindow implements ActionListener {
 	}
 	
 	public void Display() {
-		EventQueue.invokeLater(new Runnable() {
-		public void run() {
-			try {
-				LoginWindow window = new LoginWindow();
-				window.frmCheckersGameClient.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		});
+		frmCheckersGameClient.setVisible(true);
+		
 	}
 	/**
 	 * Initialize the contents of the frame.
@@ -76,7 +71,7 @@ public class LoginWindow implements ActionListener {
 		
 		JLabel lblIpAddress = new JLabel("IP Address:");
 		
-		JButton btnLogin = new JButton("Login");
+		btnLogin = new JButton("Login");
 		
 		JButton btnClear = new JButton("Clear");
 		
@@ -85,7 +80,7 @@ public class LoginWindow implements ActionListener {
 		JLabel lblCheckersClientLogin = new JLabel("Checkers Client Login");
 		lblCheckersClientLogin.setFont(new Font("Tahoma", Font.BOLD, 13));
 		
-		JFormattedTextField addrFormattedTxtField = new JFormattedTextField(createFormatter("###.###.###.###"));
+		addrFormattedTxtField = new JFormattedTextField(createFormatter("###.###.###.###"));
 		addrFormattedTxtField.setColumns(15);
 		
 		textField = new JTextField();
@@ -139,8 +134,21 @@ public class LoginWindow implements ActionListener {
 		frmCheckersGameClient.getContentPane().setLayout(groupLayout);
 		frmCheckersGameClient.setBounds(100, 100, 336, 213);
 		frmCheckersGameClient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		btnLogin.addActionListener(this);
-		btnClear.addActionListener(this);
+	}
+	
+	public void assignLoginButton(ActionListener listener) {
+		//listener = new LoginInfoParser();
+		btnLogin.addActionListener(listener);
+		//System.out.println(listener.toString());
+		//btnClear.addActionListener(listener);		
+	}
+	
+	public String getUsername() {
+		return textField.getText();
+	}
+	
+	public String getAddress() {
+		return addrFormattedTxtField.getText();
 	}
 	
 	private MaskFormatter createFormatter(String string) {
@@ -155,10 +163,8 @@ public class LoginWindow implements ActionListener {
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		if (arg0.getActionCommand().equalsIgnoreCase("LOGIN")) {
-			System.out.println("LOGIN");
-		} else System.out.println("Something Else");
+	public void actionPerformed(ActionEvent e) {
+		System.out.println("BUTTONPRESSED");
 		
 	}
 }
