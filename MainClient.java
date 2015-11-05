@@ -4,25 +4,27 @@ import serverCommunication.ServerCommunicator;
 import setup.WindowInitializer;
 
 public class MainClient implements CheckersClient {
-
+	
+	ServerInterface serverInterface;
+	
 	public MainClient() {
 		start();
 	}
 	
 	public void start() {
 		WindowInitializer windowInitializer = new WindowInitializer();
-		ServerInterface serverInterface = new ServerCommunicator(this);
+		serverInterface = new ServerCommunicator(this);
 		windowInitializer.startLogin(serverInterface);
 	}
 	@Override
 	public void connectionOK() {
-		// TODO Auto-generated method stub
+		System.out.println("Connection Successfull");
 		
 	}
 
 	@Override
 	public void youInLobby() {
-		// TODO Auto-generated method stub
+		System.out.println("You are in the lobby");
 		
 	}
 

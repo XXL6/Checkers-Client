@@ -8,7 +8,6 @@ public class entryPoint {
 	
 	public static void main(String[] args) {
 		CheckersClient client = new MainClient();
-		//client.start();
 	}//end main
 
 }//end class

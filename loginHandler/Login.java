@@ -1,5 +1,6 @@
 package loginHandler;
 
+import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,7 +24,17 @@ public class Login implements ActionListener{
 	public void parseData(String username, String address) {
 		parser.setData(username, address);
 		if (parser.usernameValid() && parser.addressValid()) {
-			server.connectToServer(address, username);
+			EventQueue.invokeLater(new Runnable() {
+				public void run() {
+					try {
+						server.connectToServer(address, username);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				});		
+			
+			
 		} else {
 			error = new ErrorPopups("username or password");
 		}
