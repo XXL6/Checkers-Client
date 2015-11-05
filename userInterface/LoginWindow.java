@@ -29,8 +29,8 @@ public class LoginWindow implements ActionListener {
 
 	private JFrame frmCheckersGameClient;
 	private JTextField textField;
-	JFormattedTextField addrFormattedTxtField;
 	private JButton btnLogin;
+	private JTextField addrTxtField;
 	//private JButton btnClear;
 	/**
 	 * Launch the application.
@@ -80,12 +80,12 @@ public class LoginWindow implements ActionListener {
 		JLabel lblCheckersClientLogin = new JLabel("Checkers Client Login");
 		lblCheckersClientLogin.setFont(new Font("Tahoma", Font.BOLD, 13));
 		
-		addrFormattedTxtField = new JFormattedTextField(createFormatter("###.###.###.###"));
-		addrFormattedTxtField.setColumns(15);
-		
 		textField = new JTextField();
 		textField.setToolTipText("The username may not contain whitespaces.");
 		textField.setColumns(15);
+		
+		addrTxtField = new JTextField();
+		addrTxtField.setColumns(10);
 		GroupLayout groupLayout = new GroupLayout(frmCheckersGameClient.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -104,8 +104,8 @@ public class LoginWindow implements ActionListener {
 									.addPreferredGap(ComponentPlacement.UNRELATED)
 									.addComponent(btnTutorial, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
 								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-									.addComponent(textField, Alignment.LEADING)
-									.addComponent(addrFormattedTxtField, Alignment.LEADING))))
+									.addComponent(addrTxtField, Alignment.LEADING)
+									.addComponent(textField, Alignment.LEADING))))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(77)
 							.addComponent(lblCheckersClientLogin)))
@@ -121,9 +121,9 @@ public class LoginWindow implements ActionListener {
 						.addComponent(lblUsername)
 						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(27)
-					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE, false)
+					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblIpAddress)
-						.addComponent(addrFormattedTxtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(addrTxtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnLogin)
@@ -148,7 +148,7 @@ public class LoginWindow implements ActionListener {
 	}
 	
 	public String getAddress() {
-		return addrFormattedTxtField.getText();
+		return addrTxtField.getText();
 	}
 	
 	private MaskFormatter createFormatter(String string) {

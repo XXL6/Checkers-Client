@@ -15,9 +15,7 @@ public class LoginInfoRetriever implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent buttonPressed) {
-		System.out.println(window.getUsername());
-		System.out.println(window.getAddress());
-		LoginInfoParser parser = new LoginInfoParser(window.getAddress(), window.getUsername());
+		
 	}
 	
 }

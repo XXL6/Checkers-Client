@@ -4,21 +4,22 @@ import userInterface.LoginWindow;
 
 import java.awt.EventQueue;
 
-import loginHandler.LoginInfoRetriever;
+import Interfaces.ServerInterface;
+import loginHandler.Login;
 
 public class WindowInitializer {
 	
 	private LoginWindow loginWindow;
-	private LoginInfoRetriever loginParser;
+	private Login login;
 	
 	public WindowInitializer() {
 		
 	}//end WindowInitializer constructor
 	
-	public void startLogin() {
+	public void startLogin(ServerInterface serverInterface) {
 		loginWindow = new LoginWindow();
-		loginParser = new LoginInfoRetriever(loginWindow);
-		loginWindow.assignLoginButton(loginParser);
+		login = new Login(loginWindow, serverInterface);
+		loginWindow.assignLoginButton(login);
 		EventQueue.invokeLater(new Runnable() {
 		public void run() {
 			try {
