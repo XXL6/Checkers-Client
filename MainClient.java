@@ -1,7 +1,7 @@
 import Interfaces.CheckersClient;
-import Interfaces.ServerInterface;
+import serverCommunication.ServerInterface;
 import serverCommunication.ServerCommunicator;
-import setup.WindowInitializer;
+import setup.LoginInitializer;
 
 public class MainClient implements CheckersClient {
 	
@@ -12,7 +12,7 @@ public class MainClient implements CheckersClient {
 	}
 	
 	public void start() {
-		WindowInitializer windowInitializer = new WindowInitializer();
+		LoginInitializer windowInitializer = new LoginInitializer();
 		serverInterface = new ServerCommunicator(this);
 		windowInitializer.startLogin(serverInterface);
 	}

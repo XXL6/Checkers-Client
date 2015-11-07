@@ -1,4 +1,4 @@
-package Interfaces;
+package serverCommunication;
 
 /**
  * Defines codes sent through TCP that correspond to messages from the game server.

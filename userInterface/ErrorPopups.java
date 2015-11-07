@@ -4,18 +4,14 @@ import javax.swing.JOptionPane;
 
 public class ErrorPopups {
 	
-	String error;
+	//String error;
 	
-	public ErrorPopups(String error) {
-		this.error = error;
-		showError(error);
+	public ErrorPopups() {
+
 	}
 	
-	private void showError(String error) {
-		if (error.equalsIgnoreCase("username or password")) {
-			JOptionPane.showMessageDialog(null, "Username or password invalid", "Login Error", JOptionPane.INFORMATION_MESSAGE);
-		}
+	public void showLoginError() {
+			JOptionPane.showMessageDialog(null, "Username or IP address invalid", "Login Error", JOptionPane.INFORMATION_MESSAGE);
 	}
-	
 	
 }

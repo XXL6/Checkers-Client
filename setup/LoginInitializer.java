@@ -1,18 +1,19 @@
 package setup;
 
+import userInterface.LoginWindowInterface;
 import userInterface.LoginWindow;
 
 import java.awt.EventQueue;
 
-import Interfaces.ServerInterface;
+import serverCommunication.ServerInterface;
 import loginHandler.Login;
 
-public class WindowInitializer {
+public class LoginInitializer {
 	
-	private LoginWindow loginWindow;
+	private LoginWindowInterface loginWindow;
 	private Login login;
 	
-	public WindowInitializer() {
+	public LoginInitializer() {
 		
 	}//end WindowInitializer constructor
 	
@@ -23,7 +24,7 @@ public class WindowInitializer {
 		EventQueue.invokeLater(new Runnable() {
 		public void run() {
 			try {
-				loginWindow.Display();
+				loginWindow.display();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

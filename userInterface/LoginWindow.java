@@ -25,7 +25,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
 import loginHandler.LoginInfoRetriever;
 
-public class LoginWindow implements ActionListener {
+public class LoginWindow implements ActionListener, LoginWindowInterface {
 
 	private JFrame frmCheckersGameClient;
 	private JTextField nameTxtField;
@@ -55,7 +55,7 @@ public class LoginWindow implements ActionListener {
 		initialize();
 	}
 	
-	public void Display() {
+	public void display() {
 		frmCheckersGameClient.setVisible(true);
 		
 	}
@@ -175,6 +175,5 @@ public class LoginWindow implements ActionListener {
 		clearUsername();
 		clearAddress();
 		nameTxtField.requestFocus();
-		
 	}
 }

@@ -2,8 +2,8 @@ package serverCommunication;
 
 import java.io.*;
 
-import Interfaces.TCPMsg;
-import Interfaces.TCPServerInterface;
+//import TCPMsg;
+//import TCPServerInterface;
 
 /**
  * This class defines the connection from the client to the server. Method

@@ -1,8 +1,8 @@
 
 import Interfaces.CheckersClient;
-import Interfaces.ServerInterface;
+import serverCommunication.ServerInterface;
 import serverCommunication.ServerCommunicator;
-import setup.WindowInitializer;
+import setup.LoginInitializer;
 
 public class entryPoint {
 	
