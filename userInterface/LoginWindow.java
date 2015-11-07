@@ -28,7 +28,7 @@ import loginHandler.LoginInfoRetriever;
 public class LoginWindow implements ActionListener {
 
 	private JFrame frmCheckersGameClient;
-	private JTextField textField;
+	private JTextField nameTxtField;
 	private JButton btnLogin;
 	private JTextField addrTxtField;
 	//private JButton btnClear;
@@ -80,9 +80,9 @@ public class LoginWindow implements ActionListener {
 		JLabel lblCheckersClientLogin = new JLabel("Checkers Client Login");
 		lblCheckersClientLogin.setFont(new Font("Tahoma", Font.BOLD, 13));
 		
-		textField = new JTextField();
-		textField.setToolTipText("The username may not contain whitespaces.");
-		textField.setColumns(15);
+		nameTxtField = new JTextField();
+		nameTxtField.setToolTipText("The username may not contain whitespaces.");
+		nameTxtField.setColumns(15);
 		
 		addrTxtField = new JTextField();
 		addrTxtField.setColumns(10);
@@ -105,7 +105,7 @@ public class LoginWindow implements ActionListener {
 									.addComponent(btnTutorial, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
 								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
 									.addComponent(addrTxtField, Alignment.LEADING)
-									.addComponent(textField, Alignment.LEADING))))
+									.addComponent(nameTxtField, Alignment.LEADING))))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(77)
 							.addComponent(lblCheckersClientLogin)))
@@ -119,7 +119,7 @@ public class LoginWindow implements ActionListener {
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblUsername)
-						.addComponent(textField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
+						.addComponent(nameTxtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(27)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblIpAddress)
@@ -134,6 +134,7 @@ public class LoginWindow implements ActionListener {
 		frmCheckersGameClient.getContentPane().setLayout(groupLayout);
 		frmCheckersGameClient.setBounds(100, 100, 336, 213);
 		frmCheckersGameClient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		btnClear.addActionListener(this);
 	}
 	
 	public void assignLoginButton(ActionListener listener) {
@@ -144,13 +145,20 @@ public class LoginWindow implements ActionListener {
 	}
 	
 	public String getUsername() {
-		return textField.getText();
+		return nameTxtField.getText();
 	}
 	
 	public String getAddress() {
 		return addrTxtField.getText();
 	}
 	
+	public void clearUsername() {
+		nameTxtField.setText("");
+	}
+	
+	public void clearAddress() {
+		addrTxtField.setText("");
+	}
 	private MaskFormatter createFormatter(String string) {
 		MaskFormatter formatter = null;
 	    try {
@@ -164,7 +172,9 @@ public class LoginWindow implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		System.out.println("BUTTONPRESSED");
+		clearUsername();
+		clearAddress();
+		nameTxtField.requestFocus();
 		
 	}
 }
