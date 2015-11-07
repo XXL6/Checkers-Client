@@ -1,4 +1,6 @@
 import Interfaces.CheckersClient;
+import lobby.Lobby;
+import lobby.LobbyInterface;
 import serverCommunication.ServerInterface;
 import serverCommunication.ServerCommunicator;
 import setup.LoginInitializer;
@@ -8,28 +10,37 @@ import userInterface.LobbyWindowInterface;
 public class MainClient extends Thread implements CheckersClient {
 	
 	ServerInterface serverInterface;
-	LobbyWindowInterface lobbyInterface;
+	LobbyInterface lobbyInterface;
+	Thread loginInitializer;
 	
 	public MainClient() {
-		
+		serverInterface = new ServerCommunicator(this);
+		//lobbyInterface = new Lobby();
 	}
 	
 	@Override
 	public void run() {
-		serverInterface = new ServerCommunicator(this);
-		lobbyInterface = new LobbyWindow();
-		LoginInitializer loginInitializer = new LoginInitializer(serverInterface);
-		loginInitializer.startLogin();
-		synchronized(this) {
-			try {
-				this.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		loginInitializer.stopLogin();
-		System.out.println("DAS BOOT");
+		login();
 	}
+	
+	public void login() {
+		loginInitializer = new LoginInitializer(serverInterface);
+		loginInitializer.run();		
+	}
+	
+	public void lobby() {
+		lobbyInterface = new Lobby(serverInterface);
+		lobbyInterface.startLobby();
+	}
+	
+	public void game() {
+		
+	}
+	
+	public void observe() {
+		
+	}
+	
 	@Override
 	public void connectionOK() {
 		System.out.println("Connection Successfull");
@@ -38,11 +49,12 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void youInLobby() {
-		synchronized(this) {
-			this.notify();
+		synchronized(loginInitializer) {
+			loginInitializer.notify();
 		}
-		System.out.println("You are in the lobby");
-		
+		//nullifies the loginInitializer so it can be picked up by the garbage collector
+		//loginInitializer = null;
+		lobby();		
 	}
 
 	@Override
@@ -53,26 +65,27 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void newMsg(String user, String msg, boolean pm) {
-		// TODO Auto-generated method stub
+		lobbyInterface.displayMessage(user, msg, pm);
 		
 	}
 
 	@Override
 	public void usersInLobby(String[] users) {
-		// TODO Auto-generated method stub
+		lobbyInterface.refreshUsers(users);
 		
 	}
 
 	@Override
 	public void nowJoinedLobby(String user) {
-		// TODO Auto-generated method stub
+		lobbyInterface.addUser(user);
+		lobbyInterface.displayGeneralMessage(user + " has joined the lobby.");
 		
 	}
 
 	@Override
 	public void nowLeftLobby(String user) {
-		// TODO Auto-generated method stub
-		
+		lobbyInterface.removeUser(user);
+		lobbyInterface.displayGeneralMessage(user + " has left the lobby.");		
 	}
 
 	@Override

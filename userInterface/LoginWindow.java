@@ -23,7 +23,6 @@ import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
-import loginHandler.LoginInfoRetriever;
 
 public class LoginWindow implements ActionListener, LoginWindowInterface {
 

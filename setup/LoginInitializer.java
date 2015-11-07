@@ -8,7 +8,7 @@ import java.awt.EventQueue;
 import serverCommunication.ServerInterface;
 import loginHandler.Login;
 
-public class LoginInitializer {
+public class LoginInitializer extends Thread{
 	
 	private LoginWindowInterface loginWindow;
 	private Login login;
@@ -18,7 +18,7 @@ public class LoginInitializer {
 		this.serverInterface = serverInterface;
 	}//end WindowInitializer constructor
 	
-	public void startLogin() {
+	public void run() {
 		loginWindow = new LoginWindow();
 		login = new Login(loginWindow, serverInterface);
 		loginWindow.assignLoginButton(login);
@@ -30,7 +30,16 @@ public class LoginInitializer {
 				e.printStackTrace();
 			}
 		}
-		});		
+		});
+		synchronized(this) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		stopLogin();
 		
 	}//end startLogin
 	

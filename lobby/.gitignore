@@ -1,3 +1,7 @@
 /outgoingChat.class
 /Chat.class
 /ChatReceiver.class
+/ChatSender.class
+/Lobby.class
+/LobbyInterface.class
+/Lobby$1.class

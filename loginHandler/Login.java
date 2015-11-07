@@ -10,7 +10,6 @@ import serverCommunication.ServerInterface;
 
 public class Login implements ActionListener{
 	private LoginInfoParser parser;
-	private LoginInfoRetriever retriever;
 	private LoginWindowInterface loginUI;
 	private ErrorPopups error;
 	private ServerInterface server;

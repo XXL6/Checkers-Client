@@ -11,6 +11,7 @@ import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JSeparator;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextArea;
@@ -23,8 +24,9 @@ public class LobbyWindow implements LobbyWindowInterface{
 
 	private JFrame frame;
 	private JTextField chatTxtField;
-	JTextArea chatTxtArea;
-	JList usrList;
+	private JTextArea chatTxtArea;
+	private JList usrList;
+	private DefaultListModel<String> listModel;
 	
 	/**
 	 * Create the application.
@@ -43,6 +45,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 	
 	private void initialize() {
 		frame = new JFrame();
+		listModel = new DefaultListModel();
 		frame.setBounds(100, 100, 750, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -52,7 +55,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
 		
 		chatTxtArea.setBorder(border);
-		usrList = new JList();
+		usrList = new JList(listModel);
 		usrList.setBorder(border);
 		
 		chatTxtField = new JTextField();
@@ -87,5 +90,32 @@ public class LobbyWindow implements LobbyWindowInterface{
 	
 	public void setChatListener(ActionListener listener) {
 		chatTxtField.addActionListener(listener);
+	}
+	
+	public void insertText(String text) {
+		chatTxtArea.append(text + "\n");
+	}
+	
+	public String retrieveInputText() {
+		String returnString = chatTxtField.getText();
+		chatTxtField.setText("");
+		return returnString;
+	}
+	
+	public void insertUser(String username) {
+		listModel.addElement(username);
+	}
+	
+	public void removeUser(String username) {
+		String removeString;
+		for(int i = 0; i < listModel.getSize(); i++){
+		     removeString =  listModel.getElementAt(i).toString(); 
+		     if (removeString.equalsIgnoreCase(username));
+		     listModel.remove(i);
+		}
+	}
+	
+	public void clearUsers() {
+		listModel.clear();
 	}
 }
