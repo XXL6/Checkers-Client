@@ -34,7 +34,6 @@ public class Login implements ActionListener{
 				}
 				});		
 			
-			
 		} else {
 			error = new ErrorPopups();
 			error.showLoginError();

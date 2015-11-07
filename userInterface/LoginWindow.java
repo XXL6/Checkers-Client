@@ -55,9 +55,8 @@ public class LoginWindow implements ActionListener, LoginWindowInterface {
 		initialize();
 	}
 	
-	public void display() {
-		frmCheckersGameClient.setVisible(true);
-		
+	public void display(boolean display) {
+		frmCheckersGameClient.setVisible(display);
 	}
 	/**
 	 * Initialize the contents of the frame.

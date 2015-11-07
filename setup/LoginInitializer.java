@@ -12,19 +12,20 @@ public class LoginInitializer {
 	
 	private LoginWindowInterface loginWindow;
 	private Login login;
+	ServerInterface serverInterface;
 	
-	public LoginInitializer() {
-		
+	public LoginInitializer(ServerInterface serverInterface) {
+		this.serverInterface = serverInterface;
 	}//end WindowInitializer constructor
 	
-	public void startLogin(ServerInterface serverInterface) {
+	public void startLogin() {
 		loginWindow = new LoginWindow();
 		login = new Login(loginWindow, serverInterface);
 		loginWindow.assignLoginButton(login);
 		EventQueue.invokeLater(new Runnable() {
 		public void run() {
 			try {
-				loginWindow.display();
+				loginWindow.display(true);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -32,5 +33,11 @@ public class LoginInitializer {
 		});		
 		
 	}//end startLogin
+	
+	public void stopLogin() {
+		loginWindow.display(false);
+		loginWindow = null;
+		login = null;
+	}
 	
 }//end WindowInitializer

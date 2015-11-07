@@ -2,19 +2,33 @@ import Interfaces.CheckersClient;
 import serverCommunication.ServerInterface;
 import serverCommunication.ServerCommunicator;
 import setup.LoginInitializer;
+import userInterface.LobbyWindow;
+import userInterface.LobbyWindowInterface;
 
-public class MainClient implements CheckersClient {
+public class MainClient extends Thread implements CheckersClient {
 	
 	ServerInterface serverInterface;
+	LobbyWindowInterface lobbyInterface;
 	
 	public MainClient() {
-		start();
+		
 	}
 	
-	public void start() {
-		LoginInitializer windowInitializer = new LoginInitializer();
+	@Override
+	public void run() {
 		serverInterface = new ServerCommunicator(this);
-		windowInitializer.startLogin(serverInterface);
+		lobbyInterface = new LobbyWindow();
+		LoginInitializer loginInitializer = new LoginInitializer(serverInterface);
+		loginInitializer.startLogin();
+		synchronized(this) {
+			try {
+				this.wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		loginInitializer.stopLogin();
+		System.out.println("DAS BOOT");
 	}
 	@Override
 	public void connectionOK() {
@@ -24,6 +38,9 @@ public class MainClient implements CheckersClient {
 
 	@Override
 	public void youInLobby() {
+		synchronized(this) {
+			this.notify();
+		}
 		System.out.println("You are in the lobby");
 		
 	}

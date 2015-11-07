@@ -7,7 +7,7 @@ public interface CheckersClient {
 	 * server. So, this interface defines all messages that can be called
 	 * on a client from the server.
 	 	*/
-
+	public void run();
 	//confirmation that you have connected and your username is registered.
 	public void connectionOK();
 	//notice that you are now in the game lobby.
