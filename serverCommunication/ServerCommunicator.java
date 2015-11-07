@@ -45,7 +45,8 @@ public class ServerCommunicator implements ServerInterface {
 	public boolean connectToServer(String ip, String userName) {
 		  try {
 	      	socket = new Socket(ip, 45322);
-	        lnOut("Connected to server!");;
+	        lnOut("Connected to server!");
+	        client.setUsername(userName);
 	        streamFromServer = new DataInputStream(socket.getInputStream());
 					streamToServer = new DataOutputStream(socket.getOutputStream());
 

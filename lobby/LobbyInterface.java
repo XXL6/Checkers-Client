@@ -8,7 +8,7 @@ public interface LobbyInterface {
 	
 	public void sendMessage(String message);
 	
-	public void refreshUsers(String[] username);
+	public void refreshUsers(String[] username, String clientUsername);
 	
 	public void addUser(String username);
 	

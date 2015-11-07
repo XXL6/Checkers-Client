@@ -12,6 +12,7 @@ public class MainClient extends Thread implements CheckersClient {
 	ServerInterface serverInterface;
 	LobbyInterface lobbyInterface;
 	Thread loginInitializer;
+	String clientUsername;
 	
 	public MainClient() {
 		serverInterface = new ServerCommunicator(this);
@@ -41,6 +42,9 @@ public class MainClient extends Thread implements CheckersClient {
 		
 	}
 	
+	public void setUsername(String username) {
+		clientUsername = username;
+	}
 	@Override
 	public void connectionOK() {
 		System.out.println("Connection Successfull");
@@ -71,7 +75,7 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void usersInLobby(String[] users) {
-		lobbyInterface.refreshUsers(users);
+		lobbyInterface.refreshUsers(users, clientUsername);
 		
 	}
 

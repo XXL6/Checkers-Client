@@ -96,4 +96,8 @@ public interface CheckersClient {
 	public void oppLeftTable();
 	//you cannot perform the requested op because you are not in the lobby.
 	public void notInLobby();
+	
+	/**Extras
+	 */
+	public void setUsername(String username);
 }

@@ -10,12 +10,15 @@ public class Lobby implements LobbyInterface{
 	LobbyWindow lobbyWindow;
 	ServerInterface serverInterface;
 	ChatSender sender;
+	Disconnector disconnector;
 	
 	public Lobby(ServerInterface serverInterface) {
 		lobbyWindow = new LobbyWindow();
 		this.serverInterface = serverInterface;
 		sender = new ChatSender(serverInterface, lobbyWindow);
 		lobbyWindow.setChatListener(sender);
+		disconnector = new Disconnector(serverInterface);
+		lobbyWindow.setDisconnectListener(disconnector);
 	}
 
 	public void startLobby() {
@@ -49,14 +52,22 @@ public class Lobby implements LobbyInterface{
 	}
 
 	@Override
-	public void refreshUsers(String[] usernames) {
+	public void refreshUsers(String[] usernames, String clientUsername) {
 		lobbyWindow.clearUsers();
 		for (String s: usernames) {
-			lobbyWindow.insertUser(s);
+			if (s.equalsIgnoreCase(clientUsername)) {
+				lobbyWindow.insertUser("[You]  " + s, true);
+			}
+			else if (!(lobbyWindow.containsUser(s))){
+				lobbyWindow.insertUser(s, false);
+			}
 		}
 	}
+	
 	public void addUser(String username) {
-		lobbyWindow.insertUser(username);
+		if (!(lobbyWindow.containsUser(username))) {
+			lobbyWindow.insertUser(username, false);
+		}
 	}
 
 	@Override
