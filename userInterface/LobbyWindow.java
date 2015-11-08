@@ -29,19 +29,21 @@ import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JPanel;
+import javax.swing.JLabel;
 
 public class LobbyWindow implements LobbyWindowInterface{
 
-	private JFrame frame;
+	private JFrame frmCheckers;
 	private JTextField chatTxtField;
 	private JTextArea chatTxtArea;
 	private JList<String> usrList;
-	private DefaultListModel<String> listModel;
+	private DefaultListModel<String> usrListModel;
+	private DefaultListModel<String> tableListModel;
 	private JButton btnDisconnect;
 	private JButton sendButton;
 	private JButton btnCreateTable;
-	private JPanel panel;
-	private JTextArea tableTxtArea;
+	private JList tableList;
+	private JScrollPane chatScrollPane;
 	/**
 	 * Create the application.
 	 */
@@ -54,14 +56,16 @@ public class LobbyWindow implements LobbyWindowInterface{
 	 */
 	
 	public void display(boolean display) {
-		frame.setVisible(display);
+		frmCheckers.setVisible(display);
 	}
 	
 	private void initialize() {
-		frame = new JFrame();
-		listModel = new DefaultListModel<String>();
-		frame.setBounds(100, 100, 750, 600);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmCheckers = new JFrame();
+		frmCheckers.setTitle("Checkers");
+		usrListModel = new DefaultListModel<String>();
+		tableListModel = new DefaultListModel<String>();
+		frmCheckers.setBounds(100, 100, 750, 700);
+		frmCheckers.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		chatTxtArea = new JTextArea();
 		chatTxtArea.setEditable(false);
@@ -69,10 +73,10 @@ public class LobbyWindow implements LobbyWindowInterface{
 		chatTxtArea.setRows(2);
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
 		chatTxtArea.setBorder(border);
-		JScrollPane chatScrollPane = new JScrollPane (chatTxtArea, 
+		chatScrollPane = new JScrollPane (chatTxtArea, 
 				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		usrList = new JList<String>(listModel);
+		usrList = new JList<String>(usrListModel);
 		usrList.setBorder(border);
 		JScrollPane userScrollPane = new JScrollPane (usrList, 
 				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);		
@@ -89,66 +93,60 @@ public class LobbyWindow implements LobbyWindowInterface{
 		btnCreateTable = new JButton("Create Table");
 		btnCreateTable.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		panel = new JPanel();
-		GroupLayout groupLayout = new GroupLayout(frame.getContentPane());
+		tableList = new JList<String>(tableListModel);
+		tableList.setBorder(border);
+		JScrollPane tableScrollPane = new JScrollPane (tableList, 
+				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);			
+		
+		JLabel lblTablesInServer = new JLabel("Tables in server");
+		lblTablesInServer.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		GroupLayout groupLayout = new GroupLayout(frmCheckers.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(panel, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
+						.addComponent(tableScrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
 						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-								.addComponent(chatScrollPane)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(chatTxtField, GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(sendButton, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE)))
+									.addComponent(sendButton, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
+								.addComponent(chatScrollPane, GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(userScrollPane, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
 						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 							.addComponent(btnCreateTable, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnDisconnect, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)))
+							.addComponent(btnDisconnect, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
+						.addComponent(lblTablesInServer))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addComponent(panel, GroupLayout.PREFERRED_SIZE, 321, GroupLayout.PREFERRED_SIZE)
+					.addComponent(lblTablesInServer)
 					.addPreferredGap(ComponentPlacement.RELATED)
+					.addComponent(tableScrollPane, GroupLayout.DEFAULT_SIZE, 394, Short.MAX_VALUE)
+					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnDisconnect)
 						.addComponent(btnCreateTable))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(chatScrollPane, GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
+							.addComponent(chatScrollPane, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(chatTxtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(sendButton, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)))
-						.addComponent(userScrollPane, GroupLayout.DEFAULT_SIZE, 161, Short.MAX_VALUE))
+						.addComponent(userScrollPane, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
 					.addGap(21))
 		);
-		panel.setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),}));
-		
-		tableTxtArea = new JTextArea();
-		tableTxtArea.setText("Tables");
-		tableTxtArea.setEditable(false);
-		panel.add(tableTxtArea, "2, 2, fill, fill");
-		frame.getContentPane().setLayout(groupLayout);
-		chatScrollPane.getVerticalScrollBar().addAdjustmentListener(new AdjustmentListener() {  
-	        public void adjustmentValueChanged(AdjustmentEvent e) {  
-	            e.getAdjustable().setValue(e.getAdjustable().getMaximum());  
-	        }
-	    });
+		frmCheckers.getContentPane().setLayout(groupLayout);
 //		usrList.addMouseListener( new MouseAdapter()
 //		{
 //		    public void mousePressed(MouseEvent e)
@@ -175,6 +173,8 @@ public class LobbyWindow implements LobbyWindowInterface{
 	
 	public void insertText(String text) {
 		chatTxtArea.append(text + "\n");
+		chatTxtArea.validate();
+		chatScrollPane.getVerticalScrollBar().setValue(chatScrollPane.getVerticalScrollBar().getMaximum());
 	}
 	
 	public String retrieveInputText() {
@@ -185,31 +185,56 @@ public class LobbyWindow implements LobbyWindowInterface{
 	
 	public void insertUser(String username, boolean client) {
 		if (client) {
-			listModel.insertElementAt(username, 0);	
+			usrListModel.insertElementAt(username, 0);	
 		} else {
-			listModel.addElement(username);
+			usrListModel.addElement(username);
 		}
 	}
 	
 	public void removeUser(String username) {
 		String removeString;
-		for(int i = 0; i < listModel.getSize(); i++){
-		     removeString =  listModel.getElementAt(i).toString(); 
+		for(int i = 0; i < usrListModel.getSize(); i++){
+		     removeString =  usrListModel.getElementAt(i).toString(); 
 		     if (removeString.equalsIgnoreCase(username)) {
-		    	 listModel.remove(i);
+		    	 usrListModel.remove(i);
 		     }
 		}
 	}
 	
 	public boolean containsUser(String username) {
-		for(int i = 0; i < listModel.getSize(); i++){
-		    if (listModel.getElementAt(i).toString().equalsIgnoreCase(username)) {
+		for(int i = 0; i < usrListModel.getSize(); i++){
+		    if (usrListModel.getElementAt(i).toString().equalsIgnoreCase(username)) {
 		    	return true;
 		    }
 		}
 		return false;
 	}
+	
 	public void clearUsers() {
-		listModel.clear();
+		usrListModel.clear();
 	}
+	
+	public void insertTable(String tableIdentifier) {
+		tableListModel.addElement(tableIdentifier);
+	}
+	
+	public void removeTable(String tableIdentifier) {
+		String removeString;
+		for(int i = 0; i < tableListModel.getSize(); i++){
+		     removeString =  tableListModel.getElementAt(i).toString(); 
+		     if (removeString.equalsIgnoreCase(tableIdentifier)) {
+		    	 tableListModel.remove(i);
+		     }
+		}
+	}
+	
+	public void clearTables() {
+		tableListModel.clear();
+	}
+
+//	@Override
+//	public void adjustmentValueChanged(AdjustmentEvent arg0) {
+//		e.getAdjustable().setValue(e.getAdjustable().getMaximum());
+//		
+//	}
 }

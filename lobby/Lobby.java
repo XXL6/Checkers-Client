@@ -64,6 +64,8 @@ public class Lobby implements LobbyInterface{
 		}
 	}
 	
+
+	
 	public void addUser(String username) {
 		if (!(lobbyWindow.containsUser(username))) {
 			lobbyWindow.insertUser(username, false);
@@ -75,7 +77,14 @@ public class Lobby implements LobbyInterface{
 		lobbyWindow.removeUser(username);
 		
 	}
-
+	public void refreshTables(int[] tables) {
+		String stringToAdd;
+		lobbyWindow.clearTables();
+		for (int i: tables) {
+			stringToAdd = "Table " + i + ": " + "\n";
+				lobbyWindow.insertTable(stringToAdd);
+		}
+	}
 	@Override
 	public void sendPrivateMessage(String username, String message) {
 		// TODO Auto-generated method stub
