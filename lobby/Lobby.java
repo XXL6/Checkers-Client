@@ -2,6 +2,8 @@ package lobby;
 import userInterface.LobbyWindow;
 
 import java.awt.EventQueue;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import serverCommunication.ServerInterface;
 
@@ -9,16 +11,18 @@ public class Lobby implements LobbyInterface{
 	
 	LobbyWindow lobbyWindow;
 	ServerInterface serverInterface;
-	ChatSender sender;
-	Disconnector disconnector;
+	GeneralButtonListener buttonListener;
+	MouseListener popupListener;
 	
 	public Lobby(ServerInterface serverInterface) {
 		lobbyWindow = new LobbyWindow();
 		this.serverInterface = serverInterface;
-		sender = new ChatSender(serverInterface, lobbyWindow);
-		lobbyWindow.setChatListener(sender);
-		disconnector = new Disconnector(serverInterface);
-		lobbyWindow.setDisconnectListener(disconnector);
+		buttonListener = new GeneralButtonListener(this);
+		lobbyWindow.setChatListener(buttonListener);
+		lobbyWindow.setChatClearListener(buttonListener);
+		lobbyWindow.setDisconnectListener(buttonListener);
+		popupListener = new PopupListener(this);
+		lobbyWindow.addPopupMenu(buttonListener, popupListener);
 	}
 
 	public void startLobby() {
@@ -44,11 +48,10 @@ public class Lobby implements LobbyInterface{
 	public void displayGeneralMessage(String message) {
 		lobbyWindow.insertText(message);
 	}
-
+	
 	@Override
-	public void sendMessage(String message) {
-		// TODO Auto-generated method stub
-		
+	public void clearChat() {
+		lobbyWindow.clearText();
 	}
 
 	@Override
@@ -86,8 +89,30 @@ public class Lobby implements LobbyInterface{
 		}
 	}
 	@Override
-	public void sendPrivateMessage(String username, String message) {
+	public void sendMessage() {
+		String toSend;
+		toSend = lobbyWindow.retrieveInputText();
+		if (!(toSend.equals(""))) {
+			serverInterface.sendMsg_All(toSend);
+		}
+	}
+
+	@Override
+	public void sendPrivateMessage(String username) {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void requestPrivateMessage() {
+		System.out.println("GUD JEB LEL");
+	}
+	
+	@Override
+	public void disconnect() {
+		serverInterface.disconnect(true);
+	}
+
+	public void showPopup(MouseEvent mouseEvent) {
+		lobbyWindow.displayPopupMenu(mouseEvent);
 	}
 }

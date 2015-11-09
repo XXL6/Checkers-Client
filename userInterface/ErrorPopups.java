@@ -14,4 +14,9 @@ public class ErrorPopups {
 			JOptionPane.showMessageDialog(null, "Username or IP address invalid", "Login Error", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
+	public void showGeneralError() {
+		JOptionPane.showMessageDialog(null, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 
+				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", JOptionPane.INFORMATION_MESSAGE);
+		
+	}
 }

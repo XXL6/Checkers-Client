@@ -7,6 +7,7 @@ import java.awt.event.AdjustmentEvent;
 import java.awt.event.AdjustmentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 import javax.swing.JFrame;
 import com.jgoodies.forms.layout.FormLayout;
@@ -18,17 +19,21 @@ import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
+import javax.swing.InputMap;
 import javax.swing.JTextArea;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JLabel;
 
 public class LobbyWindow implements LobbyWindowInterface{
@@ -40,10 +45,13 @@ public class LobbyWindow implements LobbyWindowInterface{
 	private DefaultListModel<String> usrListModel;
 	private DefaultListModel<String> tableListModel;
 	private JButton btnDisconnect;
-	private JButton sendButton;
+	private JButton btnSend;
 	private JButton btnCreateTable;
 	private JList tableList;
 	private JScrollPane chatScrollPane;
+	private JButton btnClearChat;
+	private JPopupMenu popupMenu;
+
 	/**
 	 * Create the application.
 	 */
@@ -87,8 +95,8 @@ public class LobbyWindow implements LobbyWindowInterface{
 		btnDisconnect = new JButton("Disconnect");
 		btnDisconnect.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		sendButton = new JButton("Send");
-		sendButton.setFont(new Font("Tahoma", Font.PLAIN, 9));
+		btnSend = new JButton("Send");
+		btnSend.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		
 		btnCreateTable = new JButton("Create Table");
 		btnCreateTable.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -100,6 +108,12 @@ public class LobbyWindow implements LobbyWindowInterface{
 		
 		JLabel lblTablesInServer = new JLabel("Tables in server");
 		lblTablesInServer.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		JButton btnTutorial = new JButton("Tutorial");
+		btnTutorial.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		btnClearChat = new JButton("Clear Chat");
+		btnClearChat.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		GroupLayout groupLayout = new GroupLayout(frmCheckers.getContentPane());
 		groupLayout.setHorizontalGroup(
@@ -113,11 +127,15 @@ public class LobbyWindow implements LobbyWindowInterface{
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(chatTxtField, GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(sendButton, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
+									.addComponent(btnSend, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
 								.addComponent(chatScrollPane, GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(userScrollPane, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
 						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addComponent(btnClearChat, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 234, Short.MAX_VALUE)
+							.addComponent(btnTutorial, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(btnCreateTable, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addComponent(btnDisconnect, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
@@ -134,7 +152,9 @@ public class LobbyWindow implements LobbyWindowInterface{
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnDisconnect)
-						.addComponent(btnCreateTable))
+						.addComponent(btnCreateTable)
+						.addComponent(btnTutorial)
+						.addComponent(btnClearChat))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -142,10 +162,11 @@ public class LobbyWindow implements LobbyWindowInterface{
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(chatTxtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-								.addComponent(sendButton, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)))
+								.addComponent(btnSend, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)))
 						.addComponent(userScrollPane, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
 					.addGap(21))
 		);
+		frmCheckers.getRootPane().setDefaultButton(btnSend);
 		frmCheckers.getContentPane().setLayout(groupLayout);
 //		usrList.addMouseListener( new MouseAdapter()
 //		{
@@ -163,12 +184,15 @@ public class LobbyWindow implements LobbyWindowInterface{
 	}
 	
 	public void setChatListener(ActionListener listener) {
-		chatTxtField.addActionListener(listener);
-		sendButton.addActionListener(listener);
+		btnSend.addActionListener(listener);
 	}
 	
 	public void setDisconnectListener(ActionListener listener) {
 		btnDisconnect.addActionListener(listener);
+	}
+	
+	public void setChatClearListener(ActionListener listener) {
+		btnClearChat.addActionListener(listener);
 	}
 	
 	public void insertText(String text) {
@@ -177,6 +201,11 @@ public class LobbyWindow implements LobbyWindowInterface{
 		chatScrollPane.getVerticalScrollBar().setValue(chatScrollPane.getVerticalScrollBar().getMaximum());
 	}
 	
+	public void clearText() {
+		chatTxtArea.setText("");
+		chatTxtArea.validate();
+		
+	}
 	public String retrieveInputText() {
 		String returnString = chatTxtField.getText();
 		chatTxtField.setText("");
@@ -231,10 +260,20 @@ public class LobbyWindow implements LobbyWindowInterface{
 	public void clearTables() {
 		tableListModel.clear();
 	}
-
-//	@Override
-//	public void adjustmentValueChanged(AdjustmentEvent arg0) {
-//		e.getAdjustable().setValue(e.getAdjustable().getMaximum());
-//		
-//	}
+	
+	public void addPopupMenu(ActionListener actionListener, MouseListener mouseListener) {
+	    popupMenu = new JPopupMenu();
+	    JMenuItem menuItem = new JMenuItem("Send a PM");
+	    menuItem.addActionListener(actionListener);
+	    popupMenu.add(menuItem);
+	 
+	    usrList.addMouseListener(mouseListener);
+	}
+	
+	public void displayPopupMenu(MouseEvent mouseEvent) {
+		popupMenu.show(mouseEvent.getComponent(), mouseEvent.getX(), mouseEvent.getY());
+	}
+	public JPopupMenu getPopupMenu() {
+		return popupMenu;
+	}
 }

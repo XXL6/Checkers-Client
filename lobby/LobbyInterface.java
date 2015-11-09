@@ -6,7 +6,11 @@ public interface LobbyInterface {
 	
 	public void displayGeneralMessage(String message);
 	
-	public void sendMessage(String message);
+	public void clearChat();
+	
+	public void sendMessage();
+	
+	public void sendPrivateMessage(String username);
 	
 	public void refreshUsers(String[] username, String clientUsername);
 	
@@ -14,7 +18,8 @@ public interface LobbyInterface {
 	
 	public void removeUser(String username);
 	
-	public void sendPrivateMessage(String username, String message);
-	
 	public void startLobby();
+	
+	public void disconnect();
+
 }

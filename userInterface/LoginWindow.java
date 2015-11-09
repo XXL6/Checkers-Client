@@ -19,6 +19,7 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.text.MaskFormatter;
 import javax.swing.JTextField;
+import javax.swing.KeyStroke;
 import javax.swing.JButton;
 import java.awt.Font;
 import javax.swing.JFormattedTextField;
@@ -30,26 +31,8 @@ public class LoginWindow implements ActionListener, LoginWindowInterface {
 	private JTextField nameTxtField;
 	private JButton btnLogin;
 	private JTextField addrTxtField;
-	//private JButton btnClear;
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					LoginWindow window = new LoginWindow();
-//					window.frmCheckersGameClient.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
+	private JButton btnTutorial;
 
-	/**
-	 * Create the application.
-	 */
 	public LoginWindow() {
 		initialize();
 	}
@@ -57,9 +40,7 @@ public class LoginWindow implements ActionListener, LoginWindowInterface {
 	public void display(boolean display) {
 		frmCheckersGameClient.setVisible(display);
 	}
-	/**
-	 * Initialize the contents of the frame.
-	 */
+
 	private void initialize() {
 		frmCheckersGameClient = new JFrame();
 		frmCheckersGameClient.setTitle("Checkers Game Client\r\n");
@@ -73,7 +54,7 @@ public class LoginWindow implements ActionListener, LoginWindowInterface {
 		
 		JButton btnClear = new JButton("Clear");
 		
-		JButton btnTutorial = new JButton("Tutorial");
+		btnTutorial = new JButton("Tutorial");
 		
 		JLabel lblCheckersClientLogin = new JLabel("Checkers Client Login");
 		lblCheckersClientLogin.setFont(new Font("Tahoma", Font.BOLD, 13));
@@ -132,14 +113,12 @@ public class LoginWindow implements ActionListener, LoginWindowInterface {
 		frmCheckersGameClient.getContentPane().setLayout(groupLayout);
 		frmCheckersGameClient.setBounds(100, 100, 336, 213);
 		frmCheckersGameClient.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmCheckersGameClient.getRootPane().setDefaultButton(btnLogin);
 		btnClear.addActionListener(this);
 	}
 	
 	public void assignLoginButton(ActionListener listener) {
-		//listener = new LoginInfoParser();
 		btnLogin.addActionListener(listener);
-		//System.out.println(listener.toString());
-		//btnClear.addActionListener(listener);		
 	}
 	
 	public String getUsername() {
@@ -157,21 +136,17 @@ public class LoginWindow implements ActionListener, LoginWindowInterface {
 	public void clearAddress() {
 		addrTxtField.setText("");
 	}
-	private MaskFormatter createFormatter(String string) {
-		MaskFormatter formatter = null;
-	    try {
-	        formatter = new MaskFormatter(string);
-	    } catch (java.text.ParseException exc) {
-	        System.err.println("formatter is bad: " + exc.getMessage());
-	        System.exit(-1);
-	    }
-	    return formatter;
-	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		clearUsername();
 		clearAddress();
 		nameTxtField.requestFocus();
+	}
+
+	@Override
+	public void assignTutorialButton(ActionListener listener) {
+		btnTutorial.addActionListener(listener);
+		
 	}
 }

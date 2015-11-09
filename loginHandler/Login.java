@@ -41,7 +41,11 @@ public class Login implements ActionListener{
 
 	@Override
 	public void actionPerformed(ActionEvent buttonPressed) {
-		parseData(loginUI.getUsername(), loginUI.getAddress());
-		
+		if (buttonPressed.getActionCommand().equalsIgnoreCase("login")) {
+			parseData(loginUI.getUsername(), loginUI.getAddress());		
+		} else if (buttonPressed.getActionCommand().equalsIgnoreCase("tutorial")) {
+			error = new ErrorPopups();
+			error.showGeneralError();
+		}
 	}
 }
