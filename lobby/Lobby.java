@@ -1,5 +1,6 @@
 package lobby;
 import userInterface.LobbyWindow;
+import userInterface.RequestPopups;
 
 import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
@@ -104,7 +105,16 @@ public class Lobby implements LobbyInterface{
 	}
 
 	public void requestPrivateMessage() {
-		System.out.println("GUD JEB LEL");
+		String recipient, message;
+		recipient = lobbyWindow.getSelectedUser();
+		RequestPopups requestPopup = new RequestPopups();
+		message = requestPopup.privateMessageRequest();
+		if (message.length() > 0) {
+			serverInterface.sendMsg(recipient, message);
+			if (!recipient.contains("[You] ")) {
+				lobbyWindow.insertText("PM TO " + recipient + ": " + message);
+			}
+		}
 	}
 	
 	@Override

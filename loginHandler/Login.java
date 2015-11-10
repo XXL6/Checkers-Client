@@ -9,19 +9,21 @@ import userInterface.LoginWindowInterface;
 import serverCommunication.ServerInterface;
 
 public class Login implements ActionListener{
-	private LoginInfoParser parser;
+	
 	private LoginWindowInterface loginUI;
 	private ErrorPopups error;
 	private ServerInterface server;
 	
 	public Login(LoginWindowInterface window, ServerInterface server) {
-		parser = new LoginInfoParser();
 		loginUI = window;
 		this.server = server;
 	}
 	
-	public void parseData(String username, String address) {
-		parser.setData(username, address);
+	//if the username and address both fit a predetermined format
+	//send the credentials to the server
+	public void login(String username, String address) {
+		LoginInfoParser parser = new LoginInfoParser(username, address);
+		//parser.setData(username, address);
 		if (parser.usernameValid() && parser.addressValid()) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
@@ -42,7 +44,7 @@ public class Login implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent buttonPressed) {
 		if (buttonPressed.getActionCommand().equalsIgnoreCase("login")) {
-			parseData(loginUI.getUsername(), loginUI.getAddress());		
+			login(loginUI.getUsername(), loginUI.getAddress());		
 		} else if (buttonPressed.getActionCommand().equalsIgnoreCase("tutorial")) {
 			error = new ErrorPopups();
 			error.showGeneralError();

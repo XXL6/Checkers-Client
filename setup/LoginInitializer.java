@@ -12,7 +12,7 @@ public class LoginInitializer extends Thread{
 	
 	private LoginWindowInterface loginWindow;
 	private Login login;
-	ServerInterface serverInterface;
+	private ServerInterface serverInterface;
 	
 	public LoginInitializer(ServerInterface serverInterface) {
 		this.serverInterface = serverInterface;
@@ -36,7 +36,6 @@ public class LoginInitializer extends Thread{
 			try {
 				this.wait();
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}

@@ -32,6 +32,8 @@ import javax.swing.KeyStroke;
 import javax.swing.JButton;
 import java.awt.event.ActionEvent;
 import java.awt.Font;
+import java.awt.Point;
+
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JLabel;
@@ -84,7 +86,17 @@ public class LobbyWindow implements LobbyWindowInterface{
 		chatScrollPane = new JScrollPane (chatTxtArea, 
 				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		usrList = new JList<String>(usrListModel);
+		usrList = new JList<String>(usrListModel) {
+				@Override
+                public int locationToIndex(Point location) {
+                    int index = super.locationToIndex(location);
+                    if (index != -1 && !getCellBounds(index, index).contains(location)) {
+                        return -1;
+                    }
+                    else {
+                        return index;
+                    }
+                }};
 		usrList.setBorder(border);
 		JScrollPane userScrollPane = new JScrollPane (usrList, 
 				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);		
@@ -275,5 +287,9 @@ public class LobbyWindow implements LobbyWindowInterface{
 	}
 	public JPopupMenu getPopupMenu() {
 		return popupMenu;
+	}
+	
+	public String getSelectedUser() {
+		return usrList.getSelectedValue();
 	}
 }
