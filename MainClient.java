@@ -154,14 +154,13 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void onTable(int tid, String blackSeat, String redSeat) {
-		// TODO Auto-generated method stub
+		lobbyInterface.incomingTableInfo(tid, blackSeat, redSeat);
 		
 	}
 
 	@Override
 	public void tableList(int[] tids) {
-		// TODO Auto-generated method stub
-		
+		lobbyInterface.refreshTables(tids);
 	}
 
 	@Override

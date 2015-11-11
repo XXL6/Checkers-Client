@@ -13,6 +13,9 @@ import javax.swing.JFrame;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import lobby.GameTable;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JSeparator;
 import javax.swing.BorderFactory;
@@ -45,7 +48,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 	private JTextArea chatTxtArea;
 	private JList<String> usrList;
 	private DefaultListModel<String> usrListModel;
-	private DefaultListModel<String> tableListModel;
+	private DefaultListModel<GameTable> tableListModel;
 	private JButton btnDisconnect;
 	private JButton btnSend;
 	private JButton btnCreateTable;
@@ -73,7 +76,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 		frmCheckers = new JFrame();
 		frmCheckers.setTitle("Checkers");
 		usrListModel = new DefaultListModel<String>();
-		tableListModel = new DefaultListModel<String>();
+		tableListModel = new DefaultListModel<GameTable>();
 		frmCheckers.setBounds(100, 100, 750, 700);
 		frmCheckers.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
@@ -113,7 +116,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 		btnCreateTable = new JButton("Create Table");
 		btnCreateTable.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		tableList = new JList<String>(tableListModel);
+		tableList = new JList<GameTable>(tableListModel);
 		tableList.setBorder(border);
 		JScrollPane tableScrollPane = new JScrollPane (tableList, 
 				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);			
@@ -255,15 +258,27 @@ public class LobbyWindow implements LobbyWindowInterface{
 		usrListModel.clear();
 	}
 	
-	public void insertTable(String tableIdentifier) {
-		tableListModel.addElement(tableIdentifier);
+	public void insertTable(GameTable table) {
+		int tableLocation;
+		if (tableListModel.contains(table)) {
+			tableLocation = tableListModel.indexOf(table);
+			tableListModel.setElementAt(table, tableLocation);
+		} else {
+			tableListModel.addElement(table);
+		}
 	}
 	
-	public void removeTable(String tableIdentifier) {
-		String removeString;
+	public void updateTable(GameTable table) {
+		
+	}
+	public void removeTable(GameTable table) {
+		tableListModel.removeElement(table);
+	}
+	public void removeTable(int tableIdentifier) {
+		int toBeRemoved;
 		for(int i = 0; i < tableListModel.getSize(); i++){
-		     removeString =  tableListModel.getElementAt(i).toString(); 
-		     if (removeString.equalsIgnoreCase(tableIdentifier)) {
+		     toBeRemoved =  tableListModel.getElementAt(i).getTableID(); 
+		     if (toBeRemoved == tableIdentifier) {
 		    	 tableListModel.remove(i);
 		     }
 		}

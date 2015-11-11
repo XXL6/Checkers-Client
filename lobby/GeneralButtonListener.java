@@ -5,9 +5,9 @@ import java.awt.event.ActionListener;
 
 public class GeneralButtonListener implements ActionListener {
 
-	Lobby lobby;
+	LobbyInterface lobby;
 	
-	public GeneralButtonListener(Lobby lobby) {
+	public GeneralButtonListener(LobbyInterface lobby) {
 		this.lobby = lobby;
 	}
 	

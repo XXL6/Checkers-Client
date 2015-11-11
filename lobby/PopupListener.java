@@ -10,10 +10,10 @@ import javax.swing.JList;
 
 class PopupListener extends MouseAdapter {
 	
-	Lobby lobby;
+	LobbyInterface lobby;
 	Robot robot;
 	
-	public PopupListener(Lobby lobby) {
+	public PopupListener(LobbyInterface lobby) {
 		this.lobby = lobby;
 		try {
 			robot = new Robot();

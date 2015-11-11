@@ -1,25 +1,35 @@
 package lobby;
 
+import java.awt.event.MouseEvent;
+
 public interface LobbyInterface {
-	
-	public void displayMessage(String username, String message, boolean isPrivate);
-	
-	public void displayGeneralMessage(String message);
-	
-	public void clearChat();
-	
-	public void sendMessage();
-	
-	public void sendPrivateMessage(String username);
-	
-	public void refreshUsers(String[] username, String clientUsername);
-	
-	public void addUser(String username);
-	
-	public void removeUser(String username);
-	
-	public void startLobby();
-	
-	public void disconnect();
+
+	void startLobby();
+
+	void displayMessage(String username, String message, boolean isPrivate);
+
+	void displayGeneralMessage(String message);
+
+	void clearChat();
+
+	void refreshUsers(String[] usernames, String clientUsername);
+
+	void addUser(String username);
+
+	void removeUser(String username);
+
+	void refreshTables(int[] tables);
+
+	void incomingTableInfo(int tableID, String black, String red);
+
+	void sendMessage();
+
+	void sendPrivateMessage(String username);
+
+	void requestPrivateMessage();
+
+	void disconnect();
+
+	void showPopup(MouseEvent mouseEvent);
 
 }

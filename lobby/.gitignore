@@ -10,3 +10,8 @@
 /ChatClearer.class
 /GeneralButtonListener.class
 /PopupListener.class
+/TableManager.class
+/TableRefresher.class
+/SharedTableList.class
+/SharedTableInfo.class
+/GameTable.class

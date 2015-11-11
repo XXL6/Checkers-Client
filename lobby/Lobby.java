@@ -8,12 +8,13 @@ import java.awt.event.MouseListener;
 
 import serverCommunication.ServerInterface;
 
-public class Lobby implements LobbyInterface{
+public class Lobby implements LobbyInterface {
 	
 	LobbyWindow lobbyWindow;
 	ServerInterface serverInterface;
 	GeneralButtonListener buttonListener;
 	MouseListener popupListener;
+	TableManager tableManager;
 	
 	public Lobby(ServerInterface serverInterface) {
 		lobbyWindow = new LobbyWindow();
@@ -24,8 +25,13 @@ public class Lobby implements LobbyInterface{
 		lobbyWindow.setDisconnectListener(buttonListener);
 		popupListener = new PopupListener(this);
 		lobbyWindow.addPopupMenu(buttonListener, popupListener);
+		tableManager = new TableManager(lobbyWindow, serverInterface);
 	}
 
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#startLobby()
+	 */
+	@Override
 	public void startLobby() {
 		EventQueue.invokeLater(new Runnable() {
 		public void run() {
@@ -37,6 +43,9 @@ public class Lobby implements LobbyInterface{
 		}
 		});
 	}
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#displayMessage(java.lang.String, java.lang.String, boolean)
+	 */
 	@Override
 	public void displayMessage(String username, String message, boolean isPrivate) {
 		if (isPrivate) {
@@ -46,15 +55,25 @@ public class Lobby implements LobbyInterface{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#displayGeneralMessage(java.lang.String)
+	 */
+	@Override
 	public void displayGeneralMessage(String message) {
 		lobbyWindow.insertText(message);
 	}
 	
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#clearChat()
+	 */
 	@Override
 	public void clearChat() {
 		lobbyWindow.clearText();
 	}
 
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#refreshUsers(java.lang.String[], java.lang.String)
+	 */
 	@Override
 	public void refreshUsers(String[] usernames, String clientUsername) {
 		lobbyWindow.clearUsers();
@@ -70,25 +89,42 @@ public class Lobby implements LobbyInterface{
 	
 
 	
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#addUser(java.lang.String)
+	 */
+	@Override
 	public void addUser(String username) {
 		if (!(lobbyWindow.containsUser(username))) {
 			lobbyWindow.insertUser(username, false);
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#removeUser(java.lang.String)
+	 */
 	@Override
 	public void removeUser(String username) {
 		lobbyWindow.removeUser(username);
 		
 	}
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#refreshTables(int[])
+	 */
+	@Override
 	public void refreshTables(int[] tables) {
-		String stringToAdd;
-		lobbyWindow.clearTables();
-		for (int i: tables) {
-			stringToAdd = "Table " + i + ": " + "\n";
-				lobbyWindow.insertTable(stringToAdd);
-		}
+		tableManager.refreshTables(tables);
 	}
+	
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#incomingTableInfo(int, java.lang.String, java.lang.String)
+	 */
+	@Override
+	public void incomingTableInfo(int tableID, String black, String red) {
+		tableManager.updateNextTable(tableID, black, red);
+	}
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#sendMessage()
+	 */
 	@Override
 	public void sendMessage() {
 		String toSend;
@@ -98,12 +134,19 @@ public class Lobby implements LobbyInterface{
 		}
 	}
 
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#sendPrivateMessage(java.lang.String)
+	 */
 	@Override
 	public void sendPrivateMessage(String username) {
 		// TODO Auto-generated method stub
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#requestPrivateMessage()
+	 */
+	@Override
 	public void requestPrivateMessage() {
 		String recipient, message;
 		recipient = lobbyWindow.getSelectedUser();
@@ -117,11 +160,18 @@ public class Lobby implements LobbyInterface{
 		}
 	}
 	
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#disconnect()
+	 */
 	@Override
 	public void disconnect() {
 		serverInterface.disconnect(true);
 	}
 
+	/* (non-Javadoc)
+	 * @see lobby.LobbyInterface#showPopup(java.awt.event.MouseEvent)
+	 */
+	@Override
 	public void showPopup(MouseEvent mouseEvent) {
 		lobbyWindow.displayPopupMenu(mouseEvent);
 	}
