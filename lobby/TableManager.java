@@ -53,6 +53,6 @@ public class TableManager extends Thread{
 	}
 	
 	public void insertTable(GameTable table) {
-		lobbyUI.updateTable(table);
+		lobbyUI.insertTable(table);
 	}
 }
