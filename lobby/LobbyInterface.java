@@ -31,5 +31,7 @@ public interface LobbyInterface {
 	void disconnect();
 
 	void showPopup(MouseEvent mouseEvent);
+	
+	void createTable();
 
 }

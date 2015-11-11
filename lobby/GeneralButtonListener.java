@@ -21,6 +21,8 @@ public class GeneralButtonListener implements ActionListener {
 				break;
 			case "disconnect": lobby.disconnect();
 				break;
+			case "create table": lobby.createTable();
+				break;
 			case "send a pm": lobby.requestPrivateMessage();
 			default: System.out.println("U wot m8");
 		}

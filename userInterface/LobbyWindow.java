@@ -52,6 +52,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 	private JButton btnDisconnect;
 	private JButton btnSend;
 	private JButton btnCreateTable;
+	private JButton btnTutorial;
 	private JList tableList;
 	private JScrollPane chatScrollPane;
 	private JButton btnClearChat;
@@ -124,7 +125,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 		JLabel lblTablesInServer = new JLabel("Tables in server");
 		lblTablesInServer.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
-		JButton btnTutorial = new JButton("Tutorial");
+		btnTutorial = new JButton("Tutorial");
 		btnTutorial.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		btnClearChat = new JButton("Clear Chat");
@@ -210,6 +211,9 @@ public class LobbyWindow implements LobbyWindowInterface{
 		btnClearChat.addActionListener(listener);
 	}
 	
+	public void setCreateTableListener(ActionListener listener) {
+		btnCreateTable.addActionListener(listener);
+	}
 	public void insertText(String text) {
 		chatTxtArea.append(text + "\n");
 		chatTxtArea.validate();
@@ -260,10 +264,17 @@ public class LobbyWindow implements LobbyWindowInterface{
 	
 	public void insertTable(GameTable table) {
 		int tableLocation;
-		if (tableListModel.contains(table)) {
-			tableLocation = tableListModel.indexOf(table);
-			tableListModel.setElementAt(table, tableLocation);
-		} else {
+		boolean found = false;
+		for (int i = 0; i < tableListModel.size(); i++) {
+			if (tableListModel.getElementAt(i).getTableID() == table.getTableID()) {
+				tableListModel.setElementAt(table, i);
+				found = true;
+				break;
+			} else {
+				found = false;
+			}
+		}
+		if (!found) {
 			tableListModel.addElement(table);
 		}
 	}

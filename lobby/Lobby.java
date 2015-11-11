@@ -23,6 +23,7 @@ public class Lobby implements LobbyInterface {
 		lobbyWindow.setChatListener(buttonListener);
 		lobbyWindow.setChatClearListener(buttonListener);
 		lobbyWindow.setDisconnectListener(buttonListener);
+		lobbyWindow.setCreateTableListener(buttonListener);
 		popupListener = new PopupListener(this);
 		lobbyWindow.addPopupMenu(buttonListener, popupListener);
 		tableManager = new TableManager(lobbyWindow, serverInterface);
@@ -174,5 +175,9 @@ public class Lobby implements LobbyInterface {
 	@Override
 	public void showPopup(MouseEvent mouseEvent) {
 		lobbyWindow.displayPopupMenu(mouseEvent);
+	}
+	
+	public void createTable() {
+		serverInterface.makeTable("bob");
 	}
 }

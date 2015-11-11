@@ -20,8 +20,13 @@ public class TableRefresher extends Thread{
 	public void run() {
 		GameTable table = null;
 		lobbyUI.clearTables();
+		for (int i: tableID) {
+			GameTable tempTable = new GameTable(i);
+			lobbyUI.insertTable(tempTable);
+			serverInterface.getTblStatus("somebody", i);
+		}
 		for (int i = 0; i < tableID.length; i++) {
-			serverInterface.getTblStatus("somebody", tableID[i]);
+
 			synchronized(this) {
 				try {
 					this.wait();
@@ -32,7 +37,7 @@ public class TableRefresher extends Thread{
 			}
 			try {
 				if (table.getTableID() == tableID[i]) {
-					lobbyUI.insertTable(table);
+					manager.insertTable(table);
 				} else {
 					i--;
 					manager.insertTable(table);
