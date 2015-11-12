@@ -25,6 +25,12 @@ public class TableRefresher extends Thread{
 			lobbyUI.insertTable(tempTable);
 			serverInterface.getTblStatus("somebody", i);
 		}
+//		try {
+//			Thread.sleep(7000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		for (int i = 0; i < tableID.length; i++) {
 
 			synchronized(this) {

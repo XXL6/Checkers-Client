@@ -1,9 +1,11 @@
 package lobby;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import serverCommunication.ServerInterface;
 import userInterface.LobbyWindow;
+import java.util.Queue;
 
 public class TableManager extends Thread{
 
@@ -11,7 +13,7 @@ public class TableManager extends Thread{
 	ServerInterface serverInterface;
 	TableRefresher tableRefresher;
 	GameTable table;
-	ArrayList<GameTable> tableBuffer = new ArrayList<GameTable>();
+	Queue<GameTable> tableBuffer = new LinkedList<GameTable>();
 //	ArrayList<Integer> localTableList = new ArrayList<Integer>();
 //	ArrayList<Thread> refresherList = new ArrayList<Thread>();
 	
@@ -35,6 +37,7 @@ public class TableManager extends Thread{
 			synchronized(tableRefresher) {
 				table = new GameTable(tableID);
 				table.setTableInfo(tableID, black, red);
+				tableBuffer.add(table);
 				tableRefresher.notify();
 			}
 		} else {
@@ -64,7 +67,7 @@ public class TableManager extends Thread{
 //	}
 	
 	public GameTable getTable() {
-		return table;
+		return tableBuffer.poll();
 	}
 	
 	public void removeTable(int tableID) {
