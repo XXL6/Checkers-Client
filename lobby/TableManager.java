@@ -77,4 +77,8 @@ public class TableManager extends Thread{
 	public void insertTable(GameTable table) {
 		lobbyUI.insertTable(table);
 	}
+	
+	public boolean areAnyTablesLoading() {
+		return lobbyUI.tablesLoading();
+	}
 }

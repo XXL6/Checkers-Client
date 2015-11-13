@@ -39,6 +39,9 @@ public class GameTable {
 		return red;
 	}
 	
+	public boolean isLoading() {
+		return loading;
+	}
 	public String toString() {
 		if (loading) {
 			return "Table " + tableID + ": " + "Retrieving status......\n";

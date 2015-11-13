@@ -285,6 +285,15 @@ public class LobbyWindow implements LobbyWindowInterface{
 	public void removeTable(GameTable table) {
 		tableListModel.removeElement(table);
 	}
+	
+	public boolean tablesLoading() {
+		for (int i = 0; i < tableListModel.size(); i++) {
+			if (tableListModel.getElementAt(i).isLoading()) {
+				return true;
+			}
+		}
+		return false;
+	}
 	public void removeTable(int tableIdentifier) {
 		int toBeRemoved;
 		for(int i = 0; i < tableListModel.getSize(); i++){
