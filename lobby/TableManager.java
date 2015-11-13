@@ -9,7 +9,7 @@ import java.util.Queue;
 
 public class TableManager extends Thread{
 
-	LobbyWindow lobbyUI;
+	TableList list;
 	ServerInterface serverInterface;
 	TableRefresher tableRefresher;
 	GameTable table;
@@ -17,17 +17,13 @@ public class TableManager extends Thread{
 //	ArrayList<Integer> localTableList = new ArrayList<Integer>();
 //	ArrayList<Thread> refresherList = new ArrayList<Thread>();
 	
-	public TableManager(LobbyWindow lobbyUI, ServerInterface serverInterface) {
-		this.lobbyUI = lobbyUI;
+	public TableManager(TableList list, ServerInterface serverInterface) {
+		this.list = list;
 		this.serverInterface = serverInterface;
 	}
 	
-	public void insertTable(int tableID) {
-		
-	}
-	
 	public void refreshTables(int[] tableID) {
-		tableRefresher = new TableRefresher(tableID, lobbyUI, serverInterface, this);
+		tableRefresher = new TableRefresher(tableID, list, serverInterface, this);
 		tableRefresher.start();
 		//tableRefresher.run();
 	}
@@ -47,38 +43,19 @@ public class TableManager extends Thread{
 		}
 	}
 	
-//	public void refreshTables(int[] tableID) {
-//		for (int i : tableID) {
-//			GameTable table = new GameTable(i);
-//			SingleTableRefresher refresher = new SingleTableRefresher(table, this);
-//			refresherList.add(refresher);
-//			refresher.start();
-//			serverInterface.getTblStatus("badboy", i);
-//		}
-//	}
-//	
-//	public void updateNextTable(int tableID, String black, String red) {
-//			table = new GameTable(tableID);
-//			table.setTableInfo(tableID, black, red);
-//			for (Thread t: refresherList) {
-//				t.notify();
-//			}
-//
-//	}
-	
 	public GameTable getTable() {
 		return tableBuffer.poll();
 	}
 	
 	public void removeTable(int tableID) {
-		lobbyUI.removeTable(tableID);
+		list.remove(tableID);
 	}
 	
 	public void insertTable(GameTable table) {
-		lobbyUI.insertTable(table);
+		list.insert(table);
 	}
 	
 	public boolean areAnyTablesLoading() {
-		return lobbyUI.tablesLoading();
+		return list.tablesLoading();
 	}
 }

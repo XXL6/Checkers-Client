@@ -6,33 +6,33 @@ import userInterface.LobbyWindow;
 public class TableRefresher extends Thread{
 	
 	int[] tableID;
-	LobbyWindow lobbyUI;
+	TableList list;
 	ServerInterface serverInterface;
 	TableManager manager;
 	boolean tableComplete = false;
 	
-	public TableRefresher(int[] tableID, LobbyWindow window, ServerInterface serverInterface, TableManager manager) {
+	public TableRefresher(int[] tableID, TableList list, ServerInterface serverInterface, TableManager manager) {
 		this.tableID = tableID;
-		this.lobbyUI = window;
+		this.list = list;
 		this.serverInterface = serverInterface;
 		this.manager = manager;
 	}
 	
 	public void run() {
 		GameTable table = null;
-		lobbyUI.clearTables();
+		list.clear();
 		while (!tableComplete) {
 			for (int i: tableID) {
 				GameTable tempTable = new GameTable(i);
-				lobbyUI.insertTable(tempTable);
+				list.insert(tempTable);
 				serverInterface.getTblStatus("somebody", i);
 			}
-			try {
-				Thread.sleep(7000);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+//			try {
+//				Thread.sleep(7000);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
 			for (int i = 0; i < tableID.length; i++) {
 	
 				synchronized(this) {
@@ -41,7 +41,7 @@ public class TableRefresher extends Thread{
 						table = manager.getTable();
 					} catch (InterruptedException e) {
 						e.printStackTrace();
-					}
+					} 
 				}
 				try {
 					if (table.getTableID() == tableID[i]) {

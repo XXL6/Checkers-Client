@@ -15,18 +15,21 @@ public class Lobby implements LobbyInterface {
 	GeneralButtonListener buttonListener;
 	MouseListener popupListener;
 	TableManager tableManager;
+	ChatArea chatWindow;
+	UserList userList;
+	TableList tableList;
 	
 	public Lobby(ServerInterface serverInterface) {
-		lobbyWindow = new LobbyWindow();
+		chatWindow = new ChatArea();
+		userList = new UserList();
+		tableList = new TableList();
+		lobbyWindow = new LobbyWindow(chatWindow, userList, tableList);
 		this.serverInterface = serverInterface;
 		buttonListener = new GeneralButtonListener(this);
-		lobbyWindow.setChatListener(buttonListener);
-		lobbyWindow.setChatClearListener(buttonListener);
-		lobbyWindow.setDisconnectListener(buttonListener);
-		lobbyWindow.setCreateTableListener(buttonListener);
+		lobbyWindow.setButtonListeners(buttonListener);
 		popupListener = new PopupListener(this);
 		lobbyWindow.addPopupMenu(buttonListener, popupListener);
-		tableManager = new TableManager(lobbyWindow, serverInterface);
+		tableManager = new TableManager(tableList, serverInterface);
 	}
 
 	/* (non-Javadoc)

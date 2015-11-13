@@ -1,3 +1,6 @@
 /ServerCommunicator.class
 /ServerConnection.class
 /TCPListenerThread.class
+/ServerInterface.class
+/TCPMsg.class
+/TCPServerInterface.class

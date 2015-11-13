@@ -1,5 +1,7 @@
 package game;
 
-public class CheckerBoard {
+import javax.swing.JPanel;
+
+public class CheckerBoard extends JPanel {
 
 }

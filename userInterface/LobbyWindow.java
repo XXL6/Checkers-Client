@@ -40,20 +40,23 @@ import java.awt.Point;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JLabel;
+import lobby.TableList;
+import lobby.ChatArea;
+import lobby.UserList;
 
 public class LobbyWindow implements LobbyWindowInterface{
 
 	private JFrame frmCheckers;
-	private JTextField chatTxtField;
-	private JTextArea chatTxtArea;
-	private JList<String> usrList;
+	private JTextField chatInputField;
+	private ChatArea chatArea;
+	private UserList userList;
 	private DefaultListModel<String> usrListModel;
 	private DefaultListModel<GameTable> tableListModel;
 	private JButton btnDisconnect;
 	private JButton btnSend;
 	private JButton btnCreateTable;
 	private JButton btnTutorial;
-	private JList tableList;
+	private TableList tableList;
 	private JScrollPane chatScrollPane;
 	private JButton btnClearChat;
 	private JPopupMenu popupMenu;
@@ -61,7 +64,10 @@ public class LobbyWindow implements LobbyWindowInterface{
 	/**
 	 * Create the application.
 	 */
-	public LobbyWindow() {
+	public LobbyWindow(ChatArea chatArea, UserList userList, TableList tableList) {
+		this.chatArea = chatArea;
+		this.userList = userList;
+		this.tableList = tableList;
 		initialize();
 	}
 
@@ -81,32 +87,23 @@ public class LobbyWindow implements LobbyWindowInterface{
 		frmCheckers.setBounds(100, 100, 750, 700);
 		frmCheckers.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
-		chatTxtArea = new JTextArea();
-		chatTxtArea.setEditable(false);
-		chatTxtArea.setLineWrap(true);
-		chatTxtArea.setRows(2);
+		//chatArea = new ChatArea();
+		chatArea.setEditable(false);
+		chatArea.setLineWrap(true);
+		chatArea.setRows(2);
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
-		chatTxtArea.setBorder(border);
-		chatScrollPane = new JScrollPane (chatTxtArea, 
+		chatArea.setBorder(border);
+		chatScrollPane = new JScrollPane (chatArea, 
 				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
-		usrList = new JList<String>(usrListModel) {
-				@Override
-                public int locationToIndex(Point location) {
-                    int index = super.locationToIndex(location);
-                    if (index != -1 && !getCellBounds(index, index).contains(location)) {
-                        return -1;
-                    }
-                    else {
-                        return index;
-                    }
-                }};
-		usrList.setBorder(border);
-		JScrollPane userScrollPane = new JScrollPane (usrList, 
+		//userList = new UserList(usrListModel);
+		//userList.setModel(usrListModel);
+		userList.setBorder(border);
+		JScrollPane userScrollPane = new JScrollPane (userList, 
 				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);		
-		chatTxtField = new JTextField();
-		chatTxtField.setColumns(10);
-		chatTxtField.setBorder(border);
+		chatInputField = new JTextField();
+		chatInputField.setColumns(10);
+		chatInputField.setBorder(border);
 		
 		btnDisconnect = new JButton("Disconnect");
 		btnDisconnect.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -117,7 +114,8 @@ public class LobbyWindow implements LobbyWindowInterface{
 		btnCreateTable = new JButton("Create Table");
 		btnCreateTable.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		tableList = new JList<GameTable>(tableListModel);
+		//tableList = new TableList(tableListModel);
+		//tableList.setModel(tableListModel);
 		tableList.setBorder(border);
 		JScrollPane tableScrollPane = new JScrollPane (tableList, 
 				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);			
@@ -141,7 +139,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(chatTxtField, GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+									.addComponent(chatInputField, GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(btnSend, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
 								.addComponent(chatScrollPane, GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
@@ -177,135 +175,76 @@ public class LobbyWindow implements LobbyWindowInterface{
 							.addComponent(chatScrollPane, GroupLayout.PREFERRED_SIZE, 119, GroupLayout.PREFERRED_SIZE)
 							.addPreferredGap(ComponentPlacement.UNRELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-								.addComponent(chatTxtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(chatInputField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
 								.addComponent(btnSend, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)))
 						.addComponent(userScrollPane, GroupLayout.PREFERRED_SIZE, 150, GroupLayout.PREFERRED_SIZE))
 					.addGap(21))
 		);
 		frmCheckers.getRootPane().setDefaultButton(btnSend);
 		frmCheckers.getContentPane().setLayout(groupLayout);
-//		usrList.addMouseListener( new MouseAdapter()
-//		{
-//		    public void mousePressed(MouseEvent e)
-//		    {
-//		        if ( SwingUtilities.isRightMouseButton(e) )
-//		        {
-//		            JList list = (JList)e.getSource();
-//		            int row = list.locationToIndex(e.getPoint());
-//		            list.setSelectedIndex(row);
-//		        }
-//		    }
-//
-//		});
 	}
 	
-	public void setChatListener(ActionListener listener) {
+	public void setButtonListeners(ActionListener listener) {
 		btnSend.addActionListener(listener);
-	}
-	
-	public void setDisconnectListener(ActionListener listener) {
 		btnDisconnect.addActionListener(listener);
-	}
-	
-	public void setChatClearListener(ActionListener listener) {
 		btnClearChat.addActionListener(listener);
-	}
-	
-	public void setCreateTableListener(ActionListener listener) {
 		btnCreateTable.addActionListener(listener);
 	}
+
 	public void insertText(String text) {
-		chatTxtArea.append(text + "\n");
-		chatTxtArea.validate();
+		chatArea.insert(text);
 		chatScrollPane.getVerticalScrollBar().setValue(chatScrollPane.getVerticalScrollBar().getMaximum());
 	}
 	
 	public void clearText() {
-		chatTxtArea.setText("");
-		chatTxtArea.validate();
+		chatArea.clear();
 		
 	}
 	public String retrieveInputText() {
-		String returnString = chatTxtField.getText();
-		chatTxtField.setText("");
+		String returnString = chatInputField.getText();
+		chatInputField.setText("");
 		return returnString;
 	}
 	
+//	public void insertUser(String username, boolean client) {
+//		if (client) {
+//			usrListModel.insertElementAt(username, 0);	
+//		} else {
+//			usrListModel.addElement(username);
+//		}
+//	}
+	
 	public void insertUser(String username, boolean client) {
-		if (client) {
-			usrListModel.insertElementAt(username, 0);	
-		} else {
-			usrListModel.addElement(username);
-		}
+		userList.insertUser(username, client);
 	}
 	
 	public void removeUser(String username) {
-		String removeString;
-		for(int i = 0; i < usrListModel.getSize(); i++){
-		     removeString =  usrListModel.getElementAt(i).toString(); 
-		     if (removeString.equalsIgnoreCase(username)) {
-		    	 usrListModel.remove(i);
-		     }
-		}
+		userList.removeUser(username);
 	}
 	
 	public boolean containsUser(String username) {
-		for(int i = 0; i < usrListModel.getSize(); i++){
-		    if (usrListModel.getElementAt(i).toString().equalsIgnoreCase(username)) {
-		    	return true;
-		    }
-		}
-		return false;
+		return userList.containsUser(username);
 	}
 	
 	public void clearUsers() {
-		usrListModel.clear();
+		userList.clearUsers();
 	}
 	
 	public void insertTable(GameTable table) {
-		int tableLocation;
-		boolean found = false;
-		for (int i = 0; i < tableListModel.size(); i++) {
-			if (tableListModel.getElementAt(i).getTableID() == table.getTableID()) {
-				tableListModel.setElementAt(table, i);
-				found = true;
-				break;
-			} else {
-				found = false;
-			}
-		}
-		if (!found) {
-			tableListModel.addElement(table);
-		}
+		tableList.insert(table);
 	}
 	
-	public void updateTable(GameTable table) {
-		
-	}
-	public void removeTable(GameTable table) {
-		tableListModel.removeElement(table);
-	}
 	
 	public boolean tablesLoading() {
-		for (int i = 0; i < tableListModel.size(); i++) {
-			if (tableListModel.getElementAt(i).isLoading()) {
-				return true;
-			}
-		}
-		return false;
+		return tableList.tablesLoading();
 	}
+	
 	public void removeTable(int tableIdentifier) {
-		int toBeRemoved;
-		for(int i = 0; i < tableListModel.getSize(); i++){
-		     toBeRemoved =  tableListModel.getElementAt(i).getTableID(); 
-		     if (toBeRemoved == tableIdentifier) {
-		    	 tableListModel.remove(i);
-		     }
-		}
+		tableList.remove(tableIdentifier);
 	}
 	
 	public void clearTables() {
-		tableListModel.clear();
+		tableList.clear();
 	}
 	
 	public void addPopupMenu(ActionListener actionListener, MouseListener mouseListener) {
@@ -314,7 +253,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 	    menuItem.addActionListener(actionListener);
 	    popupMenu.add(menuItem);
 	 
-	    usrList.addMouseListener(mouseListener);
+	    userList.addMouseListener(mouseListener);
 	}
 	
 	public void displayPopupMenu(MouseEvent mouseEvent) {
@@ -325,6 +264,6 @@ public class LobbyWindow implements LobbyWindowInterface{
 	}
 	
 	public String getSelectedUser() {
-		return usrList.getSelectedValue();
+		return userList.getSelectedValue();
 	}
 }
