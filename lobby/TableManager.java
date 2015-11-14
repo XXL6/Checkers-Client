@@ -5,13 +5,15 @@ import java.util.LinkedList;
 
 import serverCommunication.ServerInterface;
 import userInterface.LobbyWindow;
+import userInterface.TableList;
+
 import java.util.Queue;
 
 public class TableManager extends Thread{
 
 	TableList list;
 	ServerInterface serverInterface;
-	TableRefresher tableRefresher;
+	TableUpdater tableUpdater;
 	GameTable table;
 	Queue<GameTable> tableBuffer = new LinkedList<GameTable>();
 //	ArrayList<Integer> localTableList = new ArrayList<Integer>();
@@ -23,27 +25,35 @@ public class TableManager extends Thread{
 	}
 	
 	public void refreshTables(int[] tableID) {
-		tableRefresher = new TableRefresher(tableID, list, serverInterface, this);
-		tableRefresher.start();
+		//tableUpdater = new TableUpdater(tableID, list, serverInterface, this);
+		//tableUpdater.start();
 		//tableRefresher.run();
-	}
-	
-	public void updateNextTable(int tableID, String black, String red) {
-		if (tableRefresher.isAlive()) {
-			synchronized(tableRefresher) {
-				table = new GameTable(tableID);
-				table.setTableInfo(tableID, black, red);
-				tableBuffer.add(table);
-				tableRefresher.notify();
-			}
-		} else {
-			table = new GameTable(tableID);
-			table.setTableInfo(tableID, black, red);
+		
+		//This will work well assuming there aren't too many tables that need to be updated
+		for (int i : tableID) {
+			table = new GameTable(i);
 			insertTable(table);
+			serverInterface.getTblStatus("somebody", i);
 		}
 	}
 	
-	public GameTable getTable() {
+	public void updateNextTable(int tableID, String black, String red) {
+//		if (tableRefresher.isAlive()) {
+//			synchronized(tableRefresher) {
+//				table = new GameTable(tableID);
+//				table.setTableInfo(tableID, black, red);
+//				tableBuffer.add(table);
+//				tableRefresher.notify();
+//			}
+//		} else {
+			table = new GameTable(tableID);
+			table.setTableInfo(tableID, black, red);
+			//tableBuffer.add(table);
+			insertTable(table);
+//		}
+	}
+	
+	public GameTable getIncomingTable() {
 		return tableBuffer.poll();
 	}
 	
@@ -57,5 +67,9 @@ public class TableManager extends Thread{
 	
 	public boolean areAnyTablesLoading() {
 		return list.tablesLoading();
+	}
+	
+	public boolean hasIncomingTables() {
+		return !tableBuffer.isEmpty();
 	}
 }

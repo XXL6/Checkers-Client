@@ -15,21 +15,18 @@ public class Lobby implements LobbyInterface {
 	GeneralButtonListener buttonListener;
 	MouseListener popupListener;
 	TableManager tableManager;
-	ChatArea chatWindow;
-	UserList userList;
-	TableList tableList;
+	ChatManager chatManager;
+	String clientName;
 	
 	public Lobby(ServerInterface serverInterface) {
-		chatWindow = new ChatArea();
-		userList = new UserList();
-		tableList = new TableList();
-		lobbyWindow = new LobbyWindow(chatWindow, userList, tableList);
+		lobbyWindow = new LobbyWindow();
 		this.serverInterface = serverInterface;
 		buttonListener = new GeneralButtonListener(this);
 		lobbyWindow.setButtonListeners(buttonListener);
 		popupListener = new PopupListener(this);
 		lobbyWindow.addPopupMenu(buttonListener, popupListener);
-		tableManager = new TableManager(tableList, serverInterface);
+		tableManager = new TableManager(lobbyWindow.getTableList(), serverInterface);
+		chatManager = new ChatManager(serverInterface, this);
 	}
 
 	/* (non-Javadoc)
@@ -54,9 +51,13 @@ public class Lobby implements LobbyInterface {
 	public void displayMessage(String username, String message, boolean isPrivate) {
 		if (isPrivate) {
 			lobbyWindow.insertText("PM FROM " + username + ": " + message);
-		} else {
+		} else if (!username.equals(clientName)){
 			lobbyWindow.insertText(username + ": " + message);
 		}
+	}
+	
+	public void displayClientMessage(Message message) {
+		lobbyWindow.insertText(clientName + ": " + message.getMessage());
 	}
 	
 	/* (non-Javadoc)
@@ -134,7 +135,8 @@ public class Lobby implements LobbyInterface {
 		String toSend;
 		toSend = lobbyWindow.retrieveInputText();
 		if (!(toSend.equals(""))) {
-			serverInterface.sendMsg_All(toSend);
+			Message message = new Message(toSend);
+			chatManager.send(message);
 		}
 	}
 
@@ -157,7 +159,8 @@ public class Lobby implements LobbyInterface {
 		RequestPopups requestPopup = new RequestPopups();
 		message = requestPopup.privateMessageRequest();
 		if (message.length() > 0) {
-			serverInterface.sendMsg(recipient, message);
+			Message toSend = new Message(message, recipient);
+			chatManager.send(toSend);
 			if (!recipient.contains("[You] ")) {
 				lobbyWindow.insertText("PM TO " + recipient + ": " + message);
 			}
@@ -182,5 +185,11 @@ public class Lobby implements LobbyInterface {
 	
 	public void createTable() {
 		serverInterface.makeTable("bob");
+	}
+
+	@Override
+	public void setUsername(String username) {
+		clientName = username;
+		
 	}
 }

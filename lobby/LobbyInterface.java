@@ -34,4 +34,5 @@ public interface LobbyInterface {
 	
 	void createTable();
 
+	void setUsername(String username);
 }

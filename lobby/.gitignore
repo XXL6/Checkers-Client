@@ -19,3 +19,6 @@
 /UserList.class
 /TableList.class
 /ChatArea.class
+/ChatManager.class
+/Message.class
+/TableUpdater.class

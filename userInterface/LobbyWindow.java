@@ -40,9 +40,6 @@ import java.awt.Point;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JLabel;
-import lobby.TableList;
-import lobby.ChatArea;
-import lobby.UserList;
 
 public class LobbyWindow implements LobbyWindowInterface{
 
@@ -64,10 +61,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 	/**
 	 * Create the application.
 	 */
-	public LobbyWindow(ChatArea chatArea, UserList userList, TableList tableList) {
-		this.chatArea = chatArea;
-		this.userList = userList;
-		this.tableList = tableList;
+	public LobbyWindow() {
 		initialize();
 	}
 
@@ -86,21 +80,24 @@ public class LobbyWindow implements LobbyWindowInterface{
 		tableListModel = new DefaultListModel<GameTable>();
 		frmCheckers.setBounds(100, 100, 750, 700);
 		frmCheckers.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		chatArea = new ChatArea();
+		userList = new UserList();
+		tableList = new TableList();
 		//chatArea = new ChatArea();
 		chatArea.setEditable(false);
 		chatArea.setLineWrap(true);
 		chatArea.setRows(2);
 		Border border = BorderFactory.createLineBorder(Color.BLACK);
-		chatArea.setBorder(border);
+		//chatArea.setBorder(border);
 		chatScrollPane = new JScrollPane (chatArea, 
 				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-
+		chatScrollPane.setBorder(border);
 		//userList = new UserList(usrListModel);
 		//userList.setModel(usrListModel);
-		userList.setBorder(border);
+		//userList.setBorder(border);
 		JScrollPane userScrollPane = new JScrollPane (userList, 
 				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);		
+		userScrollPane.setBorder(border);
 		chatInputField = new JTextField();
 		chatInputField.setColumns(10);
 		chatInputField.setBorder(border);
@@ -116,10 +113,10 @@ public class LobbyWindow implements LobbyWindowInterface{
 		
 		//tableList = new TableList(tableListModel);
 		//tableList.setModel(tableListModel);
-		tableList.setBorder(border);
+		//tableList.setBorder(border);
 		JScrollPane tableScrollPane = new JScrollPane (tableList, 
 				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);			
-		
+		tableScrollPane.setBorder(border);
 		JLabel lblTablesInServer = new JLabel("Tables in server");
 		lblTablesInServer.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
@@ -193,7 +190,9 @@ public class LobbyWindow implements LobbyWindowInterface{
 
 	public void insertText(String text) {
 		chatArea.insert(text);
-		chatScrollPane.getVerticalScrollBar().setValue(chatScrollPane.getVerticalScrollBar().getMaximum());
+		//chatArea.validate();
+		//chatScrollPane.getVerticalScrollBar().setValue(chatScrollPane.getVerticalScrollBar().getMaximum());
+		chatArea.setCaretPosition(chatArea.getDocument().getLength());
 	}
 	
 	public void clearText() {
@@ -247,6 +246,9 @@ public class LobbyWindow implements LobbyWindowInterface{
 		tableList.clear();
 	}
 	
+	public TableList getTableList() {
+		return tableList;
+	}
 	public void addPopupMenu(ActionListener actionListener, MouseListener mouseListener) {
 	    popupMenu = new JPopupMenu();
 	    JMenuItem menuItem = new JMenuItem("Send a PM");

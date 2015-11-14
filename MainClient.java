@@ -12,6 +12,7 @@ public class MainClient extends Thread implements CheckersClient {
 	ServerInterface serverInterface;
 	LobbyInterface lobbyInterface;
 	Thread loginInitializer;
+	Thread gameInitializer;
 	String clientUsername;
 	
 	public MainClient() {
@@ -32,13 +33,14 @@ public class MainClient extends Thread implements CheckersClient {
 	public void lobby() {
 		lobbyInterface = new Lobby(serverInterface);
 		lobbyInterface.startLobby();
+		lobbyInterface.setUsername(clientUsername);
 	}
 	
-	public void game() {
-		
+	public void game(int tableID) {
+		gameInitializer = new gameInitializer(serverInterface, tableID, lobbyInterface);
 	}
 	
-	public void observe() {
+	public void observe(int tableID) {
 		
 	}
 	
@@ -58,7 +60,7 @@ public class MainClient extends Thread implements CheckersClient {
 		}
 		//nullifies the loginInitializer so it can be picked up by the garbage collector
 		//loginInitializer = null;
-		lobby();		
+		lobby();
 	}
 
 	@Override
@@ -100,7 +102,7 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void joinedTable(int tid) {
-		// TODO Auto-generated method stub
+		game(tid);
 		
 	}
 
