@@ -3,6 +3,7 @@ import lobby.Lobby;
 import lobby.LobbyInterface;
 import serverCommunication.ServerInterface;
 import serverCommunication.ServerCommunicator;
+import setup.GameInitializer;
 import setup.LoginInitializer;
 import userInterface.LobbyWindow;
 import userInterface.LobbyWindowInterface;
@@ -23,6 +24,17 @@ public class MainClient extends Thread implements CheckersClient {
 	@Override
 	public void run() {
 		login();
+//		for (int i = 0; i < 100; i++) {
+//			serverInterface.connectToServer("127.0.0.1", Integer.toString(i));
+//			try {
+//				sleep(100);
+//			} catch (InterruptedException e) {
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//			//serverInterface.makeTable(Integer.toString(i));
+//			//System.out.println(i);
+//		}
 	}
 	
 	public void login() {
@@ -37,7 +49,7 @@ public class MainClient extends Thread implements CheckersClient {
 	}
 	
 	public void game(int tableID) {
-		gameInitializer = new gameInitializer(serverInterface, tableID, lobbyInterface);
+		gameInitializer = new GameInitializer(serverInterface, tableID, lobbyInterface);
 	}
 	
 	public void observe(int tableID) {

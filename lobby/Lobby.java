@@ -57,6 +57,7 @@ public class Lobby implements LobbyInterface {
 	}
 	
 	public void displayClientMessage(Message message) {
+		
 		lobbyWindow.insertText(clientName + ": " + message.getMessage());
 	}
 	
