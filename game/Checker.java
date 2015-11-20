@@ -1,6 +1,10 @@
 package game;
 
 public class Checker {
+	
+final int RED = 1;
+final int BLACK = 2;
+
 private boolean canMakeAMove(int row1, int row2, int col1, int col2, int player) {
   // Need a getLegalMove methode and call this method i think.
   // Use array for row and column to store moves made.

@@ -5,6 +5,7 @@ import serverCommunication.ServerInterface;
 import serverCommunication.ServerCommunicator;
 import setup.GameInitializer;
 import setup.LoginInitializer;
+import userInterface.ErrorPopups;
 import userInterface.LobbyWindow;
 import userInterface.LobbyWindowInterface;
 
@@ -14,10 +15,12 @@ public class MainClient extends Thread implements CheckersClient {
 	LobbyInterface lobbyInterface;
 	Thread loginInitializer;
 	Thread gameInitializer;
+	ErrorPopups errorPopup;
 	String clientUsername;
 	
 	public MainClient() {
 		serverInterface = new ServerCommunicator(this);
+		errorPopup = new ErrorPopups();
 		//lobbyInterface = new Lobby();
 	}
 	
@@ -203,7 +206,7 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void nameInUseError() {
-		// TODO Auto-generated method stub
+		errorPopup.usernameTakenError();
 		
 	}
 

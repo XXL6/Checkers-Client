@@ -84,7 +84,7 @@ public class Lobby implements LobbyInterface {
 	public void refreshUsers(String[] usernames, String clientUsername) {
 		lobbyWindow.clearUsers();
 		for (String s: usernames) {
-			if (s.equalsIgnoreCase(clientUsername)) {
+			if (s.equals(clientUsername)) {
 				lobbyWindow.insertUser("[You]  " + s, true);
 			}
 			else if (!(lobbyWindow.containsUser(s))){

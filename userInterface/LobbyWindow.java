@@ -126,14 +126,24 @@ public class LobbyWindow implements LobbyWindowInterface{
 		btnClearChat = new JButton("Clear Chat");
 		btnClearChat.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
+		JButton btnJoinTable = new JButton("Join Table");
+		btnJoinTable.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		JButton btnSpectate = new JButton("Spectate");
+		btnSpectate.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
+		btnSpectate.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
 		GroupLayout groupLayout = new GroupLayout(frmCheckers.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(tableScrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+						.addComponent(tableScrollPane, GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
+						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addGroup(groupLayout.createSequentialGroup()
 									.addComponent(chatInputField, GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
@@ -142,14 +152,18 @@ public class LobbyWindow implements LobbyWindowInterface{
 								.addComponent(chatScrollPane, GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(userScrollPane, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addComponent(btnClearChat, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 234, Short.MAX_VALUE)
-							.addComponent(btnTutorial, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnCreateTable, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnDisconnect, GroupLayout.PREFERRED_SIZE, 115, GroupLayout.PREFERRED_SIZE))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(btnClearChat, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
+							.addComponent(btnSpectate, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnJoinTable, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnTutorial, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnCreateTable, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(btnDisconnect, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))
 						.addComponent(lblTablesInServer))
 					.addContainerGap())
 		);
@@ -163,9 +177,11 @@ public class LobbyWindow implements LobbyWindowInterface{
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnDisconnect)
+						.addComponent(btnClearChat)
 						.addComponent(btnCreateTable)
 						.addComponent(btnTutorial)
-						.addComponent(btnClearChat))
+						.addComponent(btnJoinTable)
+						.addComponent(btnSpectate))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
