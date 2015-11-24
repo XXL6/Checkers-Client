@@ -13,6 +13,10 @@ import javax.swing.JPanel;
 
 public class CheckerBoard extends JPanel {
   
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7313749626074051125L;
 	private static BufferedImage checkerBoardImage;
 	private int boardWidth, boardHeight;
 	private int board[][] = new int[8][8];

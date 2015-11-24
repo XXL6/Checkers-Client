@@ -1,4 +1,4 @@
-package lobby;
+package chatHandler;
 
 import serverCommunication.ServerInterface;
 
@@ -9,12 +9,10 @@ public class ChatManager {
 	ServerInterface serverInterface;
 	Queue<Message> sendQueue;
 	ChatSender sender;
-	Lobby lobby;
 	
-	public ChatManager(ServerInterface sInterface, Lobby lobby) {
+	public ChatManager(ServerInterface sInterface) {
 		this.serverInterface = sInterface;
 		sendQueue = new LinkedList<Message>();
-		this.lobby = lobby;
 		sender = new ChatSender(serverInterface, this);
 		sender.start();
 	}
@@ -23,9 +21,6 @@ public class ChatManager {
 		sendQueue.add(message);
 		synchronized(sender) {
 			sender.notify();
-		}
-		if (!message.isPrivate()) {
-			lobby.displayClientMessage(message);
 		}
 	}
 	

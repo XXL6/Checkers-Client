@@ -35,4 +35,8 @@ public interface LobbyInterface {
 	void createTable();
 
 	void setUsername(String username);
+
+	void joinTable();
+
+	void toggleWindow();
 }

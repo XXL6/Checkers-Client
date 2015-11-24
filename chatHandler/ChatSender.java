@@ -1,4 +1,4 @@
-package lobby;
+package chatHandler;
 
 import serverCommunication.ServerInterface;
 

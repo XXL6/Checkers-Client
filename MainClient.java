@@ -1,4 +1,5 @@
 import Interfaces.CheckersClient;
+import chatHandler.ChatManager;
 import lobby.Lobby;
 import lobby.LobbyInterface;
 import serverCommunication.ServerInterface;
@@ -17,10 +18,12 @@ public class MainClient extends Thread implements CheckersClient {
 	Thread gameInitializer;
 	ErrorPopups errorPopup;
 	String clientUsername;
+	ChatManager chatManager;
 	
 	public MainClient() {
 		serverInterface = new ServerCommunicator(this);
 		errorPopup = new ErrorPopups();
+		chatManager = new ChatManager(serverInterface);
 		//lobbyInterface = new Lobby();
 	}
 	
@@ -46,13 +49,15 @@ public class MainClient extends Thread implements CheckersClient {
 	}
 	
 	public void lobby() {
-		lobbyInterface = new Lobby(serverInterface);
+		lobbyInterface = new Lobby(serverInterface, chatManager);
 		lobbyInterface.startLobby();
 		lobbyInterface.setUsername(clientUsername);
 	}
 	
 	public void game(int tableID) {
-		gameInitializer = new GameInitializer(serverInterface, tableID, lobbyInterface);
+		//lobbyInterface.toggleWindow();
+		gameInitializer = new GameInitializer(serverInterface, tableID, chatManager, clientUsername);
+		gameInitializer.start();
 	}
 	
 	public void observe(int tableID) {
@@ -80,7 +85,8 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void youLeftLobby() {
-		// TODO Auto-generated method stub
+		lobbyInterface.toggleWindow();
+		lobbyInterface = null;
 		
 	}
 
@@ -123,7 +129,9 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void alertLeftTable() {
-		// TODO Auto-generated method stub
+		synchronized (gameInitializer) {
+			gameInitializer.notify();
+		}
 		
 	}
 

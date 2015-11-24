@@ -2,6 +2,9 @@ package lobby;
 import userInterface.LobbyWindow;
 import userInterface.RequestPopups;
 
+import chatHandler.ChatManager;
+import chatHandler.Message;
+
 import java.awt.EventQueue;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -18,7 +21,7 @@ public class Lobby implements LobbyInterface {
 	ChatManager chatManager;
 	String clientName;
 	
-	public Lobby(ServerInterface serverInterface) {
+	public Lobby(ServerInterface serverInterface, ChatManager chatManager) {
 		lobbyWindow = new LobbyWindow();
 		this.serverInterface = serverInterface;
 		buttonListener = new GeneralButtonListener(this);
@@ -26,7 +29,7 @@ public class Lobby implements LobbyInterface {
 		popupListener = new PopupListener(this);
 		lobbyWindow.addPopupMenu(buttonListener, popupListener);
 		tableManager = new TableManager(lobbyWindow.getTableList(), serverInterface);
-		chatManager = new ChatManager(serverInterface, this);
+		this.chatManager = chatManager;
 	}
 
 	/* (non-Javadoc)
@@ -138,6 +141,7 @@ public class Lobby implements LobbyInterface {
 		if (!(toSend.equals(""))) {
 			Message message = new Message(toSend);
 			chatManager.send(message);
+			displayClientMessage(message);
 		}
 	}
 
@@ -185,12 +189,25 @@ public class Lobby implements LobbyInterface {
 	}
 	
 	public void createTable() {
-		serverInterface.makeTable("bob");
+		serverInterface.makeTable(clientName);
 	}
 
+	public void joinTable() {
+		int tableID = lobbyWindow.getSelectedTable();
+		System.out.println(lobbyWindow.getSelectedTable());
+		serverInterface.joinTable(clientName, tableID);
+	}
 	@Override
 	public void setUsername(String username) {
 		clientName = username;
 		
+	}
+	
+	public void displayWindow(boolean display) {
+		lobbyWindow.display(display);
+	}
+	
+	public void toggleWindow() {
+		lobbyWindow.toggleWindow(lobbyWindow.isEnabled());
 	}
 }

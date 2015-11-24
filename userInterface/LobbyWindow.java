@@ -53,6 +53,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 	private JButton btnSend;
 	private JButton btnCreateTable;
 	private JButton btnTutorial;
+	private JButton btnJoinTable;
 	private TableList tableList;
 	private JScrollPane chatScrollPane;
 	private JButton btnClearChat;
@@ -73,6 +74,14 @@ public class LobbyWindow implements LobbyWindowInterface{
 		frmCheckers.setVisible(display);
 	}
 	
+	public boolean isEnabled() {
+		return frmCheckers.isEnabled();
+	}
+	
+	public void toggleWindow(boolean display) {
+			frmCheckers.setEnabled(!display);
+			frmCheckers.setVisible(!display);
+		}
 	private void initialize() {
 		frmCheckers = new JFrame();
 		frmCheckers.setTitle("Checkers");
@@ -126,7 +135,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 		btnClearChat = new JButton("Clear Chat");
 		btnClearChat.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		JButton btnJoinTable = new JButton("Join Table");
+		btnJoinTable = new JButton("Join Table");
 		btnJoinTable.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JButton btnSpectate = new JButton("Spectate");
@@ -202,6 +211,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 		btnDisconnect.addActionListener(listener);
 		btnClearChat.addActionListener(listener);
 		btnCreateTable.addActionListener(listener);
+		btnJoinTable.addActionListener(listener);
 	}
 
 	public void insertText(String text) {
@@ -283,5 +293,9 @@ public class LobbyWindow implements LobbyWindowInterface{
 	
 	public String getSelectedUser() {
 		return userList.getSelectedValue();
+	}
+	
+	public int getSelectedTable() {
+		return tableList.getSelectedValue().getTableID();
 	}
 }
