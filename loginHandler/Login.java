@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import userInterface.ErrorPopups;
+import userInterface.LoadingScreen;
 import userInterface.LoginWindowInterface;
 import serverCommunication.ServerInterface;
 
@@ -27,14 +28,16 @@ public class Login implements ActionListener{
 		if (parser.usernameValid() && parser.addressValid()) {
 			EventQueue.invokeLater(new Runnable() {
 				public void run() {
-					try {
+					try {		
+						//LoadingScreen loading = new LoadingScreen();
+						//loading.showLoginLoading();
 						server.connectToServer(address, username);
+						//loading = null;
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
 				});		
-			
 		} else {
 			error = new ErrorPopups();
 			error.showLoginError();

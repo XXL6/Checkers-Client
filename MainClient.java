@@ -1,5 +1,6 @@
 import Interfaces.CheckersClient;
 import chatHandler.ChatManager;
+import game.Game;
 import lobby.Lobby;
 import lobby.LobbyInterface;
 import serverCommunication.ServerInterface;
@@ -15,10 +16,11 @@ public class MainClient extends Thread implements CheckersClient {
 	ServerInterface serverInterface;
 	LobbyInterface lobbyInterface;
 	Thread loginInitializer;
-	Thread gameInitializer;
+	GameInitializer gameInitializer;
 	ErrorPopups errorPopup;
 	String clientUsername;
 	ChatManager chatManager;
+	Game game;
 	
 	public MainClient() {
 		serverInterface = new ServerCommunicator(this);
@@ -49,15 +51,21 @@ public class MainClient extends Thread implements CheckersClient {
 	}
 	
 	public void lobby() {
-		lobbyInterface = new Lobby(serverInterface, chatManager);
-		lobbyInterface.startLobby();
-		lobbyInterface.setUsername(clientUsername);
+		if (lobbyInterface == null) {
+			lobbyInterface = new Lobby(serverInterface, chatManager);
+			lobbyInterface.startLobby();
+			lobbyInterface.setUsername(clientUsername);
+		} else {
+			lobbyInterface.toggleWindow();
+		}
 	}
 	
 	public void game(int tableID) {
 		//lobbyInterface.toggleWindow();
 		gameInitializer = new GameInitializer(serverInterface, tableID, chatManager, clientUsername);
-		gameInitializer.start();
+		gameInitializer.run();
+		game = gameInitializer.getGameInstance();
+		System.out.println("Is the game a null: " + game == null);
 	}
 	
 	public void observe(int tableID) {
@@ -86,13 +94,14 @@ public class MainClient extends Thread implements CheckersClient {
 	@Override
 	public void youLeftLobby() {
 		lobbyInterface.toggleWindow();
-		lobbyInterface = null;
+		//lobbyInterface = null;
 		
 	}
 
 	@Override
 	public void newMsg(String user, String msg, boolean pm) {
 		lobbyInterface.displayMessage(user, msg, pm);
+		game.displayMessage(user, msg, pm);
 		
 	}
 
@@ -129,10 +138,10 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void alertLeftTable() {
-		synchronized (gameInitializer) {
-			gameInitializer.notify();
-		}
-		
+		//synchronized (gameInitializer) {
+		//	gameInitializer.notify();
+		//}
+		gameInitializer.stopGame();
 	}
 
 	@Override
@@ -143,13 +152,13 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void colorBlack() {
-		// TODO Auto-generated method stub
+		game.setColor("black");
 		
 	}
 
 	@Override
 	public void colorRed() {
-		// TODO Auto-generated method stub
+		game.setColor("red");
 		
 	}
 
@@ -180,6 +189,17 @@ public class MainClient extends Thread implements CheckersClient {
 	@Override
 	public void onTable(int tid, String blackSeat, String redSeat) {
 		lobbyInterface.incomingTableInfo(tid, blackSeat, redSeat);
+		if (game != null && game.getID() == tid) {
+			if (blackSeat.equals("-1") || redSeat.equals("-1")) {
+				game.removeOpponent();
+			} else {
+				if (!blackSeat.equals(clientUsername))
+					game.addOpponent(blackSeat);
+				else {
+					game.addOpponent(redSeat);
+				}
+			}
+		}
 		
 	}
 

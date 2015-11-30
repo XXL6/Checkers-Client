@@ -13,7 +13,7 @@ public class TableList extends JList<GameTable> {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	static DefaultListModel<GameTable> MODEL = new DefaultListModel<GameTable>();
+	private DefaultListModel<GameTable> MODEL = new DefaultListModel<GameTable>();
 	
 	public TableList() {
 		super.setModel(MODEL);

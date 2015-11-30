@@ -15,11 +15,12 @@ public class ErrorPopups {
 	}
 	
 	public void showGeneralError() {
-		JOptionPane.showMessageDialog(null, "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", 
-				"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "Tutorial not yet implemented", "tutorial", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	public void usernameTakenError() {
 		JOptionPane.showMessageDialog(null, "Username already in use.", "Server Error", JOptionPane.INFORMATION_MESSAGE);
 	}
+	
+	
 }

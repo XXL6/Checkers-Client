@@ -12,7 +12,7 @@ import serverCommunication.ServerInterface;
 import userInterface.GameWindow;
 import userInterface.LoginWindow;
 
-public class GameInitializer extends Thread {
+public class GameInitializer {
 
 	private ServerInterface serverInterface;
 	private GameWindow gameWindow;
@@ -32,7 +32,7 @@ public class GameInitializer extends Thread {
 	
 	public void run() {
 		gameWindow = new GameWindow();
-		game = new Game(serverInterface, chatManager, gameWindow, clientUsername);
+		game = new Game(serverInterface, chatManager, gameWindow, clientUsername, tableID);
 		listener = new GeneralButtonListener(game);
 		gameWindow.setButtonListeners(listener);
 		EventQueue.invokeLater(new Runnable() {
@@ -44,17 +44,13 @@ public class GameInitializer extends Thread {
 			}
 		}
 		});
-		synchronized(this) {
-			try {
-				this.wait();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		stopGame();
 		
 	}//end startLogin
 	
+	public Game getGameInstance() {
+		System.out.println("Getting game instance" + game == null);
+		return game;
+	}
 	public void stopGame() {
 		gameWindow.display(false);
 		gameWindow = null;

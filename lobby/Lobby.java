@@ -194,7 +194,7 @@ public class Lobby implements LobbyInterface {
 
 	public void joinTable() {
 		int tableID = lobbyWindow.getSelectedTable();
-		System.out.println(lobbyWindow.getSelectedTable());
+		//System.out.println(lobbyWindow.getSelectedTable());
 		serverInterface.joinTable(clientName, tableID);
 	}
 	@Override

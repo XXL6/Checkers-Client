@@ -12,7 +12,7 @@ public class UserList extends JList<String> {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	static DefaultListModel<String> MODEL = new DefaultListModel<String>();
+	private DefaultListModel<String> MODEL = new DefaultListModel<String>();
 	
 	public UserList() {
 		super.setModel(MODEL);
@@ -34,7 +34,7 @@ public class UserList extends JList<String> {
 		String removeString;
 		for(int i = 0; i < MODEL.getSize(); i++){
 		     removeString =  MODEL.getElementAt(i).toString(); 
-		     if (removeString.equalsIgnoreCase(username)) {
+		     if (removeString.equals(username)) {
 		    	 MODEL.remove(i);
 		     }
 		}
@@ -42,7 +42,7 @@ public class UserList extends JList<String> {
 	
 	public boolean containsUser(String username) {
 		for(int i = 0; i < MODEL.getSize(); i++){
-		    if (MODEL.getElementAt(i).toString().equalsIgnoreCase(username)) {
+		    if (MODEL.getElementAt(i).toString().contains(username)) {
 		    	return true;
 		    }
 		}

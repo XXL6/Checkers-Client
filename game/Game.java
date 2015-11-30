@@ -13,15 +13,21 @@ public class Game {
 	ChatManager chatManager;
 	GameWindow gameWindow;
 	String clientName;
+	int tableID;
+	String opponent = null;
+	String clientColor = null;
+	String opponentColor = null;
 	
-	public Game(ServerInterface serverInterface, ChatManager chatManager, GameWindow gameWindow, String clientUsername) {
+	public Game(ServerInterface serverInterface, ChatManager chatManager, GameWindow gameWindow, 
+			String clientUsername, int tableID) {
 		this.serverInterface = serverInterface;
 		this.chatManager = chatManager;
 		this.gameWindow = gameWindow;
-		this.clientName = clientUsername;
+		setUsername(clientUsername);
+		this.tableID = tableID;
 	}
 
-	public void startLobby() {
+	public void startGame() {
 		EventQueue.invokeLater(new Runnable() {
 		public void run() {
 			try {
@@ -49,7 +55,7 @@ public class Game {
 	}
 
 	public void disconnect() {
-		// TODO Auto-generated method stub
+		serverInterface.disconnect(true);
 		
 	}
 	
@@ -68,7 +74,7 @@ public class Game {
 
 	public void setUsername(String username) {
 		clientName = username;
-		
+		gameWindow.insertUser("[You]  " + clientName, true);
 	}
 	
 	public void refreshUsers(String[] usernames, String clientUsername) {
@@ -83,9 +89,10 @@ public class Game {
 		}
 	}
 	
-	public void addUser(String username) {
+	public void addOpponent(String username) {
 		if (!(gameWindow.containsUser(username))) {
 			gameWindow.insertUser(username, false);
+			opponent = username;
 		}
 	}
 
@@ -94,7 +101,26 @@ public class Game {
 		
 	}
 	
+	public void removeOpponent() {
+		gameWindow.removeUser(opponent);
+		opponent = null;
+	}
 	public void leaveTable() {
+		System.out.println("leaving table");
 		serverInterface.leaveTable(clientName);
+	}
+	
+	public int getID() {
+		return tableID;
+	}
+	
+	public void setColor(String color) {
+		if (color.equalsIgnoreCase("black")) {
+			clientColor = "black";
+			opponentColor = "red";
+		} else {
+			clientColor = "red";
+			opponentColor = "black";
+		}
 	}
 }
