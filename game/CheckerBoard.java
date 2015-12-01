@@ -317,10 +317,10 @@ public class CheckerBoard extends JLayeredPane {
 	                } else {
 	                    droppedPanel.add(dragLabel);
 	                    droppedPanel.revalidate();
-	                    if (clientColor.equalsIgnoreCase("black"))
-	                    	serverInterface.move(clientUsername, GRID_ROWS - 1 - fRow, GRID_COLUMNS - 1 - fCol, 
-	                    			GRID_ROWS - 1 - tRow, GRID_COLUMNS - 1 - tCol);
-	                    else
+	                   // if (clientColor.equalsIgnoreCase("black"))
+	                    //	serverInterface.move(clientUsername, GRID_ROWS - 1 - fRow, GRID_COLUMNS - 1 - fCol, 
+	                    //			GRID_ROWS - 1 - tRow, GRID_COLUMNS - 1 - tCol);
+	                    //else
 	                    	serverInterface.move(clientUsername, fRow, fCol, tRow, tCol);
 	                    System.out.println("From row: " + fRow + " and column: " + fCol);
 	                    System.out.println("To row: " + tRow + " and column: " + tCol);
