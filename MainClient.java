@@ -1,3 +1,5 @@
+import javax.swing.JOptionPane;
+
 import Interfaces.CheckersClient;
 import chatHandler.ChatManager;
 import game.Game;
@@ -178,7 +180,7 @@ public class MainClient extends Thread implements CheckersClient {
 	}
 
 	@Override
-		public void youWin() {
+	public void youWin() {
 		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(null, "Winner, You are the best that ever was!", "Winner", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -237,12 +239,14 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void nameInUseError() {
+		
+		
+		
 		errorPopup.usernameTakenError();
 		
 	}
 
 	@Override
-	
 	public void nameIllegal() {
 		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(null, "Name is Illegal please pick another", "User name error", JOptionPane.INFORMATION_MESSAGE);
@@ -252,6 +256,7 @@ public class MainClient extends Thread implements CheckersClient {
 	public void illegalMove() {
 		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(null, "That is an illegal move.", "Illegal Move Error", JOptionPane.INFORMATION_MESSAGE);
+		game.enableBoard(true);
 	}
 
 	@Override
