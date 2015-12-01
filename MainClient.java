@@ -178,15 +178,15 @@ public class MainClient extends Thread implements CheckersClient {
 	}
 
 	@Override
-	public void youWin() {
+		public void youWin() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "Winner, You are the best that ever was!", "Winner", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
 	public void youLose() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "Loser, Mabye you should brush up on your checkker skils...", "Loser", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
