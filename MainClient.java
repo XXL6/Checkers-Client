@@ -242,75 +242,81 @@ public class MainClient extends Thread implements CheckersClient {
 	}
 
 	@Override
+	
 	public void nameIllegal() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "Name is Illegal please pick another", "User name error", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
 	public void illegalMove() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "That is an illegal move.", "Illegal Move Error", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
 	public void tableFull() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "That table is full.", "Full Table Error", JOptionPane.INFORMATION_MESSAGE);
+	
 	}
 
 	@Override
 	public void tblNotExists() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "That table dos not exist.", "void table Error", JOptionPane.INFORMATION_MESSAGE);
 	}
+	
 
 	@Override
 	public void gameNotCreatedYet() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "Game has not been Created", "No Game Error", JOptionPane.INFORMATION_MESSAGE);
 	}
+	
 
 	@Override
 	public void notYourTurn() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "It is not your turn", "Turn error", JOptionPane.INFORMATION_MESSAGE);
 	}
+	
 
 	@Override
 	public void notObserving() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "You are not Observing", "Observing error", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
 	public void oppNotReady() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "Opponent is not ready", "ready-up error", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
 	public void errorInLobby() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "A lobby error has occured", "Lobby error", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
 	public void badMessage() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "Error Bad Message", "Message error", JOptionPane.INFORMATION_MESSAGE);
+
 	}
 
 	@Override
 	public void oppLeftTable() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "Opponent has left the table", "Opponent left", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	@Override
 	public void notInLobby() {
 		// TODO Auto-generated method stub
-		
+		JOptionPane.showMessageDialog(null, "You are not in the lobby", "Lobby error", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 }
