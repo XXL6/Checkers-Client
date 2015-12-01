@@ -115,7 +115,7 @@ public class CheckerBoard extends JLayeredPane {
     
     public void arrangeCheckers() {
 
-    	if (clientColor.equals("red")) {
+//    	if (clientColor.equals("red")) {
 	        for (int i = 0; i < 8; i++) {
 	            for (int j = 0; j < 8; j++) {
 	            	if(((i<3 && ((j%2) != 0) && i!=1) )|| ((i == 1 && (j%2) == 0))){
@@ -128,21 +128,21 @@ public class CheckerBoard extends JLayeredPane {
 	            	}
 	            }
 	        }
-    	}
-    	else {
-	        for (int i = 0; i < 8; i++) {
-	            for (int j = 0; j < 8; j++) {
-	            	if(((i<3 && ((j%2) != 0) && i!=1) )|| ((i == 1 && (j%2) == 0))){
-	            		board[i][j] = 2;
-	            	}else if((i>4 && ((j%2) == 0) && i !=6) || (i == 6 && (j%2) != 0)){
-	            		board[i][j] = 1;
-	            	}
-	            	else{
-	            		board[i][j] = 0;
-	            	}
-	            }
-	        }
-    	}
+//    	}
+//    	else {
+//	        for (int i = 0; i < 8; i++) {
+//	            for (int j = 0; j < 8; j++) {
+//	            	if(((i<3 && ((j%2) != 0) && i!=1) )|| ((i == 1 && (j%2) == 0))){
+//	            		board[i][j] = 2;
+//	            	}else if((i>4 && ((j%2) == 0) && i !=6) || (i == 6 && (j%2) != 0)){
+//	            		board[i][j] = 1;
+//	            	}
+//	            	else{
+//	            		board[i][j] = 0;
+//	            	}
+//	            }
+//	        }
+//    	}
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 System.out.print(board[i][j]+ ", ");
@@ -166,29 +166,63 @@ public class CheckerBoard extends JLayeredPane {
     }
     
     public void refreshBoard(byte[][] boardState) {
-        for (int row = 0; row < GRID_ROWS; row++) {
-            for (int col = 0; col < GRID_COLUMNS; col++) {
-            	if (boardState[row][col] == 1 && panelGrid[row][col].getComponentCount() < 1) {
-            		Checker blackChecker = new Checker("black");
-                    blackChecker.setOpaque(false);
-                    panelGrid[row][col].add(blackChecker);
-            	} else if (boardState[row][col] == 2 && panelGrid[row][col].getComponentCount() < 1) {
-            		Checker redChecker = new Checker("red");
-                    redChecker.setOpaque(false);
-                    panelGrid[row][col].add(redChecker);
-            	} else if (boardState[row][col] == 3 && panelGrid[row][col].getComponentCount() < 1) {
-                    Checker blackKingChecker = new Checker("blackKing");
-                    blackKingChecker.setOpaque(false);
-                    panelGrid[row][col].add(blackKingChecker);
-            	} else if (boardState[row][col] == 4 && panelGrid[row][col].getComponentCount() < 1) {
-                    Checker redKingChecker = new Checker("redKing");
-                    redKingChecker.setOpaque(false);
-                    panelGrid[row][col].add(redKingChecker);
-            	} else if (boardState[row][col] == 0) {
-            		panelGrid[row][col].removeAll();
-            	}
-            }
-        }
+    	if (clientColor.equals("red")) {
+	        for (int row = 0; row < GRID_ROWS; row++) {
+	            for (int col = 0; col < GRID_COLUMNS; col++) {
+	            	if (boardState[row][col] == 1 && panelGrid[row][col].getComponentCount() < 1) {
+	            		Checker blackChecker = new Checker("black");
+	                    blackChecker.setOpaque(false);
+	                    panelGrid[row][col].add(blackChecker);
+	            	} else if (boardState[row][col] == 2 && panelGrid[row][col].getComponentCount() < 1) {
+	            		Checker redChecker = new Checker("red");
+	                    redChecker.setOpaque(false);
+	                    panelGrid[row][col].add(redChecker);
+	            	} else if (boardState[row][col] == 3 && panelGrid[row][col].getComponentCount() < 1) {
+	                    Checker blackKingChecker = new Checker("blackKing");
+	                    blackKingChecker.setOpaque(false);
+	                    panelGrid[row][col].add(blackKingChecker);
+	            	} else if (boardState[row][col] == 4 && panelGrid[row][col].getComponentCount() < 1) {
+	                    Checker redKingChecker = new Checker("redKing");
+	                    redKingChecker.setOpaque(false);
+	                    panelGrid[row][col].add(redKingChecker);
+	            	} else if (boardState[row][col] == 0) {
+	            		panelGrid[row][col].removeAll();
+	            	}
+	            }
+	        }
+    	} else {
+    		byte[][] tempBoardState = new byte[8][8];
+    		for (int i = 0; i < GRID_ROWS; i++) {
+        		for (int j = 0; j < GRID_COLUMNS; j++) {
+        			tempBoardState[i][j] = boardState[GRID_ROWS - i - 1][GRID_COLUMNS - j - 1];
+        		}
+    			//tempBoardState[i] = boardState[GRID_ROWS - i - 1];
+    		}
+    		boardState = tempBoardState;
+    		for (int row = 0; row < GRID_ROWS; row++) {
+	            for (int col = 0; col < GRID_COLUMNS; col++) {
+	            	if (boardState[row][col] == 1 && panelGrid[row][col].getComponentCount() < 1) {
+	            		Checker blackChecker = new Checker("black");
+	                    blackChecker.setOpaque(false);
+	                    panelGrid[row][col].add(blackChecker);
+	            	} else if (boardState[row][col] == 2 && panelGrid[row][col].getComponentCount() < 1) {
+	            		Checker redChecker = new Checker("red");
+	                    redChecker.setOpaque(false);
+	                    panelGrid[row][col].add(redChecker);
+	            	} else if (boardState[row][col] == 3 && panelGrid[row][col].getComponentCount() < 1) {
+	                    Checker blackKingChecker = new Checker("blackKing");
+	                    blackKingChecker.setOpaque(false);
+	                    panelGrid[row][col].add(blackKingChecker);
+	            	} else if (boardState[row][col] == 4 && panelGrid[row][col].getComponentCount() < 1) {
+	                    Checker redKingChecker = new Checker("redKing");
+	                    redKingChecker.setOpaque(false);
+	                    panelGrid[row][col].add(redKingChecker);
+	            	} else if (boardState[row][col] == 0) {
+	            		panelGrid[row][col].removeAll();
+	            	}
+	            }
+	        }
+    	}
     }
     
     public void disable() {
@@ -317,10 +351,10 @@ public class CheckerBoard extends JLayeredPane {
 	                } else {
 	                    droppedPanel.add(dragLabel);
 	                    droppedPanel.revalidate();
-	                   // if (clientColor.equalsIgnoreCase("black"))
-	                    //	serverInterface.move(clientUsername, GRID_ROWS - 1 - fRow, GRID_COLUMNS - 1 - fCol, 
-	                    //			GRID_ROWS - 1 - tRow, GRID_COLUMNS - 1 - tCol);
-	                    //else
+	                    if (clientColor.equalsIgnoreCase("black"))
+	                    	serverInterface.move(clientUsername, GRID_ROWS - 1 - fRow, GRID_COLUMNS - 1 - fCol, 
+	                    			GRID_ROWS - 1 - tRow, GRID_COLUMNS - 1 - tCol);
+	                    else
 	                    	serverInterface.move(clientUsername, fRow, fCol, tRow, tCol);
 	                    System.out.println("From row: " + fRow + " and column: " + fCol);
 	                    System.out.println("To row: " + tRow + " and column: " + tCol);
@@ -333,5 +367,3 @@ public class CheckerBoard extends JLayeredPane {
         }
     }
 }
-
-
