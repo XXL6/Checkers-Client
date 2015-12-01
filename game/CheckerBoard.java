@@ -150,7 +150,7 @@ public class CheckerBoard extends JLayeredPane {
             System.out.println("");
         }
         refreshBoard(board);
-        repaint();
+        //repaint();
     }
     
     public static void resizeBoard(int newWidth, int newHeight) {
@@ -177,13 +177,15 @@ public class CheckerBoard extends JLayeredPane {
 	            		Checker redChecker = new Checker("red");
 	                    redChecker.setOpaque(false);
 	                    panelGrid[row][col].add(redChecker);
-	            	} else if (boardState[row][col] == 3 && panelGrid[row][col].getComponentCount() < 1) {
+	            	} else if (boardState[row][col] == 3 && panelGrid[row][col].getComponentCount() < 2) {
 	                    Checker blackKingChecker = new Checker("blackKing");
 	                    blackKingChecker.setOpaque(false);
+	                    panelGrid[row][col].removeAll();
 	                    panelGrid[row][col].add(blackKingChecker);
-	            	} else if (boardState[row][col] == 4 && panelGrid[row][col].getComponentCount() < 1) {
+	            	} else if (boardState[row][col] == 4 && panelGrid[row][col].getComponentCount() < 2) {
 	                    Checker redKingChecker = new Checker("redKing");
 	                    redKingChecker.setOpaque(false);
+	                    panelGrid[row][col].removeAll();
 	                    panelGrid[row][col].add(redKingChecker);
 	            	} else if (boardState[row][col] == 0) {
 	            		panelGrid[row][col].removeAll();
@@ -209,13 +211,15 @@ public class CheckerBoard extends JLayeredPane {
 	            		Checker redChecker = new Checker("red");
 	                    redChecker.setOpaque(false);
 	                    panelGrid[row][col].add(redChecker);
-	            	} else if (boardState[row][col] == 3 && panelGrid[row][col].getComponentCount() < 1) {
+	            	} else if (boardState[row][col] == 3 && panelGrid[row][col].getComponentCount() < 2) {
 	                    Checker blackKingChecker = new Checker("blackKing");
 	                    blackKingChecker.setOpaque(false);
+	                    panelGrid[row][col].removeAll();
 	                    panelGrid[row][col].add(blackKingChecker);
-	            	} else if (boardState[row][col] == 4 && panelGrid[row][col].getComponentCount() < 1) {
+	            	} else if (boardState[row][col] == 4 && panelGrid[row][col].getComponentCount() < 2) {
 	                    Checker redKingChecker = new Checker("redKing");
 	                    redKingChecker.setOpaque(false);
+	                    panelGrid[row][col].removeAll();
 	                    panelGrid[row][col].add(redKingChecker);
 	            	} else if (boardState[row][col] == 0) {
 	            		panelGrid[row][col].removeAll();
