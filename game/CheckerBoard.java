@@ -168,19 +168,19 @@ public class CheckerBoard extends JLayeredPane {
     public void refreshBoard(byte[][] boardState) {
         for (int row = 0; row < GRID_ROWS; row++) {
             for (int col = 0; col < GRID_COLUMNS; col++) {
-            	if (boardState[row][col] == 1) {
+            	if (boardState[row][col] == 1 && panelGrid[row][col].getComponentCount() < 1) {
             		Checker blackChecker = new Checker("black");
                     blackChecker.setOpaque(false);
                     panelGrid[row][col].add(blackChecker);
-            	} else if (boardState[row][col] == 2) {
+            	} else if (boardState[row][col] == 2 && panelGrid[row][col].getComponentCount() < 1) {
             		Checker redChecker = new Checker("red");
                     redChecker.setOpaque(false);
                     panelGrid[row][col].add(redChecker);
-            	} else if (boardState[row][col] == 3) {
+            	} else if (boardState[row][col] == 3 && panelGrid[row][col].getComponentCount() < 1) {
                     Checker blackKingChecker = new Checker("blackKing");
                     blackKingChecker.setOpaque(false);
                     panelGrid[row][col].add(blackKingChecker);
-            	} else if (boardState[row][col] == 4) {
+            	} else if (boardState[row][col] == 4 && panelGrid[row][col].getComponentCount() < 1) {
                     Checker redKingChecker = new Checker("redKing");
                     redKingChecker.setOpaque(false);
                     panelGrid[row][col].add(redKingChecker);
