@@ -50,7 +50,7 @@ public class Checker extends JLabel {
 				e.printStackTrace();
 			}
 	    	checkerState = "black";
-		} else {
+		} else if (color.equalsIgnoreCase("red")){
 	    	try {
 				checkerImage = ImageIO.read(new File("./resources/RedChecker.png"));
 			} catch (IOException e) {
@@ -58,6 +58,23 @@ public class Checker extends JLabel {
 				e.printStackTrace();
 			}
 	    	checkerState = "red";
+		} else if (color.equalsIgnoreCase("blackking")) {
+	    	try {
+				checkerImage = ImageIO.read(new File("./resources/BlackKing.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	checkerState = "blackking";
+		} else if (color.equalsIgnoreCase("redking")) {
+	    	try {
+				checkerImage = ImageIO.read(new File("./resources/RedKing.png"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	    	checkerState = "redking";
+			
 		}
 		//checkerImage = checkerImage.getS
 		//JLabel tempChecker = new JLabel("", checkerImage, JLabel.CENTER);
