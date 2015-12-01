@@ -1,62 +1,92 @@
 package game;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.*;
-
+import javax.swing.BorderFactory;
+import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-public class CheckerBoard extends JPanel {
+import serverCommunication.ServerInterface;
+
+//import lolol.DragLabelOnLayeredPane.MyMouseAdapter;
+
+public class CheckerBoard extends JLayeredPane {
   
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -7313749626074051125L;
 	private static BufferedImage checkerBoardImage;
-	private int boardWidth, boardHeight;
-	private int board[][] = new int[8][8];
+	private int iBoardWidth, iBoardHeight;
+	private static int boardWidth = 500;
+	private static int boardHeight = 500;
+	private static int GAP = 1;
+	private int GRID_ROWS = 8;
+	private int GRID_COLUMNS = 8;
+	private byte board[][] = new byte[8][8];
+	private static final Dimension LAYERED_PANE_SIZE = new Dimension(boardWidth, boardHeight);
+    private static final Dimension LABEL_SIZE = new Dimension(60, 60);
+	private JPanel[][] panelGrid = new JPanel[GRID_ROWS][GRID_COLUMNS];
+    private GridLayout gridlayout = new GridLayout(GRID_ROWS, GRID_COLUMNS, GAP, GAP);
+    private JPanel backingPanel = new JPanel(gridlayout);
+    private boolean boardActive = false;
+    private String clientColor = null;
+    private String clientUsername = null;
+    private ServerInterface serverInterface = null;
   /*
   Just a quick thing I made to populate a 2d array in the right checkers positions, though there was probably an easier
   to do it. It can easily be altered to make the array populated by checkers instances.
   */
   
   
-    public CheckerBoard(){
-    	
+    public CheckerBoard(ServerInterface serverInterface){
+    	this.serverInterface = serverInterface;
+    	//Setup the board image
     	try {
 			checkerBoardImage = ImageIO.read(new File("./resources/Board.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+    	//resize the image to fit within the frame
+    	iBoardWidth = checkerBoardImage.getWidth(this) / 2;
+    	iBoardHeight = checkerBoardImage.getHeight(this) / 2;
+    	resizeBoard(boardWidth, boardHeight);
     	
-    	boardWidth = checkerBoardImage.getWidth(this) / 2;
-    	boardHeight = checkerBoardImage.getHeight(this) / 2;
-    	resizeBoard(500, 500);
-    	
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-            if(((i<3 && (j%2)== 0 && i!=1) )|| ((i == 1 && (j%2) != 0))){
-                board[i][j] = 1;
-        }else if((i>4 && (j%2 !=0) && i !=6) || (i == 6 && (j%2) == 0)){
-                board[i][j] = 2;
+        //Sets up a background panel for the Checker containing panels to rest on
+        backingPanel.setSize(LAYERED_PANE_SIZE);
+        backingPanel.setBackground(Color.black);
+        backingPanel.setOpaque(false);
+        //Populates each of the checker containers with a new JPanel with a gridbaglayout
+        for (int row = 0; row < GRID_ROWS; row++) {
+            for (int col = 0; col < GRID_COLUMNS; col++) {
+                panelGrid[row][col] = new JPanel(new GridBagLayout());
+                panelGrid[row][col].setOpaque(false);
+                backingPanel.add(panelGrid[row][col]);
             }
-        else{
-            board[i][j] = 0;
         }
-            }
-    }
-        for (int i = 0; i < 8; i++) {
-            for (int j = 0; j < 8; j++) {
-                System.out.print(board[i][j]+ ", ");
-            }
-            System.out.println("");
-        }
+
+        backingPanel.setBorder(BorderFactory.createEmptyBorder(GAP, GAP, GAP, GAP));
+        setPreferredSize(LAYERED_PANE_SIZE);
+        add(backingPanel, JLayeredPane.DEFAULT_LAYER);
+        BoardMouseAdapter mouseAdapter = new BoardMouseAdapter();
+        addMouseListener(mouseAdapter);
+        addMouseMotionListener(mouseAdapter);
+
     }
     
     public void paintComponent(Graphics g) {
@@ -83,6 +113,46 @@ public class CheckerBoard extends JPanel {
         return dimg;
     }  
     
+    public void arrangeCheckers() {
+
+    	if (clientColor.equals("red")) {
+	        for (int i = 0; i < 8; i++) {
+	            for (int j = 0; j < 8; j++) {
+	            	if(((i<3 && ((j%2) != 0) && i!=1) )|| ((i == 1 && (j%2) == 0))){
+	            		board[i][j] = 1;
+	            	}else if((i>4 && ((j%2) == 0) && i !=6) || (i == 6 && (j%2) != 0)){
+	            		board[i][j] = 2;
+	            	}
+	            	else{
+	            		board[i][j] = 0;
+	            	}
+	            }
+	        }
+    	}
+    	else {
+	        for (int i = 0; i < 8; i++) {
+	            for (int j = 0; j < 8; j++) {
+	            	if(((i<3 && ((j%2) != 0) && i!=1) )|| ((i == 1 && (j%2) == 0))){
+	            		board[i][j] = 2;
+	            	}else if((i>4 && ((j%2) == 0) && i !=6) || (i == 6 && (j%2) != 0)){
+	            		board[i][j] = 1;
+	            	}
+	            	else{
+	            		board[i][j] = 0;
+	            	}
+	            }
+	        }
+    	}
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+                System.out.print(board[i][j]+ ", ");
+            }
+            System.out.println("");
+        }
+        refreshBoard(board);
+        repaint();
+    }
+    
     public static void resizeBoard(int newWidth, int newHeight) {
     	checkerBoardImage = resizeBoard(checkerBoardImage, newWidth, newHeight);
     }
@@ -94,4 +164,174 @@ public class CheckerBoard extends JPanel {
     public int getBoardWidth() {
     	return this.boardWidth;
     }
+    
+    public void refreshBoard(byte[][] boardState) {
+        for (int row = 0; row < GRID_ROWS; row++) {
+            for (int col = 0; col < GRID_COLUMNS; col++) {
+            	if (boardState[row][col] == 1) {
+            		Checker blackChecker = new Checker("black");
+                    blackChecker.setOpaque(false);
+                    panelGrid[row][col].add(blackChecker);
+            	} else if (boardState[row][col] == 2) {
+            		Checker redChecker = new Checker("red");
+                    redChecker.setOpaque(false);
+                    panelGrid[row][col].add(redChecker);
+            	} else if (boardState[row][col] == 3) {
+                    Checker blackKingChecker = new Checker("blackKing");
+                    blackKingChecker.setOpaque(false);
+                    panelGrid[row][col].add(blackKingChecker);
+            	} else if (boardState[row][col] == 4) {
+                    Checker redKingChecker = new Checker("redKing");
+                    redKingChecker.setOpaque(false);
+                    panelGrid[row][col].add(redKingChecker);
+            	} else if (boardState[row][col] == 0) {
+            		panelGrid[row][col].removeAll();
+            	}
+            }
+        }
+    }
+    
+    public void disable() {
+    	boardActive = false;
+    }
+    
+    public void enable() {
+    	boardActive = true;
+    }
+    
+    public void setColor(String color) {
+    	clientColor = color;
+    }
+    
+    public void setUsername(String username) {
+    	this.clientUsername = username;
+    }
+    public void moveChecker(int fRow, int fCol, int tRow, int tCol) {
+    	Component[] components = panelGrid[fRow][fCol].getComponents();
+    	if (components.length < 1) {
+    		System.out.print("Error: Asked to move non-existing checker");
+    		return;
+    	}
+    	panelGrid[tRow][tCol].add(components[0]);
+    	panelGrid[fRow][fCol].removeAll();
+    }
+    private class BoardMouseAdapter extends MouseAdapter {
+        private Checker dragLabel = null;
+        private int dragLabelWidthDiv2;
+        private int dragLabelHeightDiv2;
+        private JPanel clickedPanel = null;
+        int fRow, fCol;
+        int tRow, tCol;
+
+        @Override
+        public void mousePressed(MouseEvent me) {
+        	if (boardActive) {
+	            clickedPanel = (JPanel) backingPanel.getComponentAt(me.getPoint());
+	            Component[] components = clickedPanel.getComponents();
+	            if (components.length == 0) {
+	                return;
+	            }
+	            // if we click on jpanel that holds a jlabel
+	            if (components[0] instanceof JLabel) {
+	            	
+	                // remove label from panel
+	                dragLabel = (Checker) components[0];
+	                if (!dragLabel.getColor().equals(clientColor)) {
+	                	clickedPanel = null;
+	                	dragLabel = null;
+	                	return;
+	                }
+	                searchPanelGrid: for (int row = 0; row < panelGrid.length; row++) {
+	                    for (int col = 0; col < panelGrid[row].length; col++) {
+	                        if (panelGrid[row][col] == clickedPanel) {
+	                            fRow = row;
+	                            fCol = col;
+	                            break searchPanelGrid;
+	                        }
+	                    }
+	                }
+	                System.out.println("From row: " + fRow + " and column: " + fCol);
+	                clickedPanel.remove(dragLabel);
+	                clickedPanel.revalidate();
+	                clickedPanel.repaint();
+	
+	                dragLabelWidthDiv2 = dragLabel.getWidth() / 2;
+	                dragLabelHeightDiv2 = dragLabel.getHeight() / 2;
+	
+	                int x = me.getPoint().x - dragLabelWidthDiv2;
+	                int y = me.getPoint().y - dragLabelHeightDiv2;
+	                dragLabel.setLocation(x, y);
+	                add(dragLabel, JLayeredPane.DRAG_LAYER);
+	                repaint();
+	            }
+        	}
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent me) {
+        	if (boardActive) {
+	            if (dragLabel == null) {
+	                return;
+	            }
+	            int x = me.getPoint().x - dragLabelWidthDiv2;
+	            int y = me.getPoint().y - dragLabelHeightDiv2;
+	            dragLabel.setLocation(x, y);
+	            repaint();
+        	}
+        }
+
+        @Override
+        public void mouseReleased(MouseEvent me) {
+        	if (boardActive) {
+	            if (dragLabel == null) {
+	                return;
+	            }
+	            remove(dragLabel); // remove dragLabel for drag layer of JLayeredPane
+	            JPanel droppedPanel = (JPanel) backingPanel.getComponentAt(me.getPoint());
+	            //Component[] components = droppedPanel.getComponents();
+
+	            if (droppedPanel == null) {
+	                // if off the grid, return label to home
+	                clickedPanel.add(dragLabel);
+	                clickedPanel.revalidate();
+	            } else if (droppedPanel.getComponents().length > 0){
+	            	clickedPanel.add(dragLabel);
+	                clickedPanel.revalidate();
+	            } else {
+	                tRow = -1;
+	                tCol = -1;
+	                searchPanelGrid: for (int row = 0; row < panelGrid.length; row++) {
+	                    for (int col = 0; col < panelGrid[row].length; col++) {
+	                        if (panelGrid[row][col] == droppedPanel) {
+	                            tRow = row;
+	                            tCol = col;
+	                            break searchPanelGrid;
+	                        }
+	                    }
+	                }
+	
+	                if (tRow == -1 || tCol == -1) {
+	                    // if off the grid, return label to home
+	                    clickedPanel.add(dragLabel);
+	                    clickedPanel.revalidate();
+	                } else {
+	                    droppedPanel.add(dragLabel);
+	                    droppedPanel.revalidate();
+	                    if (clientColor.equalsIgnoreCase("black"))
+	                    	serverInterface.move(clientUsername, GRID_ROWS - 1 - fRow, GRID_COLUMNS - 1 - fCol, 
+	                    			GRID_ROWS - 1 - tRow, GRID_COLUMNS - 1 - tCol);
+	                    else
+	                    	serverInterface.move(clientUsername, fRow, fCol, tRow, tCol);
+	                    System.out.println("From row: " + fRow + " and column: " + fCol);
+	                    System.out.println("To row: " + tRow + " and column: " + tCol);
+	                }
+	            }
+	
+	            repaint();
+	            dragLabel = null;
+	        }
+        }
+    }
 }
+
+

@@ -5,7 +5,6 @@ import lobby.Lobby;
 import lobby.LobbyInterface;
 import serverCommunication.ServerInterface;
 import serverCommunication.ServerCommunicator;
-import setup.GameInitializer;
 import setup.LoginInitializer;
 import userInterface.ErrorPopups;
 import userInterface.LobbyWindow;
@@ -16,7 +15,6 @@ public class MainClient extends Thread implements CheckersClient {
 	ServerInterface serverInterface;
 	LobbyInterface lobbyInterface;
 	Thread loginInitializer;
-	GameInitializer gameInitializer;
 	ErrorPopups errorPopup;
 	String clientUsername;
 	ChatManager chatManager;
@@ -32,6 +30,10 @@ public class MainClient extends Thread implements CheckersClient {
 	@Override
 	public void run() {
 		login();
+		//game(420);
+		//game.enableBoard(true);
+		//game.setColor("red");
+		//game.startGame();
 //		for (int i = 0; i < 100; i++) {
 //			serverInterface.connectToServer("127.0.0.1", Integer.toString(i));
 //			try {
@@ -62,10 +64,9 @@ public class MainClient extends Thread implements CheckersClient {
 	
 	public void game(int tableID) {
 		//lobbyInterface.toggleWindow();
-		gameInitializer = new GameInitializer(serverInterface, tableID, chatManager, clientUsername);
-		gameInitializer.run();
-		game = gameInitializer.getGameInstance();
-		System.out.println("Is the game a null: " + game == null);
+		game = new Game(serverInterface, chatManager, clientUsername, tableID);
+		game.setupGame();
+		//System.out.println("Is the game a null: " + game == null);
 	}
 	
 	public void observe(int tableID) {
@@ -141,12 +142,13 @@ public class MainClient extends Thread implements CheckersClient {
 		//synchronized (gameInitializer) {
 		//	gameInitializer.notify();
 		//}
-		gameInitializer.stopGame();
+		game.stopGame();
+		game = null;
 	}
 
 	@Override
 	public void gameStart() {
-		// TODO Auto-generated method stub
+		game.startGame();
 		
 	}
 
@@ -170,7 +172,8 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void curBoardState(int tid, byte[][] boardState) {
-		// TODO Auto-generated method stub
+		if (game.getID() == tid)
+			game.refreshBoardState(boardState);
 		
 	}
 
@@ -210,7 +213,7 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void yourTurn() {
-		// TODO Auto-generated method stub
+		game.enableBoard(true);
 		
 	}
 

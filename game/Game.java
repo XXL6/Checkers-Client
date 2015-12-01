@@ -17,17 +17,25 @@ public class Game {
 	String opponent = null;
 	String clientColor = null;
 	String opponentColor = null;
+	GeneralButtonListener listener = null;
+	CheckerBoard board;
 	
-	public Game(ServerInterface serverInterface, ChatManager chatManager, GameWindow gameWindow, 
+	public Game(ServerInterface serverInterface, ChatManager chatManager, 
 			String clientUsername, int tableID) {
+		board = new CheckerBoard(serverInterface);
+		gameWindow = new GameWindow(board);
 		this.serverInterface = serverInterface;
 		this.chatManager = chatManager;
-		this.gameWindow = gameWindow;
+		//this.gameWindow = gameWindow;
 		setUsername(clientUsername);
 		this.tableID = tableID;
 	}
 
-	public void startGame() {
+	public void setupGame() {
+		listener = new GeneralButtonListener(this);
+		gameWindow.setButtonListeners(listener);
+		//gameWindow.setClientColor(clientColor);
+		//gameWindow.setOpponentColor(opponentColor);
 		EventQueue.invokeLater(new Runnable() {
 		public void run() {
 			try {
@@ -37,6 +45,17 @@ public class Game {
 			}
 		}
 		});
+	}
+	public void startGame() {	
+		gameWindow.setClientColor(clientColor);
+		gameWindow.setOpponentColor(opponentColor);
+		board.setColor(clientColor);
+		board.arrangeCheckers();
+	}
+	public void stopGame() {
+		gameWindow.display(false);
+		gameWindow = null;
+		listener = null;
 	}
 	
 	public void sendMessage() {
@@ -59,6 +78,9 @@ public class Game {
 		
 	}
 	
+	public void readyUp() {
+		serverInterface.playerReady(clientName);
+	}
 	public void displayClientMessage(Message message) {
 		
 		gameWindow.insertText(clientName + ": " + message.getMessage());
@@ -74,6 +96,7 @@ public class Game {
 
 	public void setUsername(String username) {
 		clientName = username;
+		board.setUsername(username);
 		gameWindow.insertUser("[You]  " + clientName, true);
 	}
 	
@@ -89,6 +112,9 @@ public class Game {
 		}
 	}
 	
+	public void refreshBoardState(byte[][] boardState) {
+		board.refreshBoard(boardState);
+	}
 	public void addOpponent(String username) {
 		if (!(gameWindow.containsUser(username))) {
 			gameWindow.insertUser(username, false);
@@ -114,6 +140,9 @@ public class Game {
 		return tableID;
 	}
 	
+	public void moveChecker(int fRow, int fCol, int tRow, int tCol) {
+		
+	}
 	public void setColor(String color) {
 		if (color.equalsIgnoreCase("black")) {
 			clientColor = "black";
@@ -121,6 +150,15 @@ public class Game {
 		} else {
 			clientColor = "red";
 			opponentColor = "black";
+		}
+
+	}
+
+	public void enableBoard(boolean b) {
+		if (b) {
+			board.enable();
+		} else {
+			board.disable();
 		}
 	}
 }

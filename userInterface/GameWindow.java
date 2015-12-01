@@ -57,11 +57,17 @@ public class GameWindow {
 	private JScrollPane chatScrollPane;
 	private JButton btnClearChat;
 	private JPopupMenu popupMenu;
-
+	private JButton btnReady;
+	CheckerBoard gameBoard;
+	private JLabel lblYourColor;
+	private JLabel lblOpponentColor;
+	private JLabel clientColorIndicator;
+	private JLabel oppColorIndicator;
 	/**
 	 * Create the application.
 	 */
-	public GameWindow() {
+	public GameWindow(CheckerBoard gameBoard) {
+		this.gameBoard = gameBoard;
 		initialize();
 	}
 
@@ -78,7 +84,7 @@ public class GameWindow {
 		frmCheckers.setTitle("Checkers");
 		usrListModel = new DefaultListModel<String>();
 		tableListModel = new DefaultListModel<GameTable>();
-		frmCheckers.setBounds(100, 100, 750, 757);
+		frmCheckers.setBounds(100, 100, 750, 810);
 		frmCheckers.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		chatArea = new ChatArea();
 		userList = new UserList();
@@ -113,7 +119,7 @@ public class GameWindow {
 		//tableList = new TableList(tableListModel);
 		//tableList.setModel(tableListModel);
 		//tableList.setBorder(border);
-		CheckerBoard gameBoard = new CheckerBoard();			
+		//gameBoard = new CheckerBoard();			
 		gameBoard.setBorder(new LineBorder(new Color(0, 0, 0)));
 		JLabel lblTablesInServer = new JLabel("Game Table");
 		lblTablesInServer.setFont(new Font("Tahoma", Font.BOLD, 16));
@@ -121,30 +127,60 @@ public class GameWindow {
 		btnClearChat = new JButton("Clear Chat");
 		btnClearChat.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
+		btnReady = new JButton("READY");
+		btnReady.setFont(new Font("Tahoma", Font.BOLD, 12));
+		
+		lblYourColor = new JLabel("Your Color: ");
+		lblYourColor.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		
+		lblOpponentColor = new JLabel("Opp Color: ");
+		lblOpponentColor.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		
+		clientColorIndicator = new JLabel("");
+		clientColorIndicator.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
+		oppColorIndicator = new JLabel("");
+		oppColorIndicator.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
 		GroupLayout groupLayout = new GroupLayout(frmCheckers.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(chatInputField, GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+										.addGroup(groupLayout.createSequentialGroup()
+											.addComponent(chatInputField, GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(btnSend, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
+										.addComponent(chatScrollPane, GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnSend, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
-								.addComponent(chatScrollPane, GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(userScrollPane, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+									.addComponent(userScrollPane, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+								.addComponent(lblTablesInServer)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addComponent(btnClearChat, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED, 378, Short.MAX_VALUE)
+									.addComponent(btnLeaveTable, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnDisconnect, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)))
+							.addContainerGap())
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(btnClearChat, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 378, Short.MAX_VALUE)
-							.addComponent(btnLeaveTable, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDisconnect, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))
-						.addComponent(lblTablesInServer)
-						.addComponent(gameBoard, Alignment.LEADING, GroupLayout.PREFERRED_SIZE, 448, GroupLayout.PREFERRED_SIZE))
-					.addContainerGap())
+							.addComponent(gameBoard, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnReady, GroupLayout.PREFERRED_SIZE, 133, GroupLayout.PREFERRED_SIZE)
+								.addGroup(groupLayout.createSequentialGroup()
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(lblOpponentColor)
+										.addComponent(lblYourColor))
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+										.addComponent(clientColorIndicator, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
+										.addComponent(oppColorIndicator))))
+							.addGap(25))))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
@@ -152,8 +188,20 @@ public class GameWindow {
 					.addContainerGap()
 					.addComponent(lblTablesInServer)
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(gameBoard, GroupLayout.DEFAULT_SIZE, 451, Short.MAX_VALUE)
-					.addGap(18)
+					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(gameBoard, GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
+							.addGap(18))
+						.addGroup(groupLayout.createSequentialGroup()
+							.addComponent(btnReady, GroupLayout.PREFERRED_SIZE, 46, GroupLayout.PREFERRED_SIZE)
+							.addGap(18)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblYourColor)
+								.addComponent(clientColorIndicator, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblOpponentColor, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
+								.addComponent(oppColorIndicator, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))))
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnDisconnect)
 						.addComponent(btnClearChat)
@@ -178,6 +226,7 @@ public class GameWindow {
 		btnDisconnect.addActionListener(listener);
 		btnClearChat.addActionListener(listener);
 		btnLeaveTable.addActionListener(listener);
+		btnReady.addActionListener(listener);
 	}
 
 	public void insertText(String text) {
@@ -233,5 +282,19 @@ public class GameWindow {
 		return userList.getSelectedValue();
 	}
 	
-
+	public void setClientColor(String color) {
+		clientColorIndicator.setText(color);
+		if (color.equalsIgnoreCase("red"))
+			clientColorIndicator.setForeground(Color.RED);
+		else
+			clientColorIndicator.setForeground(Color.BLACK);
+	}
+	
+	public void setOpponentColor(String color) {
+		oppColorIndicator.setText(color);
+		if (color.equalsIgnoreCase("red"))
+			oppColorIndicator.setForeground(Color.RED);
+		else
+			oppColorIndicator.setForeground(Color.BLACK);
+	}
 }

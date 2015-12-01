@@ -3,3 +3,6 @@
 /Game.class
 /GeneralButtonListener.class
 /Game$1.class
+/CheckerContainer.class
+/CheckerBoardMouseAdapter.class
+/CheckerBoard$BoardMouseAdapter.class

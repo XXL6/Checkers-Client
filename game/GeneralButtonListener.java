@@ -23,6 +23,8 @@ public class GeneralButtonListener implements ActionListener {
 				break;
 			case "leave table": game.leaveTable();
 				break;
+			case "ready": game.readyUp();
+				break;
 			default: System.out.println("U wot m8");
 		}
 	}
