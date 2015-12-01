@@ -223,6 +223,8 @@ public class CheckerBoard extends JLayeredPane {
 	            }
 	        }
     	}
+    	validate();
+    	repaint();
     }
     
     public void disable() {
