@@ -47,6 +47,8 @@ public class CheckerBoard extends JLayeredPane {
     private String clientColor = null;
     private String clientUsername = null;
     private ServerInterface serverInterface = null;
+    private int fRow, fCol;
+    private int tRow, tCol;
   /*
   Just a quick thing I made to populate a 2d array in the right checkers positions, though there was probably an easier
   to do it. It can easily be altered to make the array populated by checkers instances.
@@ -254,14 +256,67 @@ public class CheckerBoard extends JLayeredPane {
     	}
     	panelGrid[tRow][tCol].add(components[0]);
     	panelGrid[fRow][fCol].removeAll();
+    	validate();
+    	repaint();
+    }
+    
+    public void undoMove() {
+    	moveChecker(tRow, tCol, fRow, fCol);
+    }
+    
+    private void removeColor() {
+		for (int row = 0; row < GRID_ROWS; row++) {
+            for (int col = 0; col < GRID_COLUMNS; col++) {
+            	
+                panelGrid[row][col].setBackground(new Color(0,255,0,0));
+                panelGrid[row][col].setOpaque(false);
+            }
+		}
+    }
+    
+    private void highlightAvailableMoves(int fRow, int fCol, String color) {
+    	if (!color.toLowerCase().contains("king")) {
+    		if (fCol > 0 && fRow > 0) {
+    			if (panelGrid[fRow - 1][fCol - 1].getComponentCount() < 1) {
+	    			panelGrid[fRow - 1][fCol - 1].setBackground(new Color(0,255,0,50));
+	    			panelGrid[fRow - 1][fCol - 1].setOpaque(true);
+    			} else if (panelGrid[fRow - 1][fCol - 1].getComponentCount() > 0) {
+    				Checker checker = (Checker)panelGrid[fRow - 1][fCol - 1].getComponents()[0];
+    				if (!(checker.getColor().toLowerCase().contains(clientColor))) {
+    					fRow--;
+    					fCol--;
+    	    			if (panelGrid[fRow - 1][fCol - 1].getComponentCount() < 1) {
+    		    			panelGrid[fRow - 1][fCol - 1].setBackground(new Color(0,255,0,50));
+    		    			panelGrid[fRow - 1][fCol - 1].setOpaque(true);
+    	    			}
+    				}
+    				
+    			}
+    		}
+    		if (fCol < GRID_COLUMNS-1  && fRow > 0) {
+    			if (panelGrid[fRow - 1][fCol + 1].getComponentCount() < 1) {
+	    			panelGrid[fRow - 1][fCol + 1].setBackground(new Color(0,255,0,50));
+	    			panelGrid[fRow - 1][fCol + 1].setOpaque(true);
+    			} else if (panelGrid[fRow - 1][fCol + 1].getComponentCount() > 0) {
+    				Checker checker = (Checker)panelGrid[fRow - 1][fCol - 1].getComponents()[0];
+    				if (!(checker.getColor().toLowerCase().contains(clientColor))) {
+    					fRow--;
+    					fCol++;
+    	    			if (panelGrid[fRow - 1][fCol + 1].getComponentCount() < 1) {
+    		    			panelGrid[fRow - 1][fCol + 1].setBackground(new Color(0,255,0,50));
+    		    			panelGrid[fRow - 1][fCol + 1].setOpaque(true);
+    	    			}
+    				}
+    				
+    			}
+    		}
+    	}
     }
     private class BoardMouseAdapter extends MouseAdapter {
         private Checker dragLabel = null;
         private int dragLabelWidthDiv2;
         private int dragLabelHeightDiv2;
         private JPanel clickedPanel = null;
-        int fRow, fCol;
-        int tRow, tCol;
 
         @Override
         public void mousePressed(MouseEvent me) {
@@ -276,7 +331,7 @@ public class CheckerBoard extends JLayeredPane {
 	            	
 	                // remove label from panel
 	                dragLabel = (Checker) components[0];
-	                if (!dragLabel.getColor().equals(clientColor)) {
+	                if (!dragLabel.getColor().contains(clientColor)) {
 	                	clickedPanel = null;
 	                	dragLabel = null;
 	                	return;
@@ -290,6 +345,8 @@ public class CheckerBoard extends JLayeredPane {
 	                        }
 	                    }
 	                }
+
+	                highlightAvailableMoves(fRow, fCol, dragLabel.getColor());
 	                System.out.println("From row: " + fRow + " and column: " + fCol);
 	                clickedPanel.remove(dragLabel);
 	                clickedPanel.revalidate();
@@ -319,7 +376,27 @@ public class CheckerBoard extends JLayeredPane {
 	            repaint();
         	}
         }
-
+    	private boolean canMakeAMove(int row1, int row2, int col1, int col2, int player) {
+    		  // Need a getLegalMove methode and call this method i think.
+    		  // Use array for row and column to store moves made.
+    		         
+    		      if (clientColor.equals("red")) {
+    		         if (board[row1][col1] == RED && row2 > row1)
+    		             return false;  // Red piece move down one direction.
+    		          return true;  // Legal move.
+    		      }
+    		      else {
+    		         if (board[row1][col1] == BLACK && row2 < row1)
+    		             return false;  // Black piece can move up one direction.
+    		          return true;  // Legal move.
+    		      }
+    		      
+    		      if (col2 < 0 || col2 >= 8  || row2 < 0 || row2 >= 8)
+    		         return false;  // Cant make move no locations.
+    		    
+    		      if (board[row2][col2] != EMPTY)
+    		         return false;  // Square ocupied.
+    			}  // end canMakeAMove()
         @Override
         public void mouseReleased(MouseEvent me) {
         	if (boardActive) {
@@ -357,18 +434,23 @@ public class CheckerBoard extends JLayeredPane {
 	                } else {
 	                    droppedPanel.add(dragLabel);
 	                    droppedPanel.revalidate();
-	                    if (clientColor.equalsIgnoreCase("black"))
-	                    	serverInterface.move(clientUsername, GRID_ROWS - 1 - fRow, GRID_COLUMNS - 1 - fCol, 
-	                    			GRID_ROWS - 1 - tRow, GRID_COLUMNS - 1 - tCol);
-	                    else
-	                    	serverInterface.move(clientUsername, fRow, fCol, tRow, tCol);
-	                    System.out.println("From row: " + fRow + " and column: " + fCol);
-	                    System.out.println("To row: " + tRow + " and column: " + tCol);
+	                    if (fRow != tRow && fCol != tCol) {
+		                    if (clientColor.equalsIgnoreCase("black"))
+		                    	serverInterface.move(clientUsername, GRID_ROWS - 1 - fRow, GRID_COLUMNS - 1 - fCol, 
+		                    			GRID_ROWS - 1 - tRow, GRID_COLUMNS - 1 - tCol);
+		                    else
+		                    	serverInterface.move(clientUsername, fRow, fCol, tRow, tCol);
+		                    boardActive = false;
+		                    System.out.println("From row: " + fRow + " and column: " + fCol);
+		                    System.out.println("To row: " + tRow + " and column: " + tCol);
+	                    }
 	                }
 	            }
-	
+	            removeColor();
+	            validate();
 	            repaint();
 	            dragLabel = null;
+	            
 	        }
         }
     }
