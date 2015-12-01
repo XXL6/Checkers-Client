@@ -362,7 +362,6 @@ public class CheckerBoard extends JLayeredPane {
 	                    			GRID_ROWS - 1 - tRow, GRID_COLUMNS - 1 - tCol);
 	                    else
 	                    	serverInterface.move(clientUsername, fRow, fCol, tRow, tCol);
-	                    boardActive = false;
 	                    System.out.println("From row: " + fRow + " and column: " + fCol);
 	                    System.out.println("To row: " + tRow + " and column: " + tCol);
 	                }
@@ -374,4 +373,3 @@ public class CheckerBoard extends JLayeredPane {
         }
     }
 }
-
