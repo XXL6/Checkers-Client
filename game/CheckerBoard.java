@@ -116,35 +116,18 @@ public class CheckerBoard extends JLayeredPane {
     }  
     
     public void arrangeCheckers() {
-
-//    	if (clientColor.equals("red")) {
-	        for (int i = 0; i < 8; i++) {
-	            for (int j = 0; j < 8; j++) {
-	            	if(((i<3 && ((j%2) != 0) && i!=1) )|| ((i == 1 && (j%2) == 0))){
-	            		board[i][j] = 1;
-	            	}else if((i>4 && ((j%2) == 0) && i !=6) || (i == 6 && (j%2) != 0)){
-	            		board[i][j] = 2;
-	            	}
-	            	else{
-	            		board[i][j] = 0;
-	            	}
-	            }
-	        }
-//    	}
-//    	else {
-//	        for (int i = 0; i < 8; i++) {
-//	            for (int j = 0; j < 8; j++) {
-//	            	if(((i<3 && ((j%2) != 0) && i!=1) )|| ((i == 1 && (j%2) == 0))){
-//	            		board[i][j] = 2;
-//	            	}else if((i>4 && ((j%2) == 0) && i !=6) || (i == 6 && (j%2) != 0)){
-//	            		board[i][j] = 1;
-//	            	}
-//	            	else{
-//	            		board[i][j] = 0;
-//	            	}
-//	            }
-//	        }
-//    	}
+        for (int i = 0; i < 8; i++) {
+            for (int j = 0; j < 8; j++) {
+            	if(((i<3 && ((j%2) != 0) && i!=1) )|| ((i == 1 && (j%2) == 0))){
+            		board[i][j] = 1;
+            	}else if((i>4 && ((j%2) == 0) && i !=6) || (i == 6 && (j%2) != 0)){
+            		board[i][j] = 2;
+            	}
+            	else{
+            		board[i][j] = 0;
+            	}
+            }
+        }
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 System.out.print(board[i][j]+ ", ");
@@ -152,7 +135,6 @@ public class CheckerBoard extends JLayeredPane {
             System.out.println("");
         }
         refreshBoard(board);
-        //repaint();
     }
     
     public static void resizeBoard(int newWidth, int newHeight) {
@@ -416,27 +398,7 @@ public class CheckerBoard extends JLayeredPane {
 	            repaint();
         	}
         }
-    	private boolean canMakeAMove(int row1, int row2, int col1, int col2, int player) {
-    		  // Need a getLegalMove methode and call this method i think.
-    		  // Use array for row and column to store moves made.
-    		         
-    		      if (clientColor.equals("red")) {
-    		         if (board[row1][col1] == RED && row2 > row1)
-    		             return false;  // Red piece move down one direction.
-    		          return true;  // Legal move.
-    		      }
-    		      else {
-    		         if (board[row1][col1] == BLACK && row2 < row1)
-    		             return false;  // Black piece can move up one direction.
-    		          return true;  // Legal move.
-    		      }
-    		      
-    		      if (col2 < 0 || col2 >= 8  || row2 < 0 || row2 >= 8)
-    		         return false;  // Cant make move no locations.
-    		    
-    		      if (board[row2][col2] != EMPTY)
-    		         return false;  // Square ocupied.
-    			}  // end canMakeAMove()
+
         @Override
         public void mouseReleased(MouseEvent me) {
         	if (boardActive) {
