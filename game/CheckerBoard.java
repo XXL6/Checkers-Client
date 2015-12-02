@@ -275,41 +275,82 @@ public class CheckerBoard extends JLayeredPane {
     }
     
     private void highlightAvailableMoves(int fRow, int fCol, String color) {
-    	if (!color.toLowerCase().contains("king")) {
-    		if (fCol > 0 && fRow > 0) {
-    			if (panelGrid[fRow - 1][fCol - 1].getComponentCount() < 1) {
-	    			panelGrid[fRow - 1][fCol - 1].setBackground(new Color(0,255,0,50));
-	    			panelGrid[fRow - 1][fCol - 1].setOpaque(true);
-    			} else if (panelGrid[fRow - 1][fCol - 1].getComponentCount() > 0) {
-    				Checker checker = (Checker)panelGrid[fRow - 1][fCol - 1].getComponents()[0];
+		if (fCol > 0 && fRow > 0) {
+			if (panelGrid[fRow - 1][fCol - 1].getComponentCount() < 1) {
+    			panelGrid[fRow - 1][fCol - 1].setBackground(new Color(0,255,0,50));
+    			panelGrid[fRow - 1][fCol - 1].setOpaque(true);
+			} else if (panelGrid[fRow - 1][fCol - 1].getComponentCount() > 0) {
+				Checker checker = (Checker)panelGrid[fRow - 1][fCol - 1].getComponents()[0];
+				if (!(checker.getColor().toLowerCase().contains(clientColor))) {
+					fRow--;
+					fCol--;
+	    			if (fCol > 0 && fRow > 0 && panelGrid[fRow - 1][fCol - 1].getComponentCount() < 1) {
+		    			panelGrid[fRow - 1][fCol - 1].setBackground(new Color(0,255,0,50));
+		    			panelGrid[fRow - 1][fCol - 1].setOpaque(true);
+	    			}
+	    			fRow++;
+	    			fCol++;
+				}
+			}
+		}
+		if (fCol < GRID_COLUMNS-1  && fRow > 0) {
+			if (panelGrid[fRow - 1][fCol + 1].getComponentCount() < 1) {
+    			panelGrid[fRow - 1][fCol + 1].setBackground(new Color(0,255,0,50));
+    			panelGrid[fRow - 1][fCol + 1].setOpaque(true);
+			} else if (panelGrid[fRow - 1][fCol + 1].getComponentCount() > 0) {
+				Checker checker = (Checker)panelGrid[fRow - 1][fCol + 1].getComponents()[0];
+				if (!(checker.getColor().toLowerCase().contains(clientColor))) {
+					fRow--;
+					fCol++;
+	    			if (fCol < GRID_COLUMNS-1  && fRow > 0 && panelGrid[fRow - 1][fCol + 1].getComponentCount() < 1) {
+		    			panelGrid[fRow - 1][fCol + 1].setBackground(new Color(0,255,0,50));
+		    			panelGrid[fRow - 1][fCol + 1].setOpaque(true);
+	    			}
+	    			fRow++;
+	    			fCol--;
+				}
+				
+			}
+		}
+    	if (color.toLowerCase().contains("king")) {
+    		if (fCol > 0 && fRow < GRID_ROWS - 1) {
+    			if (panelGrid[fRow + 1][fCol - 1].getComponentCount() < 1) {
+        			panelGrid[fRow + 1][fCol - 1].setBackground(new Color(0,255,0,50));
+        			panelGrid[fRow + 1][fCol - 1].setOpaque(true);
+    			} else if (panelGrid[fRow + 1][fCol - 1].getComponentCount() > 0) {
+    				Checker checker = (Checker)panelGrid[fRow + 1][fCol - 1].getComponents()[0];
     				if (!(checker.getColor().toLowerCase().contains(clientColor))) {
-    					fRow--;
+    					fRow++;
     					fCol--;
-    	    			if (panelGrid[fRow - 1][fCol - 1].getComponentCount() < 1) {
-    		    			panelGrid[fRow - 1][fCol - 1].setBackground(new Color(0,255,0,50));
-    		    			panelGrid[fRow - 1][fCol - 1].setOpaque(true);
+    	    			if (fCol > 0 && fRow < GRID_ROWS - 1 && panelGrid[fRow + 1][fCol - 1].getComponentCount() < 1) {
+    		    			panelGrid[fRow + 1][fCol - 1].setBackground(new Color(0,255,0,50));
+    		    			panelGrid[fRow + 1][fCol - 1].setOpaque(true);
     	    			}
+    	    			fRow--;
+    	    			fCol++;
     				}
-    				
     			}
     		}
-    		if (fCol < GRID_COLUMNS-1  && fRow > 0) {
-    			if (panelGrid[fRow - 1][fCol + 1].getComponentCount() < 1) {
-	    			panelGrid[fRow - 1][fCol + 1].setBackground(new Color(0,255,0,50));
-	    			panelGrid[fRow - 1][fCol + 1].setOpaque(true);
-    			} else if (panelGrid[fRow - 1][fCol + 1].getComponentCount() > 0) {
-    				Checker checker = (Checker)panelGrid[fRow - 1][fCol - 1].getComponents()[0];
+    		if (fCol < GRID_COLUMNS-1  && fRow < GRID_ROWS - 1) {
+    			if (panelGrid[fRow + 1][fCol + 1].getComponentCount() < 1) {
+        			panelGrid[fRow + 1][fCol + 1].setBackground(new Color(0,255,0,50));
+        			panelGrid[fRow + 1][fCol + 1].setOpaque(true);
+    			} else if (panelGrid[fRow + 1][fCol + 1].getComponentCount() > 0) {
+    				Checker checker = (Checker)panelGrid[fRow + 1][fCol + 1].getComponents()[0];
     				if (!(checker.getColor().toLowerCase().contains(clientColor))) {
-    					fRow--;
+    					fRow++;
     					fCol++;
-    	    			if (panelGrid[fRow - 1][fCol + 1].getComponentCount() < 1) {
-    		    			panelGrid[fRow - 1][fCol + 1].setBackground(new Color(0,255,0,50));
-    		    			panelGrid[fRow - 1][fCol + 1].setOpaque(true);
+    	    			if (fCol < GRID_COLUMNS-1  && fRow < GRID_ROWS - 1 && panelGrid[fRow + 1][fCol + 1].getComponentCount() < 1) {
+    		    			panelGrid[fRow + 1][fCol + 1].setBackground(new Color(0,255,0,50));
+    		    			panelGrid[fRow + 1][fCol + 1].setOpaque(true);
     	    			}
+    	    			fRow--;
+    	    			fCol++;
     				}
     				
     			}
     		}
+    		
     	}
     }
     private class BoardMouseAdapter extends MouseAdapter {
@@ -347,7 +388,6 @@ public class CheckerBoard extends JLayeredPane {
 	                }
 
 	                highlightAvailableMoves(fRow, fCol, dragLabel.getColor());
-	                System.out.println("From row: " + fRow + " and column: " + fCol);
 	                clickedPanel.remove(dragLabel);
 	                clickedPanel.revalidate();
 	                clickedPanel.repaint();
@@ -431,10 +471,13 @@ public class CheckerBoard extends JLayeredPane {
 	                    // if off the grid, return label to home
 	                    clickedPanel.add(dragLabel);
 	                    clickedPanel.revalidate();
+	                } else if (!droppedPanel.isOpaque()) {
+	                	clickedPanel.add(dragLabel);
+	                    clickedPanel.revalidate();
 	                } else {
 	                    droppedPanel.add(dragLabel);
 	                    droppedPanel.revalidate();
-	                    if (fRow != tRow && fCol != tCol) {
+	                    if (fRow != tRow || fCol != tCol) {
 		                    if (clientColor.equalsIgnoreCase("black"))
 		                    	serverInterface.move(clientUsername, GRID_ROWS - 1 - fRow, GRID_COLUMNS - 1 - fCol, 
 		                    			GRID_ROWS - 1 - tRow, GRID_COLUMNS - 1 - tCol);

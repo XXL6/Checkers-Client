@@ -29,13 +29,21 @@ public class MainClient extends Thread implements CheckersClient {
 		//lobbyInterface = new Lobby();
 	}
 	
+	public MainClient(String user, String ip) {
+		
+		serverInterface = new ServerCommunicator(this);
+		errorPopup = new ErrorPopups();
+		chatManager = new ChatManager(serverInterface);
+		serverInterface.connectToServer(ip, user);
+	}
+	
 	@Override
 	public void run() {
 		login();
-		//game(420);
-		//game.enableBoard(true);
-		//game.setColor("red");
-		//game.startGame();
+//		game(420);
+//		game.enableBoard(true);
+//		game.setColor("red");
+//		game.startGame();
 //		for (int i = 0; i < 100; i++) {
 //			serverInterface.connectToServer("127.0.0.1", Integer.toString(i));
 //			try {
@@ -183,12 +191,14 @@ public class MainClient extends Thread implements CheckersClient {
 	public void youWin() {
 		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(null, "Winner, You are the best that ever was!", "Winner", JOptionPane.INFORMATION_MESSAGE);
+		game.enableBoard(false);
 	}
 
 	@Override
 	public void youLose() {
 		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(null, "Learn how to play loser...", "Loser", JOptionPane.INFORMATION_MESSAGE);
+		game.enableBoard(false);
 	}
 
 	@Override
@@ -257,6 +267,7 @@ public class MainClient extends Thread implements CheckersClient {
 		// TODO Auto-generated method stub
 		JOptionPane.showMessageDialog(null, "That is an illegal move.", "Illegal Move Error", JOptionPane.INFORMATION_MESSAGE);
 		game.enableBoard(true);
+		game.undoMove();
 	}
 
 	@Override

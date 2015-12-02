@@ -143,6 +143,10 @@ public class Game {
 	public void moveChecker(int fRow, int fCol, int tRow, int tCol) {
 		
 	}
+	
+	public void undoMove() {
+		board.undoMove();
+	}
 	public void setColor(String color) {
 		if (color.equalsIgnoreCase("black")) {
 			clientColor = "black";

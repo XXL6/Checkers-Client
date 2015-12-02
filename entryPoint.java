@@ -7,8 +7,10 @@ import setup.LoginInitializer;
 public class entryPoint {
 
 	public static void main(String[] args) {
-		Thread client = new MainClient();
+		MainClient client = new MainClient("steve", "127.0.0.1");
 		client.start();
+		MainClient client2 = new MainClient("bob", "127.0.0.1");
+		client2.start();
 		//hello
 	}//end main
 
