@@ -147,6 +147,7 @@ public class GameWindow {
 		
 		yourTurn = new JLabel("Your Turn");
 		yourTurn.setFont(new Font("Tahoma", Font.BOLD, 16));
+		yourTurn.setVisible(false);
 		
 		GroupLayout groupLayout = new GroupLayout(frmCheckers.getContentPane());
 		groupLayout.setHorizontalGroup(

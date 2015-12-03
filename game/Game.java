@@ -1,6 +1,13 @@
 package game;
 
 import java.awt.EventQueue;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequencer;
 
 import chatHandler.ChatManager;
 import chatHandler.Message;
@@ -19,7 +26,12 @@ public class Game {
 	String opponentColor = null;
 	GeneralButtonListener listener = null;
 	CheckerBoard board;
+
+	boolean ready = false;
 	
+
+	Sequencer sequencer = null;
+
 	public Game(ServerInterface serverInterface, ChatManager chatManager, 
 			String clientUsername, int tableID) {
 		board = new CheckerBoard(serverInterface, this);
@@ -45,17 +57,32 @@ public class Game {
 			}
 		}
 		});
+		try{
+			 sequencer = MidiSystem.getSequencer();
+			 sequencer.open();
+			 InputStream is = new BufferedInputStream(new FileInputStream(new File("resources/green.mid")));
+			 sequencer.setSequence(is);
+			 sequencer.start();
+			 sequencer.setLoopCount(100);
+			}catch(Exception e){
+				
+			}
 	}
 	public void startGame() {	
 		gameWindow.setClientColor(clientColor);
 		gameWindow.setOpponentColor(opponentColor);
 		board.setColor(clientColor);
 		board.arrangeCheckers();
+		
+	
+			 
 	}
 	public void stopGame() {
 		gameWindow.display(false);
 		gameWindow = null;
 		listener = null;
+		
+		sequencer.stop();
 	}
 	
 	public void sendMessage() {
@@ -79,7 +106,10 @@ public class Game {
 	}
 	
 	public void readyUp() {
+		if (ready == false){
 		serverInterface.playerReady(clientName);
+		}
+		ready = true;
 	}
 	public void displayClientMessage(Message message) {
 		
@@ -120,6 +150,7 @@ public class Game {
 			gameWindow.insertUser(username, false);
 			opponent = username;
 		}
+		ready = false;
 	}
 
 	public void removeUser(String username) {
@@ -128,6 +159,7 @@ public class Game {
 	}
 	
 	public void removeOpponent() {
+		ready = false;
 		gameWindow.removeUser(opponent);
 		opponent = null;
 	}
