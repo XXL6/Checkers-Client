@@ -43,4 +43,6 @@ public interface LobbyInterface {
 	void spectate();
 
 	void refreshLocalTables();
+
+	void tutorial();
 }

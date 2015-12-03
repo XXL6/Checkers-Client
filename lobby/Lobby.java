@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import serverCommunication.ServerInterface;
+import tutorial.Tutorial;
 
 public class Lobby implements LobbyInterface {
 	
@@ -217,6 +218,12 @@ public class Lobby implements LobbyInterface {
 	public void spectate() {
 		int tableID = lobbyWindow.getSelectedTable();
 		serverInterface.observeTable(clientName, tableID);
+	}
+
+	@Override
+	public void tutorial() {
+		Tutorial tutorial = new Tutorial();
+		tutorial.startTutorial();
 	}
 	
 	

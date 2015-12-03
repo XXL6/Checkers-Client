@@ -62,7 +62,7 @@ public class Game {
 		String toSend;
 		toSend = gameWindow.retrieveInputText();
 		if (!(toSend.equals(""))) {
-			Message message = new Message(toSend);
+			Message message = new Message(toSend, opponent);
 			chatManager.send(message);
 			displayClientMessage(message);
 		}
@@ -87,11 +87,11 @@ public class Game {
 	}
 	
 	public void displayMessage(String username, String message, boolean isPrivate) {
-		if (isPrivate) {
-			gameWindow.insertText("PM FROM " + username + ": " + message);
-		} else if (!username.equals(clientName)){
+//		if (isPrivate) {
+//			gameWindow.insertText("PM FROM " + username + ": " + message);
+//		} else if (!username.equals(clientName)){
 			gameWindow.insertText(username + ": " + message);
-		}
+//		}
 	}
 
 	public void setUsername(String username) {
@@ -169,6 +169,7 @@ public class Game {
 		
 		gameWindow.setYourTurn(setYourTurn);
 	
+	}
 	
-}
+
 }

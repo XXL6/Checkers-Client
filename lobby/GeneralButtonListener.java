@@ -31,6 +31,8 @@ public class GeneralButtonListener implements ActionListener {
 				break;
 			case "refresh": lobby.refreshLocalTables();
 				break;
+			case "tutorial": lobby.tutorial();
+				break;
 			default: System.out.println("U wot m8");
 		}
 	}

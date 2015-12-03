@@ -223,6 +223,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 		btnJoinTable.addActionListener(listener);
 		btnSpectate.addActionListener(listener);
 		btnRefreshTables.addActionListener(listener);
+		btnTutorial.addActionListener(listener);
 	}
 
 	public void insertText(String text) {
