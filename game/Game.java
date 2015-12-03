@@ -60,9 +60,10 @@ public class Game {
 		try{
 			 sequencer = MidiSystem.getSequencer();
 			 sequencer.open();
-			 InputStream is = new BufferedInputStream(new FileInputStream(new File("resources/TV_Themes_-_Cheers.mid")));
+			 InputStream is = new BufferedInputStream(new FileInputStream(new File("resources/green.mid")));
 			 sequencer.setSequence(is);
 			 sequencer.start();
+			 sequencer.setLoopCount(100);
 			}catch(Exception e){
 				
 			}
