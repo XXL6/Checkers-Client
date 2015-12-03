@@ -19,6 +19,7 @@ public class Game {
 	String opponentColor = null;
 	GeneralButtonListener listener = null;
 	CheckerBoard board;
+	boolean ready = false;
 	
 	public Game(ServerInterface serverInterface, ChatManager chatManager, 
 			String clientUsername, int tableID) {
@@ -79,7 +80,10 @@ public class Game {
 	}
 	
 	public void readyUp() {
+		if (ready == false){
 		serverInterface.playerReady(clientName);
+		}
+		ready = true;
 	}
 	public void displayClientMessage(Message message) {
 		
@@ -120,6 +124,7 @@ public class Game {
 			gameWindow.insertUser(username, false);
 			opponent = username;
 		}
+		ready = false;
 	}
 
 	public void removeUser(String username) {
@@ -128,6 +133,7 @@ public class Game {
 	}
 	
 	public void removeOpponent() {
+		ready = false;
 		gameWindow.removeUser(opponent);
 		opponent = null;
 	}
