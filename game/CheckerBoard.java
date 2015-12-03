@@ -152,6 +152,12 @@ public class CheckerBoard extends JLayeredPane {
     }
     
     public void refreshBoard(byte[][] boardState) {
+    	for (int row = 0; row < GRID_ROWS; row++) {
+            for (int col = 0; col < GRID_COLUMNS; col++) {
+            	panelGrid[row][col].removeAll();
+            }
+    	}
+    	
     	if (clientColor.equals("red")) {
 	        for (int row = 0; row < GRID_ROWS; row++) {
 	            for (int col = 0; col < GRID_COLUMNS; col++) {
