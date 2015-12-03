@@ -5,6 +5,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+import java.net.URL;
 
 import javax.sound.midi.MidiSystem;
 import javax.sound.midi.Sequencer;
@@ -58,10 +59,11 @@ public class Game {
 		}
 		});
 		try{
+			URL tempURL = Game.class.getResource("/"+"resources/green.mid");
 			 sequencer = MidiSystem.getSequencer();
 			 sequencer.open();
-			 InputStream is = new BufferedInputStream(new FileInputStream(new File("resources/green.mid")));
-			 sequencer.setSequence(is);
+			 
+			 sequencer.setSequence(MidiSystem.getSequence(tempURL));
 			 sequencer.start();
 			 sequencer.setLoopCount(100);
 			}catch(Exception e){
