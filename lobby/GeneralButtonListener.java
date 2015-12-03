@@ -27,6 +27,10 @@ public class GeneralButtonListener implements ActionListener {
 				break;
 			case "join table": lobby.joinTable();
 				break;
+			case "spectate": lobby.spectate();
+				break;
+			case "refresh": lobby.refreshLocalTables();
+				break;
 			default: System.out.println("U wot m8");
 		}
 	}

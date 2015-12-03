@@ -22,7 +22,6 @@ public class LoginInitializer extends Thread{
 		loginWindow = new LoginWindow();
 		login = new Login(loginWindow, serverInterface);
 		loginWindow.assignLoginButton(login);
-		loginWindow.assignTutorialButton(login);
 		EventQueue.invokeLater(new Runnable() {
 		public void run() {
 			try {

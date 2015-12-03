@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 import javax.swing.JOptionPane;
 
 import Interfaces.CheckersClient;
@@ -5,6 +7,7 @@ import chatHandler.ChatManager;
 import game.Game;
 import lobby.Lobby;
 import lobby.LobbyInterface;
+import observatory.Observer;
 import serverCommunication.ServerInterface;
 import serverCommunication.ServerCommunicator;
 import setup.LoginInitializer;
@@ -21,6 +24,8 @@ public class MainClient extends Thread implements CheckersClient {
 	String clientUsername;
 	ChatManager chatManager;
 	Game game;
+	Observer observer;
+	ArrayList<Observer> observerList = new ArrayList<Observer>();
 	
 	public MainClient() {
 		serverInterface = new ServerCommunicator(this);
@@ -80,7 +85,9 @@ public class MainClient extends Thread implements CheckersClient {
 	}
 	
 	public void observe(int tableID) {
-		
+		observer = new Observer(tableID, clientUsername, serverInterface);
+		observer.start();
+		observerList.add(observer);
 	}
 	
 	public void setUsername(String username) {
@@ -182,9 +189,13 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void curBoardState(int tid, byte[][] boardState) {
-		if (game.getID() == tid)
+		if (game != null && game.getID() == tid)
 			game.refreshBoardState(boardState);
-		
+		for (Observer o : observerList) {
+			if (o != null && o.getTableId() == tid) {
+				o.updateBoard(boardState); 
+			}
+		}
 	}
 
 	@Override
@@ -197,7 +208,7 @@ public class MainClient extends Thread implements CheckersClient {
 	@Override
 	public void youLose() {
 		// TODO Auto-generated method stub
-		JOptionPane.showMessageDialog(null, "Learn how to play loser...", "Loser", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "You lost, but the other guy was probably cheating.", "Loser", JOptionPane.INFORMATION_MESSAGE);
 		game.enableBoard(false);
 	}
 
@@ -215,7 +226,11 @@ public class MainClient extends Thread implements CheckersClient {
 				}
 			}
 		}
-		
+		for (Observer o : observerList) {
+			if (o != null && o.getTableId() == tid) {
+				o.setUsers(blackSeat, redSeat);
+			}
+		}
 	}
 
 	@Override
@@ -231,14 +246,18 @@ public class MainClient extends Thread implements CheckersClient {
 
 	@Override
 	public void nowObserving(int tid) {
-		// TODO Auto-generated method stub
+		observe(tid);
 		
 	}
 
 	@Override
 	public void stoppedObserving(int tid) {
-		// TODO Auto-generated method stub
-		
+		for (Observer o : observerList) {
+			if (o != null && o.getTableId() == tid) {
+				observerList.remove(o);
+				o = null;
+			}
+		}
 	}
 
 	@Override

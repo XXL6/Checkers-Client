@@ -124,6 +124,9 @@ public class Lobby implements LobbyInterface {
 		tableManager.refreshTables(tables);
 	}
 	
+	public void refreshLocalTables() {
+		tableManager.refreshLocalTables();
+	}
 	/* (non-Javadoc)
 	 * @see lobby.LobbyInterface#incomingTableInfo(int, java.lang.String, java.lang.String)
 	 */
@@ -200,7 +203,7 @@ public class Lobby implements LobbyInterface {
 	@Override
 	public void setUsername(String username) {
 		clientName = username;
-		
+		tableManager.setUsrName(username);
 	}
 	
 	public void displayWindow(boolean display) {
@@ -210,4 +213,11 @@ public class Lobby implements LobbyInterface {
 	public void toggleWindow() {
 		lobbyWindow.toggleWindow(lobbyWindow.isEnabled());
 	}
+	
+	public void spectate() {
+		int tableID = lobbyWindow.getSelectedTable();
+		serverInterface.observeTable(clientName, tableID);
+	}
+	
+	
 }

@@ -12,6 +12,7 @@ import java.util.Queue;
 public class TableManager extends Thread{
 
 	TableList list;
+	String user = "test";
 	ServerInterface serverInterface;
 	TableUpdater tableUpdater;
 	GameTable table;
@@ -24,6 +25,9 @@ public class TableManager extends Thread{
 		this.serverInterface = serverInterface;
 	}
 	
+	public void setUsrName(String user) {
+		this.user = user;
+	}
 	public void refreshTables(int[] tableID) {
 		//tableUpdater = new TableUpdater(tableID, list, serverInterface, this);
 		//tableUpdater.start();
@@ -33,10 +37,13 @@ public class TableManager extends Thread{
 		for (int i : tableID) {
 			table = new GameTable(i);
 			insertTable(table);
-			serverInterface.getTblStatus("somebody", i);
+			serverInterface.getTblStatus(user, i);
 		}
 	}
 	
+	public void refreshLocalTables() {
+		refreshTables(list.getLocalTableIDs());
+	}
 	public void updateNextTable(int tableID, String black, String red) {
 //		if (tableRefresher.isAlive()) {
 //			synchronized(tableRefresher) {

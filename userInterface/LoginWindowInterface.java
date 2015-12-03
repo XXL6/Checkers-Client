@@ -15,7 +15,5 @@ public interface LoginWindowInterface {
 	
 	public void assignLoginButton(ActionListener listener);
 	
-	public void assignTutorialButton(ActionListener listener);
-	
 	public void display(boolean display);
 }

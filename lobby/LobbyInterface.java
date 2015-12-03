@@ -39,4 +39,8 @@ public interface LobbyInterface {
 	void joinTable();
 
 	void toggleWindow();
+
+	void spectate();
+
+	void refreshLocalTables();
 }

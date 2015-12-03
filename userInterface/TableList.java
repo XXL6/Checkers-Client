@@ -61,4 +61,12 @@ public class TableList extends JList<GameTable> {
 	public void clear() {
 		MODEL.clear();
 	}
+	
+	public int[] getLocalTableIDs() {
+		int[] tempTables = new int[MODEL.getSize()];
+		for(int i = 0; i < MODEL.getSize(); i++){
+			tempTables[i] =  MODEL.getElementAt(i).getTableID(); 
+		}
+		return tempTables;
+	}
 }

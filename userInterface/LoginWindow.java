@@ -31,7 +31,6 @@ public class LoginWindow implements ActionListener, LoginWindowInterface {
 	private JTextField nameTxtField;
 	private JButton btnLogin;
 	private JTextField addrTxtField;
-	private JButton btnTutorial;
 
 	public LoginWindow() {
 		initialize();
@@ -54,8 +53,6 @@ public class LoginWindow implements ActionListener, LoginWindowInterface {
 		
 		JButton btnClear = new JButton("Clear");
 		
-		btnTutorial = new JButton("Tutorial");
-		
 		JLabel lblCheckersClientLogin = new JLabel("Checkers Client Login");
 		lblCheckersClientLogin.setFont(new Font("Tahoma", Font.BOLD, 13));
 		
@@ -71,24 +68,23 @@ public class LoginWindow implements ActionListener, LoginWindowInterface {
 				.addGroup(groupLayout.createSequentialGroup()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 						.addGroup(groupLayout.createSequentialGroup()
-							.addGap(31)
+							.addGap(55)
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addComponent(lblUsername)
-								.addComponent(btnLogin, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
 								.addComponent(lblIpAddress))
 							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(btnClear, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
-									.addPreferredGap(ComponentPlacement.UNRELATED)
-									.addComponent(btnTutorial, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE))
-								.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
-									.addComponent(addrTxtField, Alignment.LEADING)
-									.addComponent(nameTxtField, Alignment.LEADING))))
+							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING, false)
+								.addComponent(addrTxtField, Alignment.LEADING)
+								.addComponent(nameTxtField, Alignment.LEADING)))
 						.addGroup(groupLayout.createSequentialGroup()
 							.addGap(77)
-							.addComponent(lblCheckersClientLogin)))
-					.addContainerGap(29, Short.MAX_VALUE))
+							.addComponent(lblCheckersClientLogin))
+						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+							.addContainerGap()
+							.addComponent(btnLogin, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)
+							.addPreferredGap(ComponentPlacement.UNRELATED)
+							.addComponent(btnClear, GroupLayout.PREFERRED_SIZE, 80, GroupLayout.PREFERRED_SIZE)))
+					.addContainerGap(73, Short.MAX_VALUE))
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -105,9 +101,8 @@ public class LoginWindow implements ActionListener, LoginWindowInterface {
 						.addComponent(addrTxtField, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnLogin)
 						.addComponent(btnClear)
-						.addComponent(btnTutorial))
+						.addComponent(btnLogin))
 					.addGap(14))
 		);
 		frmCheckersGameClient.getContentPane().setLayout(groupLayout);
@@ -144,9 +139,4 @@ public class LoginWindow implements ActionListener, LoginWindowInterface {
 		nameTxtField.requestFocus();
 	}
 
-	@Override
-	public void assignTutorialButton(ActionListener listener) {
-		btnTutorial.addActionListener(listener);
-		
-	}
 }

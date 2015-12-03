@@ -14,7 +14,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 
-import lobby.GameTable;
+import game.CheckerBoard;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JSeparator;
@@ -40,31 +40,28 @@ import java.awt.Point;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 
-public class LobbyWindow implements LobbyWindowInterface{
+public class ObserverWindow {
 
 	private JFrame frmCheckers;
 	private JTextField chatInputField;
 	private ChatArea chatArea;
 	private UserList userList;
 	private DefaultListModel<String> usrListModel;
-	private DefaultListModel<GameTable> tableListModel;
 	private JButton btnDisconnect;
 	private JButton btnSend;
-	private JButton btnCreateTable;
-	private JButton btnTutorial;
-	private JButton btnJoinTable;
-	private JButton btnSpectate;
-	private TableList tableList;
+	private JButton btnLeaveSpec;
 	private JScrollPane chatScrollPane;
 	private JButton btnClearChat;
 	private JPopupMenu popupMenu;
-	private JButton btnRefreshTables;
+	private CheckerBoard board;
 
 	/**
 	 * Create the application.
 	 */
-	public LobbyWindow() {
+	public ObserverWindow(CheckerBoard board) {
+		this.board = board;
 		initialize();
 	}
 
@@ -88,12 +85,10 @@ public class LobbyWindow implements LobbyWindowInterface{
 		frmCheckers = new JFrame();
 		frmCheckers.setTitle("Checkers");
 		usrListModel = new DefaultListModel<String>();
-		tableListModel = new DefaultListModel<GameTable>();
-		frmCheckers.setBounds(100, 100, 750, 810);
+		frmCheckers.setBounds(100, 100, 750, 700);
 		frmCheckers.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		chatArea = new ChatArea();
 		userList = new UserList();
-		tableList = new TableList();
 		//chatArea = new ChatArea();
 		chatArea.setEditable(false);
 		chatArea.setLineWrap(true);
@@ -119,87 +114,57 @@ public class LobbyWindow implements LobbyWindowInterface{
 		btnSend = new JButton("Send");
 		btnSend.setFont(new Font("Tahoma", Font.PLAIN, 9));
 		
-		btnCreateTable = new JButton("Create Table");
-		btnCreateTable.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		//tableList = new TableList(tableListModel);
-		//tableList.setModel(tableListModel);
-		//tableList.setBorder(border);
-		JScrollPane tableScrollPane = new JScrollPane (tableList, 
-				   JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);			
-		tableScrollPane.setBorder(border);
-		JLabel lblTablesInServer = new JLabel("Tables in server:");
+		btnLeaveSpec = new JButton("Leave Spec");
+		btnLeaveSpec.setFont(new Font("Tahoma", Font.BOLD, 12));
+		JLabel lblTablesInServer = new JLabel("Tables in server");
 		lblTablesInServer.setFont(new Font("Tahoma", Font.BOLD, 16));
-		
-		btnTutorial = new JButton("Tutorial");
-		btnTutorial.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		btnClearChat = new JButton("Clear Chat");
 		btnClearChat.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
-		btnJoinTable = new JButton("Join Table");
-		btnJoinTable.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		btnSpectate = new JButton("Spectate");
-		btnSpectate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
-		btnSpectate.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		btnRefreshTables = new JButton("Refresh");
+		JLayeredPane layeredPane = new JLayeredPane();
 		
 		GroupLayout groupLayout = new GroupLayout(frmCheckers.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
 				.addGroup(groupLayout.createSequentialGroup()
-					.addContainerGap()
 					.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
-						.addComponent(tableScrollPane, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
+						.addGroup(groupLayout.createSequentialGroup()
+							.addContainerGap()
 							.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 								.addGroup(groupLayout.createSequentialGroup()
-									.addComponent(chatInputField, GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+									.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
+										.addGroup(groupLayout.createSequentialGroup()
+											.addComponent(chatInputField, GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
+											.addPreferredGap(ComponentPlacement.RELATED)
+											.addComponent(btnSend, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
+										.addComponent(chatScrollPane, GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(btnSend, GroupLayout.PREFERRED_SIZE, 59, GroupLayout.PREFERRED_SIZE))
-								.addComponent(chatScrollPane, GroupLayout.DEFAULT_SIZE, 537, Short.MAX_VALUE))
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(userScrollPane, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
-						.addGroup(Alignment.TRAILING, groupLayout.createSequentialGroup()
-							.addComponent(btnClearChat, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED, 30, Short.MAX_VALUE)
-							.addComponent(btnSpectate, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnJoinTable, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnTutorial, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnCreateTable, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(btnDisconnect, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))
+									.addComponent(userScrollPane, GroupLayout.DEFAULT_SIZE, 171, Short.MAX_VALUE))
+								.addComponent(lblTablesInServer)
+								.addGroup(Alignment.LEADING, groupLayout.createSequentialGroup()
+									.addComponent(btnClearChat, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED, 378, Short.MAX_VALUE)
+									.addComponent(btnLeaveSpec, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE)
+									.addPreferredGap(ComponentPlacement.RELATED)
+									.addComponent(btnDisconnect, GroupLayout.PREFERRED_SIZE, 110, GroupLayout.PREFERRED_SIZE))))
 						.addGroup(groupLayout.createSequentialGroup()
-							.addComponent(lblTablesInServer)
-							.addPreferredGap(ComponentPlacement.UNRELATED)
-							.addComponent(btnRefreshTables)))
+							.addGap(70)
+							.addComponent(board, GroupLayout.PREFERRED_SIZE, 500, GroupLayout.PREFERRED_SIZE)))
 					.addContainerGap())
 		);
 		groupLayout.setVerticalGroup(
 			groupLayout.createParallelGroup(Alignment.TRAILING)
 				.addGroup(groupLayout.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
-						.addComponent(lblTablesInServer)
-						.addComponent(btnRefreshTables))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(tableScrollPane, GroupLayout.DEFAULT_SIZE, 504, Short.MAX_VALUE)
-					.addGap(18)
+					.addComponent(lblTablesInServer)
+					.addGap(65)
+					.addComponent(board, GroupLayout.PREFERRED_SIZE, 504, Short.MAX_VALUE)
+					.addPreferredGap(ComponentPlacement.RELATED, 86, Short.MAX_VALUE)
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnDisconnect)
 						.addComponent(btnClearChat)
-						.addComponent(btnCreateTable)
-						.addComponent(btnTutorial)
-						.addComponent(btnJoinTable)
-						.addComponent(btnSpectate))
+						.addComponent(btnLeaveSpec))
 					.addGap(18)
 					.addGroup(groupLayout.createParallelGroup(Alignment.TRAILING)
 						.addGroup(groupLayout.createSequentialGroup()
@@ -219,10 +184,7 @@ public class LobbyWindow implements LobbyWindowInterface{
 		btnSend.addActionListener(listener);
 		btnDisconnect.addActionListener(listener);
 		btnClearChat.addActionListener(listener);
-		btnCreateTable.addActionListener(listener);
-		btnJoinTable.addActionListener(listener);
-		btnSpectate.addActionListener(listener);
-		btnRefreshTables.addActionListener(listener);
+		btnLeaveSpec.addActionListener(listener);
 	}
 
 	public void insertText(String text) {
@@ -266,26 +228,6 @@ public class LobbyWindow implements LobbyWindowInterface{
 		userList.clearUsers();
 	}
 	
-	public void insertTable(GameTable table) {
-		tableList.insert(table);
-	}
-	
-	
-	public boolean tablesLoading() {
-		return tableList.tablesLoading();
-	}
-	
-	public void removeTable(int tableIdentifier) {
-		tableList.remove(tableIdentifier);
-	}
-	
-	public void clearTables() {
-		tableList.clear();
-	}
-	
-	public TableList getTableList() {
-		return tableList;
-	}
 	public void addPopupMenu(ActionListener actionListener, MouseListener mouseListener) {
 	    popupMenu = new JPopupMenu();
 	    JMenuItem menuItem = new JMenuItem("Send a PM");
@@ -306,7 +248,5 @@ public class LobbyWindow implements LobbyWindowInterface{
 		return userList.getSelectedValue();
 	}
 	
-	public int getSelectedTable() {
-		return tableList.getSelectedValue().getTableID();
-	}
+
 }
