@@ -1,6 +1,13 @@
 package game;
 
 import java.awt.EventQueue;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.Sequencer;
 
 import chatHandler.ChatManager;
 import chatHandler.Message;
@@ -19,8 +26,12 @@ public class Game {
 	String opponentColor = null;
 	GeneralButtonListener listener = null;
 	CheckerBoard board;
+
 	boolean ready = false;
 	
+
+	Sequencer sequencer = null;
+
 	public Game(ServerInterface serverInterface, ChatManager chatManager, 
 			String clientUsername, int tableID) {
 		board = new CheckerBoard(serverInterface, this);
@@ -46,17 +57,31 @@ public class Game {
 			}
 		}
 		});
+		try{
+			 sequencer = MidiSystem.getSequencer();
+			 sequencer.open();
+			 InputStream is = new BufferedInputStream(new FileInputStream(new File("resources/TV_Themes_-_Cheers.mid")));
+			 sequencer.setSequence(is);
+			 sequencer.start();
+			}catch(Exception e){
+				
+			}
 	}
 	public void startGame() {	
 		gameWindow.setClientColor(clientColor);
 		gameWindow.setOpponentColor(opponentColor);
 		board.setColor(clientColor);
 		board.arrangeCheckers();
+		
+	
+			 
 	}
 	public void stopGame() {
 		gameWindow.display(false);
 		gameWindow = null;
 		listener = null;
+		
+		sequencer.stop();
 	}
 	
 	public void sendMessage() {
