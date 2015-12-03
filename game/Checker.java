@@ -21,7 +21,7 @@ public class Checker extends JLabel {
 		Image checkerImage = null;
 		if (color.equalsIgnoreCase("black")) {
 	    	try {
-				checkerImage = ImageIO.read(new File("./resources/BlackChecker.png"));
+				checkerImage = ImageIO.read(getClass().getClassLoader().getResource("resources/BlackChecker.png"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -29,7 +29,7 @@ public class Checker extends JLabel {
 	    	checkerState = "black";
 		} else if (color.equalsIgnoreCase("red")){
 	    	try {
-				checkerImage = ImageIO.read(new File("./resources/RedChecker.png"));
+				checkerImage = ImageIO.read(getClass().getClassLoader().getResource("resources/RedChecker.png"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -37,7 +37,7 @@ public class Checker extends JLabel {
 	    	checkerState = "red";
 		} else if (color.equalsIgnoreCase("blackking")) {
 	    	try {
-				checkerImage = ImageIO.read(new File("./resources/BlackKing.png"));
+				checkerImage = ImageIO.read(getClass().getClassLoader().getResource("resources/BlackKing.png"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -45,7 +45,7 @@ public class Checker extends JLabel {
 	    	checkerState = "blackking";
 		} else if (color.equalsIgnoreCase("redking")) {
 	    	try {
-				checkerImage = ImageIO.read(new File("./resources/RedKing.png"));
+				checkerImage = ImageIO.read(getClass().getClassLoader().getResource("resources/RedKing.png"));
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
