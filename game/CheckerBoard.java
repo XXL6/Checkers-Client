@@ -49,14 +49,16 @@ public class CheckerBoard extends JLayeredPane {
     private ServerInterface serverInterface = null;
     private int fRow, fCol;
     private int tRow, tCol;
+    private Game game;
   /*
   Just a quick thing I made to populate a 2d array in the right checkers positions, though there was probably an easier
   to do it. It can easily be altered to make the array populated by checkers instances.
   */
   
   
-    public CheckerBoard(ServerInterface serverInterface){
+    public CheckerBoard(ServerInterface serverInterface, Game game){
     	this.serverInterface = serverInterface;
+    	this.game = game;
     	//Setup the board image
     	try {
 			checkerBoardImage = ImageIO.read(getClass().getClassLoader().getResource("resources/Board.png"));
@@ -446,6 +448,7 @@ public class CheckerBoard extends JLayeredPane {
 		                    else
 		                    	serverInterface.move(clientUsername, fRow, fCol, tRow, tCol);
 		                    boardActive = false;
+		                    game.setYourTurn(false);
 		                    System.out.println("From row: " + fRow + " and column: " + fCol);
 		                    System.out.println("To row: " + tRow + " and column: " + tCol);
 	                    }

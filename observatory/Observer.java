@@ -16,7 +16,7 @@ public class Observer extends Thread{
 	private ServerInterface serverInterface;
 	
 	public Observer(int tableID, String clientName, ServerInterface serverInterface) {
-		board = new CheckerBoard(null);
+		board = new CheckerBoard(null, null);
 		board.setColor("red");
 		window = new ObserverWindow2(board);
 		GeneralButtonListener listener = new GeneralButtonListener(this);

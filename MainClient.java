@@ -241,7 +241,7 @@ public class MainClient extends Thread implements CheckersClient {
 	@Override
 	public void yourTurn() {
 		game.enableBoard(true);
-		
+		game.setYourTurn(true);
 	}
 
 	@Override

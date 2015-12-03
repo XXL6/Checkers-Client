@@ -22,7 +22,7 @@ public class Game {
 	
 	public Game(ServerInterface serverInterface, ChatManager chatManager, 
 			String clientUsername, int tableID) {
-		board = new CheckerBoard(serverInterface);
+		board = new CheckerBoard(serverInterface, this);
 		gameWindow = new GameWindow(board);
 		this.serverInterface = serverInterface;
 		this.chatManager = chatManager;
@@ -165,4 +165,10 @@ public class Game {
 			board.disable();
 		}
 	}
+	public void setYourTurn(boolean setYourTurn){
+		
+		gameWindow.setYourTurn(setYourTurn);
+	
+	
+}
 }

@@ -41,6 +41,7 @@ import java.awt.Point;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JLabel;
+import javax.swing.JLayeredPane;
 import javax.swing.border.LineBorder;
 
 public class GameWindow {
@@ -63,11 +64,13 @@ public class GameWindow {
 	private JLabel lblOpponentColor;
 	private JLabel clientColorIndicator;
 	private JLabel oppColorIndicator;
+	private JLabel yourTurn;
 	/**
 	 * Create the application.
 	 */
 	public GameWindow(CheckerBoard gameBoard) {
 		this.gameBoard = gameBoard;
+		//gameBoard = new JLayeredPane();
 		initialize();
 	}
 
@@ -142,6 +145,9 @@ public class GameWindow {
 		oppColorIndicator = new JLabel("");
 		oppColorIndicator.setFont(new Font("Tahoma", Font.BOLD, 16));
 		
+		yourTurn = new JLabel("Your Turn");
+		yourTurn.setFont(new Font("Tahoma", Font.BOLD, 16));
+		
 		GroupLayout groupLayout = new GroupLayout(frmCheckers.getContentPane());
 		groupLayout.setHorizontalGroup(
 			groupLayout.createParallelGroup(Alignment.LEADING)
@@ -175,7 +181,8 @@ public class GameWindow {
 								.addGroup(groupLayout.createSequentialGroup()
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 										.addComponent(lblOpponentColor)
-										.addComponent(lblYourColor))
+										.addComponent(lblYourColor)
+										.addComponent(yourTurn))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(groupLayout.createParallelGroup(Alignment.LEADING)
 										.addComponent(clientColorIndicator, GroupLayout.PREFERRED_SIZE, 88, GroupLayout.PREFERRED_SIZE)
@@ -201,7 +208,13 @@ public class GameWindow {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 								.addComponent(lblOpponentColor, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-								.addComponent(oppColorIndicator, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))))
+								
+								.addComponent(oppColorIndicator, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE))
+							.addPreferredGap(ComponentPlacement.RELATED)
+							.addComponent(yourTurn))
+						
+						)
+					
 					.addGroup(groupLayout.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnDisconnect)
 						.addComponent(btnClearChat)
@@ -296,5 +309,12 @@ public class GameWindow {
 			oppColorIndicator.setForeground(Color.RED);
 		else
 			oppColorIndicator.setForeground(Color.BLACK);
+	}
+	
+	public void setYourTurn(boolean setYourTurn){
+		
+			yourTurn.setVisible(setYourTurn);
+		
+		
 	}
 }
