@@ -61,7 +61,7 @@ public class CheckerBoard extends JLayeredPane {
     	this.game = game;
     	//Setup the board image
     	try {
-			checkerBoardImage = ImageIO.read(getClass().getClassLoader().getResource("resources/clgBO1g.png"));
+			checkerBoardImage = ImageIO.read(getClass().getClassLoader().getResource("resources/Board.png"));
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
