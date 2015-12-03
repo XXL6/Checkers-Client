@@ -246,7 +246,7 @@ public class CheckerBoard extends JLayeredPane {
     	moveChecker(tRow, tCol, fRow, fCol);
     }
     
-    private void removeColor() {
+    private void removeHighlights() {
 		for (int row = 0; row < GRID_ROWS; row++) {
             for (int col = 0; col < GRID_COLUMNS; col++) {
             	
@@ -451,7 +451,7 @@ public class CheckerBoard extends JLayeredPane {
 	                    }
 	                }
 	            }
-	            removeColor();
+	            removeHighlights();
 	            validate();
 	            repaint();
 	            dragLabel = null;
